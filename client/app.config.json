@@ -1,7 +1,7 @@
 {
     "apps": [
         {
-            "name": "sybl-client",
+            "name": "sybil-client",
             "script": "npx",
             "interpreter": "none",
             "args": "serve -s build -p 80"
