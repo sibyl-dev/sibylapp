@@ -1,6 +1,6 @@
 import React from 'react';
-import GrayBoxWrapper from './GrayBoxWrapper';
 import * as d3 from 'd3';
+import GrayBoxWrapper from './GrayBoxWrapper';
 
 import './styles/DonutChart.scss';
 
@@ -44,7 +44,7 @@ const PieChart = () => (
         <svg id="piechart" width={chartSize} height={chartSize}>
           <g transform={`translate(${chartSize / 2}, ${chartSize / 2})`}>
             {childData.map((currentChild, childIndex) => (
-              <path key={childIndex} d={drawArc(childIndex)} fill={colors[childIndex]} />
+              <path key={currentChild.status} d={drawArc(childIndex)} fill={colors[childIndex]} />
             ))}
           </g>
         </svg>
@@ -52,8 +52,8 @@ const PieChart = () => (
       <div className="legend">
         <ul>
           {childData.map((currentChild, childIndex) => (
-            <li key={childIndex}>
-              <i style={{ background: colors[childIndex] }}></i>
+            <li key={currentChild.status}>
+              <i style={{ background: colors[childIndex] }} />
               {currentChild.status}
             </li>
           ))}
