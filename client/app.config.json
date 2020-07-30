@@ -4,7 +4,7 @@
             "name": "sybil-client",
             "script": "npx",
             "interpreter": "none",
-            "args": "serve -s build -p 80"
+            "args": "sudo serve -s build -p 80"
         }
     ]
 }
