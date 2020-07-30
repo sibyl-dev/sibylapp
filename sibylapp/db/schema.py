@@ -53,13 +53,31 @@ class Entity(SibylAppDocument):
     eid = fields.StringField(validation=_valid_id)
 
     features = fields.DictField()  # {feature:value}
+    transformed_features = fields.DictField() # {model_id:{feature:value,},}
+
     property = fields.DictField()  # {property:value}
 
-    outcomes = fields.ListField(
+    outcome = fields.ListField(
         fields.ReferenceField(Event, reverse_delete_rule=PULL))
 
     unique_key_fields = ['eid']
 
+    def get_features(self, model_id=None):
+        """
+        Return features transformed for model with id=model_id
+        :param model_id: id of model to get features for
+        :return: transformed features for model_id, or base features if not
+                 applicable
+        """
+        if model_id is None or \
+           model_id not in self.transformed_features or \
+           self.transformed_features[model_id] is None:
+            return self.features
+        else:
+            return self.transformed_features[model_id]
+
+    def to_dataframe(self, model_id=None):
+        return pd.DataFrame(self.get_features(model_id), index=[0])
 
 class Category(SibylAppDocument):
     name = fields.StringField(required=True)
@@ -88,8 +106,8 @@ class TrainingSet(SibylAppDocument):
         fields.ReferenceField(Entity, reverse_delete_rule=PULL))
     neighbors = fields.BinaryField()  # trained NN classifier
 
-    def to_dataframe(self):
-        features = [entity.features for entity in self.entities]
+    def to_dataframe(self, model_id=None):
+        features = [entity.get_features(model_id) for entity in self.entities]
         training_set_df = pd.DataFrame(features)
         return training_set_df
 

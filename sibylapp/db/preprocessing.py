@@ -1,13 +1,35 @@
 from sibylapp.db import schema
 import pandas as pd
-from pymongo import MongoClient
-from mongoengine import connect
-from sklearn.linear_model import Lasso
 import numpy as np
 import pickle
-from sibylapp.db.utils import ModelWrapper
-import os
 import random
+
+
+def load_model_from_weights_sklearn(weights_filepath, model_base):
+    """
+    Load the model
+    :return: (model, model features)
+    """
+    model_weights = pd.read_csv(weights_filepath)
+
+    model = model_base
+    dummy_X = np.zeros((1, model_weights.shape[1] - 1))
+    dummy_y = np.zeros(model_weights.shape[1] - 1)
+    model.fit(dummy_X, dummy_y)
+
+    model.coef_ = np.array(model_weights["weight"][1:])
+    model.intercept_ = model_weights["weight"][0]
+    return model, model_weights["name"][1:]
+
+
+def load_model_from_pickle(pickle_filepath):
+    """
+    Load the model
+    :return: the model
+    """
+    model = pickle.load(open(pickle_filepath, 'rb'))
+
+    return model
 
 
 def insert_features(filepath):
@@ -27,27 +49,8 @@ def insert_categories(filepath):
     schema.Category.insert_many(items)
 
 
-def insert_model(model_filepath, importance_filepath, explainer_filepath, set_doc):
-    def load_model(model_filepath):
-        """
-        Load the model
-        :return: the model
-        """
-        model_weights = pd.read_csv(model_filepath)
-
-        model = Lasso()
-        dummy_X = np.zeros((1, model_weights.shape[1] - 1))
-        dummy_y = np.zeros(model_weights.shape[1] - 1)
-        model.fit(dummy_X, dummy_y)
-
-        model.coef_ = np.array(model_weights["weight"][1:])
-        model.intercept_ = model_weights["weight"][0]
-        return model, model_weights["name"][model_weights["name"] != "(Intercept)"]
-
-    base_model, features = load_model(model_filepath)
-    model = ModelWrapper(base_model, features)
-
-    model_serial = pickle.dumps(model)
+def insert_model(model_wrapper, explainer_filepath, importance_filepath, set_doc):
+    model_serial = pickle.dumps(model_wrapper)
 
     name = "Test Model 1"
     description = "A basic lasso regression model.\n " \
@@ -72,13 +75,11 @@ def insert_model(model_filepath, importance_filepath, explainer_filepath, set_do
     schema.Model.insert(**items)
 
 
-def insert_entities(values_filepath, weights_filepath,
+def insert_entities(values_filepath, features=None,
                     counter_start=0, num=0, include_cases=False):
-    model_weights = pd.read_csv(weights_filepath)
-    features = model_weights["name"][model_weights["name"] != "(Intercept)"].tolist()
-
-    feature_df = pd.read_csv(values_filepath)[features + ["eid"]]
-    eids = None
+    feature_df = pd.read_csv(values_filepath)
+    if features is not None:
+        feature_df = feature_df[features + ["eid"]]
     if num > 0:
         feature_df = feature_df.iloc[counter_start:num+counter_start]
     eids = feature_df["eid"]
@@ -120,27 +121,3 @@ def insert_cases(filepath):
 
 def test_validation():
     pass
-
-
-if __name__ == "__main__":
-    client = MongoClient("localhost", 27017)
-    connect('sibylapp', host='localhost', port=27017)
-
-    directory = "data"
-
-    insert_cases(os.path.join(directory, "cases.csv"))
-
-    eids = insert_entities(os.path.join(directory, "entity_features.csv"),
-                    os.path.join(directory, "weights.csv"),
-                    include_cases=True)
-    #eids = insert_entities(os.path.join(directory, "dataset.csv"),
-    #                       os.path.join(directory, "weights.csv"),
-    #                       counter_start=17, num=100000)
-    set_doc = insert_training_set(eids)
-    insert_categories(os.path.join(directory, "categories.csv"))
-    insert_features(os.path.join(directory, "features.csv"))
-    insert_model(os.path.join(directory, "weights.csv"),
-                 os.path.join(directory, "importances.csv"),
-                 os.path.join(directory, "explainer"),
-                 set_doc)
-    test_validation()

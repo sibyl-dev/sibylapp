@@ -1,0 +1,260 @@
+,name,description,type,importance,category
+0,LotFrontage, Linear feet of street connected to property,numeric,,size
+1,LotArea, Lot size in square feet,numeric,,size
+2,Street, Type of road access to property,category,,property
+3,LotShape, General shape of property,category,,property
+4,Utilities, Type of utilities available,category,,utilities
+5,LandSlope, Slope of property,category,,property
+6,OverallQual, Rates the overall material and finish of the house,category,,quality
+7,OverallCond, Rates the overall condition of the house,category,,quality
+8,YearBuilt, Original construction date,numeric,,dates
+9,YearRemodAdd, Remodel date (same as construction date if no remodeling or additions),numeric,,dates
+10,MasVnrArea, Masonry veneer area in square feet,numeric,,quality
+11,ExterQual, Evaluates the quality of the material on the exterior,category,,quality
+12,ExterCond, Evaluates the present condition of the material on the exterior,category,,quality
+13,BsmtQual, Evaluates the height of the basement,category,,basement
+14,BsmtExposure, Refers to walkout or garden level walls,category,,other
+15,BsmtFinType1, Rating of basement finished area,category,,basement
+16,BsmtFinSF1, Type 1 finished square feet,numeric,,basement
+17,BsmtFinType2, Rating of basement finished area (if multiple types),category,,basement
+18,BsmtFinSF2, Type 2 finished square feet,numeric,,basement
+19,BsmtUnfSF, Unfinished square feet of basement area,numeric,,basement
+20,TotalBsmtSF, Total square feet of basement area,numeric,,basement
+21,HeatingQC, Heating quality and condition,category,,utilities
+22,1stFlrSF, First Floor square feet,numeric,,size
+23,2ndFlrSF, Second floor square feet,numeric,,size
+24,LowQualFinSF, Low quality finished square feet (all floors),numeric,,quality
+25,GrLivArea, Above grade (ground) living area square feet,numeric,,size
+26,BsmtFullBath, Basement full bathrooms,numeric,,basement
+27,BsmtHalfBath, Basement half bathrooms,numeric,,basement
+28,FullBath, Full bathrooms above grade,numeric,,size
+29,HalfBath, Half baths above grade,numeric,,size
+30,BedroomAbvGr, Bedrooms above grade (does NOT include basement bedrooms),numeric,,size
+31,KitchenAbvGr, Kitchens above grade,numeric,,size
+32,KitchenQual, Kitchen quality,category,,quality
+33,TotRmsAbvGrd, Total rooms above grade (does not include bathrooms),numeric,,size
+34,Functional, Home functionality (Assume typical unless deductions are warranted),category,,other
+35,Fireplaces, Number of fireplaces,numeric,,other
+36,FireplaceQu, Fireplace quality,category,,other
+37,GarageYrBlt, Year garage was built,numeric,,garage
+38,GarageCars, Size of garage in car capacity,numeric,,garage
+39,GarageArea, Size of garage in square feet,numeric,,garage
+40,GarageQual, Garage quality,category,,garage
+41,GarageCond, Garage condition,category,,garage
+42,PavedDrive, Paved driveway,category,,garage
+43,WoodDeckSF, Wood deck area in square feet,numeric,,outdoor
+44,OpenPorchSF, Open porch area in square feet,numeric,,outdoor
+45,EnclosedPorch, Enclosed porch area in square feet,numeric,,outdoor
+46,3SsnPorch, Three season porch area in square feet,numeric,,outdoor
+47,ScreenPorch, Screen porch area in square feet,numeric,,outdoor
+48,PoolArea, Pool area in square feet,numeric,,outdoor
+49,PoolQC, Pool quality,category,,outdoor
+50,MiscVal, $Value of miscellaneous feature,category,,other
+51,YrSold, Year Sold (YYYY),numeric,,dates
+52,MSSubClass_SC120,Type of dwelling involved in the sale. (1-STORY PUD (Planned Unit Development) - 1946 & NEWER),binary,,general
+53,MSSubClass_SC160,Type of dwelling involved in the sale. (2-STORY PUD - 1946 & NEWER),binary,,general
+54,MSSubClass_SC180,Type of dwelling involved in the sale. (PUD - MULTILEVEL - INCL SPLIT LEV/FOYER),binary,,general
+55,MSSubClass_SC190,Type of dwelling involved in the sale. (2 FAMILY CONVERSION - ALL STYLES AND AGES),binary,,general
+56,MSSubClass_SC20,Type of dwelling involved in the sale. (1-STORY 1946 & NEWER ALL STYLES),binary,,general
+57,MSSubClass_SC30,Type of dwelling involved in the sale. (1-STORY 1945 & OLDER),binary,,general
+58,MSSubClass_SC40,Type of dwelling involved in the sale. (1-STORY W/FINISHED ATTIC ALL AGES),binary,,general
+59,MSSubClass_SC45,Type of dwelling involved in the sale. (1-1/2 STORY - UNFINISHED ALL AGES),binary,,general
+60,MSSubClass_SC50,Type of dwelling involved in the sale. (1-1/2 STORY FINISHED ALL AGES),binary,,general
+61,MSSubClass_SC60,Type of dwelling involved in the sale. (2-STORY 1946 & NEWER),binary,,general
+62,MSSubClass_SC70,Type of dwelling involved in the sale. (2-STORY 1945 & OLDER),binary,,general
+63,MSSubClass_SC75,Type of dwelling involved in the sale. (2-1/2 STORY ALL AGES),binary,,general
+64,MSSubClass_SC80,Type of dwelling involved in the sale. (SPLIT OR MULTI-LEVEL),binary,,general
+65,MSSubClass_SC85,Type of dwelling involved in the sale. (SPLIT FOYER),binary,,general
+66,MSSubClass_SC90,Type of dwelling involved in the sale. (DUPLEX - ALL STYLES AND AGES),binary,,general
+67,MSZoning_C (all),General zoning classification of the sale. (C (all)),binary,,general
+68,MSZoning_FV,General zoning classification of the sale. (Floating Village Residential),binary,,general
+69,MSZoning_RH,General zoning classification of the sale. (Residential High Density),binary,,general
+70,MSZoning_RL,General zoning classification of the sale. (Residential Low Density),binary,,general
+71,MSZoning_RM,General zoning classification of the sale. (Residential Medium Density),binary,,general
+72,Alley_1, Type of alley access to property (1),binary,,property
+73,Alley_2, Type of alley access to property (2),binary,,property
+74,Alley_None, Type of alley access to property (None),binary,,property
+75,LandContour_Bnk, Flatness of the property (Banked - Quick and significant rise from street grade to building),binary,,property
+76,LandContour_HLS, Flatness of the property (Hillside - Significant slope from side to side),binary,,property
+77,LandContour_Low, Flatness of the property (Depression),binary,,property
+78,LandContour_Lvl, Flatness of the property (Near Flat/Level),binary,,property
+79,LotConfig_Corner, Lot configuration (Corner lot),binary,,property
+80,LotConfig_CulDSac, Lot configuration (Cul-de-sac),binary,,property
+81,LotConfig_FR2, Lot configuration (Frontage on 2 sides of property),binary,,property
+82,LotConfig_FR3, Lot configuration (Frontage on 3 sides of property),binary,,property
+83,LotConfig_Inside, Lot configuration (Inside lot),binary,,property
+84,Neighborhood_Blmngtn, Physical locations within Ames city limits (Bloomington Heights),binary,,location
+85,Neighborhood_Blueste, Physical locations within Ames city limits (Bluestem),binary,,location
+86,Neighborhood_BrDale, Physical locations within Ames city limits (Briardale),binary,,location
+87,Neighborhood_BrkSide, Physical locations within Ames city limits (Brookside),binary,,location
+88,Neighborhood_ClearCr, Physical locations within Ames city limits (Clear Creek),binary,,location
+89,Neighborhood_CollgCr, Physical locations within Ames city limits (College Creek),binary,,location
+90,Neighborhood_Crawfor, Physical locations within Ames city limits (Crawford),binary,,location
+91,Neighborhood_Edwards, Physical locations within Ames city limits (Edwards),binary,,location
+92,Neighborhood_Gilbert, Physical locations within Ames city limits (Gilbert),binary,,location
+93,Neighborhood_IDOTRR, Physical locations within Ames city limits (Iowa DOT and Rail Road),binary,,location
+94,Neighborhood_MeadowV, Physical locations within Ames city limits (Meadow Village),binary,,location
+95,Neighborhood_Mitchel, Physical locations within Ames city limits (Mitchell),binary,,location
+96,Neighborhood_NAmes, Physical locations within Ames city limits (North Ames),binary,,location
+97,Neighborhood_NPkVill, Physical locations within Ames city limits (Northpark Villa),binary,,location
+98,Neighborhood_NWAmes, Physical locations within Ames city limits (Northwest Ames),binary,,location
+99,Neighborhood_NoRidge, Physical locations within Ames city limits (Northridge),binary,,location
+100,Neighborhood_NridgHt, Physical locations within Ames city limits (Northridge Heights),binary,,location
+101,Neighborhood_OldTown, Physical locations within Ames city limits (Old Town),binary,,location
+102,Neighborhood_SWISU, Physical locations within Ames city limits (South & West of Iowa State University),binary,,location
+103,Neighborhood_Sawyer, Physical locations within Ames city limits (Sawyer),binary,,location
+104,Neighborhood_SawyerW, Physical locations within Ames city limits (Sawyer West),binary,,location
+105,Neighborhood_Somerst, Physical locations within Ames city limits (Somerset),binary,,location
+106,Neighborhood_StoneBr, Physical locations within Ames city limits (Stone Brook),binary,,location
+107,Neighborhood_Timber, Physical locations within Ames city limits (Timberland),binary,,location
+108,Neighborhood_Veenker, Physical locations within Ames city limits (Veenker),binary,,location
+109,Condition1_Artery, Proximity to various conditions (Adjacent to arterial street),binary,,location
+110,Condition1_Feedr, Proximity to various conditions (Adjacent to feeder street),binary,,location
+111,Condition1_Norm, Proximity to various conditions (Normal),binary,,location
+112,Condition1_PosA, Proximity to various conditions (Adjacent to postive off-site feature),binary,,location
+113,Condition1_PosN," Proximity to various conditions (Near positive off-site feature--park, greenbelt, etc.)",binary,,location
+114,Condition1_RRAe, Proximity to various conditions (Adjacent to East-West Railroad),binary,,location
+115,Condition1_RRAn, Proximity to various conditions (Adjacent to North-South Railroad),binary,,location
+116,Condition1_RRNe, Proximity to various conditions (Within 200' of East-West Railroad),binary,,location
+117,Condition1_RRNn, Proximity to various conditions (Within 200' of North-South Railroad),binary,,location
+118,Condition2_Artery, Proximity to various conditions (if more than one is present) (Adjacent to arterial street),binary,,location
+119,Condition2_Feedr, Proximity to various conditions (if more than one is present) (Adjacent to feeder street),binary,,location
+120,Condition2_Norm, Proximity to various conditions (if more than one is present) (Normal),binary,,location
+121,Condition2_PosA, Proximity to various conditions (if more than one is present) (Adjacent to postive off-site feature),binary,,location
+122,Condition2_PosN," Proximity to various conditions (if more than one is present) (Near positive off-site feature--park, greenbelt, etc.)",binary,,location
+123,Condition2_RRAe, Proximity to various conditions (if more than one is present) (Adjacent to East-West Railroad),binary,,location
+124,Condition2_RRAn, Proximity to various conditions (if more than one is present) (Adjacent to North-South Railroad),binary,,location
+125,Condition2_RRNn, Proximity to various conditions (if more than one is present) (Within 200' of North-South Railroad),binary,,location
+126,BldgType_1Fam, Type of dwelling (Single-family Detached),binary,,general
+127,BldgType_2fmCon, Type of dwelling (2fmCon),binary,,general
+128,BldgType_Duplex, Type of dwelling (Duplex),binary,,general
+129,BldgType_Twnhs, Type of dwelling (Twnhs),binary,,general
+130,BldgType_TwnhsE, Type of dwelling (Townhouse End Unit),binary,,general
+131,HouseStyle_15Fin, Style of dwelling (One and one-half story: 2nd level finished),binary,,general
+132,HouseStyle_15Unf, Style of dwelling (One and one-half story: 2nd level unfinished),binary,,general
+133,HouseStyle_1Story, Style of dwelling (One story),binary,,general
+134,HouseStyle_25Fin, Style of dwelling (Two and one-half story: 2nd level finished),binary,,general
+135,HouseStyle_25Unf, Style of dwelling (Two and one-half story: 2nd level unfinished),binary,,general
+136,HouseStyle_2Story, Style of dwelling (Two story),binary,,general
+137,HouseStyle_SFoyer, Style of dwelling (Split Foyer),binary,,general
+138,HouseStyle_SLvl, Style of dwelling (Split Level),binary,,general
+139,RoofStyle_Flat, Type of roof (Flat),binary,,general
+140,RoofStyle_Gable, Type of roof (Gable),binary,,general
+141,RoofStyle_Gambrel, Type of roof (Gabrel (Barn)),binary,,general
+142,RoofStyle_Hip, Type of roof (Hip),binary,,general
+143,RoofStyle_Mansard, Type of roof (Mansard),binary,,general
+144,RoofStyle_Shed, Type of roof (Shed),binary,,general
+145,RoofMatl_CompShg, Roof material (Standard (Composite) Shingle),binary,,general
+146,RoofMatl_Membran, Roof material (Membrane),binary,,general
+147,RoofMatl_Metal, Roof material (Metal),binary,,general
+148,RoofMatl_Roll, Roof material (Roll),binary,,general
+149,RoofMatl_Tar&Grv, Roof material (Gravel & Tar),binary,,general
+150,RoofMatl_WdShake, Roof material (Wood Shakes),binary,,general
+151,RoofMatl_WdShngl, Roof material (Wood Shingles),binary,,general
+152,Exterior1st_AsbShng, Exterior covering on house (Asbestos Shingles),binary,,general
+153,Exterior1st_AsphShn, Exterior covering on house (Asphalt Shingles),binary,,general
+154,Exterior1st_BrkComm, Exterior covering on house (Brick Common),binary,,general
+155,Exterior1st_BrkFace, Exterior covering on house (Brick Face),binary,,general
+156,Exterior1st_CBlock, Exterior covering on house (Cinder Block),binary,,general
+157,Exterior1st_CemntBd, Exterior covering on house (Cement Board),binary,,general
+158,Exterior1st_HdBoard, Exterior covering on house (Hard Board),binary,,general
+159,Exterior1st_ImStucc, Exterior covering on house (Imitation Stucco),binary,,general
+160,Exterior1st_MetalSd, Exterior covering on house (Metal Siding),binary,,general
+161,Exterior1st_Plywood, Exterior covering on house (Plywood),binary,,general
+162,Exterior1st_Stone, Exterior covering on house (Stone),binary,,general
+163,Exterior1st_Stucco, Exterior covering on house (Stucco),binary,,general
+164,Exterior1st_VinylSd, Exterior covering on house (Vinyl Siding),binary,,general
+165,Exterior1st_Wd Sdng, Exterior covering on house (Wood Siding),binary,,general
+166,Exterior1st_WdShing, Exterior covering on house (Wood Shingles),binary,,general
+167,Exterior2nd_AsbShng, Exterior covering on house (if more than one material) (Asbestos Shingles),binary,,general
+168,Exterior2nd_AsphShn, Exterior covering on house (if more than one material) (Asphalt Shingles),binary,,general
+169,Exterior2nd_Brk Cmn, Exterior covering on house (if more than one material) (Brk Cmn),binary,,general
+170,Exterior2nd_BrkFace, Exterior covering on house (if more than one material) (Brick Face),binary,,general
+171,Exterior2nd_CBlock, Exterior covering on house (if more than one material) (Cinder Block),binary,,general
+172,Exterior2nd_CmentBd, Exterior covering on house (if more than one material) (CmentBd),binary,,general
+173,Exterior2nd_HdBoard, Exterior covering on house (if more than one material) (Hard Board),binary,,general
+174,Exterior2nd_ImStucc, Exterior covering on house (if more than one material) (Imitation Stucco),binary,,general
+175,Exterior2nd_MetalSd, Exterior covering on house (if more than one material) (Metal Siding),binary,,general
+176,Exterior2nd_Other, Exterior covering on house (if more than one material) (Other),binary,,general
+177,Exterior2nd_Plywood, Exterior covering on house (if more than one material) (Plywood),binary,,general
+178,Exterior2nd_Stone, Exterior covering on house (if more than one material) (Stone),binary,,general
+179,Exterior2nd_Stucco, Exterior covering on house (if more than one material) (Stucco),binary,,general
+180,Exterior2nd_VinylSd, Exterior covering on house (if more than one material) (Vinyl Siding),binary,,general
+181,Exterior2nd_Wd Sdng, Exterior covering on house (if more than one material) (Wood Siding),binary,,general
+182,Exterior2nd_Wd Shng, Exterior covering on house (if more than one material) (Wd Shng),binary,,general
+183,MasVnrType_BrkCmn, Masonry veneer type (Brick Common),binary,,general
+184,MasVnrType_BrkFace, Masonry veneer type (Brick Face),binary,,general
+185,MasVnrType_None, Masonry veneer type (None),binary,,general
+186,MasVnrType_Stone, Masonry veneer type (Stone),binary,,general
+187,Foundation_BrkTil, Type of foundation (Brick & Tile),binary,,general
+188,Foundation_CBlock, Type of foundation (Cinder Block),binary,,general
+189,Foundation_PConc, Type of foundation (Poured Contrete),binary,,general
+190,Foundation_Slab, Type of foundation (Slab),binary,,general
+191,Foundation_Stone, Type of foundation (Stone),binary,,general
+192,Foundation_Wood, Type of foundation (Wood),binary,,general
+193,BsmtCond_0, Evaluates the general condition of the basement (0),binary,,basement
+194,BsmtCond_1, Evaluates the general condition of the basement (1),binary,,basement
+195,BsmtCond_2, Evaluates the general condition of the basement (2),binary,,basement
+196,BsmtCond_3, Evaluates the general condition of the basement (3),binary,,basement
+197,BsmtCond_4, Evaluates the general condition of the basement (4),binary,,basement
+198,Heating_Floor, Type of heating (Floor Furnace),binary,,utilites
+199,Heating_GasA, Type of heating (Gas forced warm air furnace),binary,,utilites
+200,Heating_GasW, Type of heating (Gas hot water or steam heat),binary,,utilites
+201,Heating_Grav, Type of heating (Gravity furnace),binary,,utilites
+202,Heating_OthW, Type of heating (Hot water or steam heat other than gas),binary,,utilites
+203,Heating_Wall, Type of heating (Wall furnace),binary,,utilites
+204,CentralAir_N, Central air conditioning (No),binary,,utilites
+205,CentralAir_Y, Central air conditioning (Yes),binary,,utilites
+206,Electrical_FuseA, Electrical system (Fuse Box over 60 AMP and all Romex wiring (Average)),binary,,utilites
+207,Electrical_FuseF, Electrical system (60 AMP Fuse Box and mostly Romex wiring (Fair)),binary,,utilites
+208,Electrical_FuseP, Electrical system (60 AMP Fuse Box and mostly knob & tube wiring (poor)),binary,,utilites
+209,Electrical_Mix, Electrical system (Mixed),binary,,utilites
+210,Electrical_SBrkr, Electrical system (Standard Circuit Breakers & Romex),binary,,utilites
+211,GarageType_2Types, Garage location (More than one type of garage),binary,,garage
+212,GarageType_Attchd, Garage location (Attached to home),binary,,garage
+213,GarageType_Basment, Garage location (Basement Garage),binary,,garage
+214,GarageType_BuiltIn, Garage location (Built-In (Garage part of house - typically has room above garage)),binary,,garage
+215,GarageType_CarPort, Garage location (Car Port),binary,,garage
+216,GarageType_Detchd, Garage location (Detached from home),binary,,garage
+217,GarageType_No, Garage location (No),binary,,garage
+218,GarageFinish_Fin, Interior finish of the garage (Finished),binary,,garage
+219,GarageFinish_No, Interior finish of the garage (No),binary,,garage
+220,GarageFinish_RFn, Interior finish of the garage (Rough Finished),binary,,garage
+221,GarageFinish_Unf, Interior finish of the garage (Unfinished),binary,,garage
+222,Fence_GdPrv, Fence quality (Good Privacy),binary,,outdoor
+223,Fence_GdWo, Fence quality (Good Wood),binary,,outdoor
+224,Fence_MnPrv, Fence quality (Minimum Privacy),binary,,outdoor
+225,Fence_MnWw, Fence quality (Minimum Wood/Wire),binary,,outdoor
+226,Fence_No, Fence quality (No),binary,,outdoor
+227,MiscFeature_Gar2, Miscellaneous feature not covered in other categories (2nd Garage (if not described in garage section)),binary,,other
+228,MiscFeature_No, Miscellaneous feature not covered in other categories (No),binary,,other
+229,MiscFeature_Othr, Miscellaneous feature not covered in other categories (Other),binary,,other
+230,MiscFeature_Shed, Miscellaneous feature not covered in other categories (Shed (over 100 SF)),binary,,other
+231,MiscFeature_TenC, Miscellaneous feature not covered in other categories (Tennis Court),binary,,other
+232,MoSold_Apr, Month Sold (MM) (April),binary,,dates
+233,MoSold_Aug, Month Sold (MM) (August),binary,,dates
+234,MoSold_Dec, Month Sold (MM) (December),binary,,dates
+235,MoSold_Feb, Month Sold (MM) (February),binary,,dates
+236,MoSold_Jan, Month Sold (MM) (January),binary,,dates
+237,MoSold_Jul, Month Sold (MM) (July),binary,,dates
+238,MoSold_Jun, Month Sold (MM) (June),binary,,dates
+239,MoSold_Mar, Month Sold (MM) (March),binary,,dates
+240,MoSold_May, Month Sold (MM) (May),binary,,dates
+241,MoSold_Nov, Month Sold (MM) (November),binary,,dates
+242,MoSold_Oct, Month Sold (MM) (October),binary,,dates
+243,MoSold_Sep, Month Sold (MM) (September),binary,,dates
+244,SaleType_COD, Type of sale (Court Officer Deed/Estate),binary,,other
+245,SaleType_CWD, Type of sale (Warranty Deed - Cash),binary,,other
+246,SaleType_Con, Type of sale (Contract 15% Down payment regular terms),binary,,other
+247,SaleType_ConLD, Type of sale (Contract Low Down),binary,,other
+248,SaleType_ConLI, Type of sale (Contract Low Interest),binary,,other
+249,SaleType_ConLw, Type of sale (Contract Low Down payment and low interest),binary,,other
+250,SaleType_New, Type of sale (Home just constructed and sold),binary,,other
+251,SaleType_Oth, Type of sale (Other),binary,,other
+252,SaleType_WD, Type of sale (Warranty Deed - Conventional),binary,,other
+253,SaleCondition_Abnorml," Condition of sale (Abnormal Sale -  trade, foreclosure, short sale)",binary,,other
+254,SaleCondition_AdjLand, Condition of sale (Adjoining Land Purchase),binary,,other
+255,SaleCondition_Alloca," Condition of sale (Allocation - two linked properties with separate deeds, typically condo with a garage unit)",binary,,other
+256,SaleCondition_Family, Condition of sale (Sale between family members),binary,,other
+257,SaleCondition_Normal, Condition of sale (Normal Sale),binary,,other
+258,SaleCondition_Partial, Condition of sale (Home was not completed when last assessed (associated with New Homes)),binary,,other

@@ -2,6 +2,8 @@ import logging
 import pickle
 from calendar import monthrange
 from datetime import datetime, timezone
+import pandas as pd
+from abc import ABC, abstractmethod
 
 import numpy as np
 from pymongo import MongoClient
@@ -20,24 +22,96 @@ def preds_to_scores(preds, thresholds):
     return np.digitize(to_probs(preds), thresholds, right=True)+1
 
 
-class ModelWrapper:
-    def __init__(self, base_model, features=None):
-        self.base_model = base_model
+class ModelWrapper(ABC):
+    def __init__(self, features=None):
+        """
+        Initialize model wrapper.
+        :param features: Features the model uses, in the order it expects them
+        """
         self.features = features
-        self.thresholds = [0.01174609, 0.01857239, 0.0241622, 0.0293587,
-                           0.03448975, 0.0396932, 0.04531139, 0.051446,
-                           0.05834176, 0.06616039, 0.07549515, 0.08624243,
-                           0.09912388, 0.11433409, 0.13370343, 0.15944484,
-                           0.19579651, 0.25432879, 0.36464856, 1.0]
 
+    @abstractmethod
     def predict(self, x):
         """
-        Expects x in the form of dataframe?{feature_name:value, ...}
-        Returns a single value
+        Makes a prediction on x
+        :param x: dataframe of shape (n_entities, n_features)
+                  Data to predict on. Column names should be feature names
+        :return: list of size (n_entities, )
+                 Prediction for entities
         """
         if self.features is not None:
             x = x[self.features]
 
+
+class ModelWrapperScale(ModelWrapper):
+    def __init__(self, base_model, scaler, features=None):
+        """
+        Initialize model wrapper.
+        :param base_model: base model with which to predict
+        :param scaler: scaler for model, should have a scaler.transform(x)
+                      function
+        :param features: Features the model uses, in the order it expects them
+        """
+        self.base_model = base_model
+        self.mean = scaler["mean"].to_numpy()
+        self.std = scaler["std"].to_numpy()
+        super().__init__(features)
+
+    def predict(self, x):
+        """
+        Transform and predict on x
+        :param x: dataframe of shape (n_entities, n_features)
+                  Data to predict on. Column names should be feature names
+        :return: list of size (n_entities, )
+                 Prediction for entities
+        """
+        x_std = (x-self.mean)/self.std
+        return np.expm1(self.base_model.predict(x_std))
+
+# 88000
+# 106500
+# 115000
+# 124000
+# 130000
+# 135948
+# 141000
+# 147000
+# 155000
+# 163900
+# 172795.75
+# 179665
+# 188000
+# 200000
+# 214600
+# 230400
+# 250685
+# 279800
+# 328765
+# 755000
+
+
+class ModelWrapperThresholds(ModelWrapper):
+    def __init__(self, base_model, thresholds, features=None):
+        """
+        Initialize the model wrapper
+        :param base_model: base model with which to predict.
+               Should have a base_model.predict() function
+        :param thresholds: thresholds to use for scoring
+        :param features: Features the model uses, in the order it expects them
+        """
+        self.base_model = base_model
+        self.thresholds = thresholds
+        super().__init__(features)
+
+    def predict(self, x):
+        """
+        Predict on x, then convert to probabilities and scores based on
+        thresholds
+        :param x: dataframe of shape (n_entities, n_features)
+                  Data to predict on. Column names should be feature names
+        :return: list of size (n_entities, )
+                 Prediction for entities
+        """
         pred = self.base_model.predict(x)
         scores = preds_to_scores(pred, self.thresholds).tolist()
         return scores
