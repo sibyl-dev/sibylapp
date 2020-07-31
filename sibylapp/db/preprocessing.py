@@ -64,19 +64,21 @@ def insert_model(model_wrapper, explainer_filepath, importance_filepath, set_doc
     with open(explainer_filepath, "rb") as f:
         explainer = f.read()
     items = {
-        "model":model_serial,
-        "name":name,
-        "description":description,
-        "performance":performance,
-        "importances":importances,
-        "explainer":explainer,
-        "training_set":set_doc
+        "model": model_serial,
+        "name": name,
+        "description": description,
+        "performance": performance,
+        "importances": importances,
+        "explainer": explainer,
+        "training_set": set_doc
     }
-    schema.Model.insert(**items)
+    model = schema.Model.insert(**items)
+    return model
 
 
-def insert_entities(values_filepath, features=None,
+def insert_entities(values_filepath, transformed=None, features=None,
                     counter_start=0, num=0, include_cases=False):
+    # transformed -> {model_id:filepath}
     feature_df = pd.read_csv(values_filepath)
     if features is not None:
         feature_df = feature_df[features + ["eid"]]
@@ -86,15 +88,25 @@ def insert_entities(values_filepath, features=None,
 
     cases = schema.Case.find()
 
+    transformed_dfs = {}
+    if transformed is not None:
+        for model_id in transformed:
+            transformed_dfs[model_id] = pd.read_csv(transformed[model_id]).set_index("eid")
+
     raw_entities = feature_df.to_dict(orient="records")
     entities = []
     for raw_entity in raw_entities:
-        entity = {}
-        entity["eid"] = str(raw_entity["eid"])
+        eid = raw_entity["eid"]
+        entity = {"eid": str(eid)}
         del raw_entity["eid"]
         entity["features"] = raw_entity
         if include_cases:
             entity["property"] = {"case_id": [random.choice(cases).case_id]}
+        if transformed is not None:
+            entity["transformed_features"] = {}
+            for model_id in transformed_dfs:
+                transformed_row = transformed_dfs[model_id].loc[eid].to_dict()
+                entity["transformed_features"][model_id] = transformed_row
         entities.append(entity)
     schema.Entity.insert_many(entities)
     return eids

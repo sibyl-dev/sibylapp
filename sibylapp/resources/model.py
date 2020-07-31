@@ -118,7 +118,7 @@ class Prediction(Resource):
         eid = request.args.get('eid', None)
 
         entity = schema.Entity.find_one(eid=eid)
-        entity_features = pd.DataFrame(entity.features, index=[0])
+        entity_features = entity.to_dataframe(model_id)
 
         model_doc = schema.Model.find_one(id=model_id)
         if model_doc is None:

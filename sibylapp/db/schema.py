@@ -79,6 +79,7 @@ class Entity(SibylAppDocument):
     def to_dataframe(self, model_id=None):
         return pd.DataFrame(self.get_features(model_id), index=[0])
 
+
 class Category(SibylAppDocument):
     name = fields.StringField(required=True)
     color = fields.StringField()

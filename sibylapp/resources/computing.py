@@ -14,7 +14,7 @@ import pickle
 
 LOGGER = logging.getLogger(__name__)
 
-use_dummy_functions = True
+use_dummy_functions = False
 
 
 class Similarities(Resource):
@@ -261,7 +261,7 @@ class FeatureDistributions(Resource):
         if dataset_doc is None:
             LOGGER.exception('Error getting dataset. '
                              'Model %s does not have a dataset.', model_id)
-            return {'message': 'Model {} does have a dataset'.format(model_id)}, 400
+            return {'message': 'Model {} does have not a dataset'.format(model_id)}, 400
 
         dataset = dataset_doc.to_dataframe(model_id)
 

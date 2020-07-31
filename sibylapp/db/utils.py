@@ -19,7 +19,11 @@ def to_probs(arr):
 
 
 def preds_to_scores(preds, thresholds):
-    return np.digitize(to_probs(preds), thresholds, right=True)+1
+    return threshold(to_probs(preds), thresholds)
+
+
+def threshold(preds, thresholds):
+    return np.digitize(preds, thresholds, right=True)+1
 
 
 class ModelWrapper(ABC):
@@ -41,10 +45,11 @@ class ModelWrapper(ABC):
         """
         if self.features is not None:
             x = x[self.features]
+        return x
 
 
 class ModelWrapperScale(ModelWrapper):
-    def __init__(self, base_model, scaler, features=None):
+    def __init__(self, base_model, scaler, features=None, thresholds=None):
         """
         Initialize model wrapper.
         :param base_model: base model with which to predict
@@ -55,6 +60,7 @@ class ModelWrapperScale(ModelWrapper):
         self.base_model = base_model
         self.mean = scaler["mean"].to_numpy()
         self.std = scaler["std"].to_numpy()
+        self.thresholds = thresholds
         super().__init__(features)
 
     def predict(self, x):
@@ -65,29 +71,12 @@ class ModelWrapperScale(ModelWrapper):
         :return: list of size (n_entities, )
                  Prediction for entities
         """
+        x = super().predict(x)
         x_std = (x-self.mean)/self.std
-        return np.expm1(self.base_model.predict(x_std))
-
-# 88000
-# 106500
-# 115000
-# 124000
-# 130000
-# 135948
-# 141000
-# 147000
-# 155000
-# 163900
-# 172795.75
-# 179665
-# 188000
-# 200000
-# 214600
-# 230400
-# 250685
-# 279800
-# 328765
-# 755000
+        price = np.expm1(self.base_model.predict(x_std))
+        if self.thresholds is None:
+            return price
+        return threshold(price, self.thresholds).tolist()
 
 
 class ModelWrapperThresholds(ModelWrapper):
@@ -112,6 +101,7 @@ class ModelWrapperThresholds(ModelWrapper):
         :return: list of size (n_entities, )
                  Prediction for entities
         """
+        x = super().predict(x)
         pred = self.base_model.predict(x)
         scores = preds_to_scores(pred, self.thresholds).tolist()
         return scores
