@@ -1,4 +1,4 @@
-const baseUrl = 'http://ec2-13-59-56-28.us-east-2.compute.amazonaws.com:4200';
+const baseUrl = 'http://ec2-13-59-56-28.us-east-2.compute.amazonaws.com:3000';
 
 export const api = {
   get(url, dataType = 'json') {
