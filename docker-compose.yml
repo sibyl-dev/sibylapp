@@ -1,20 +1,20 @@
 version: '3'
 services:
-  db:
-    image: mongo:4.0
-    container_name: sibylapp_db
-    ports:
-      - '127.0.0.1:27018:27017'
-    command: bash -c "mongod --bind_ip_all --port 27017 --logpath /sibylapp/log/db.log --fork && tail -F anything"
-    volumes:
-      - ./db/data:/sibylapp/data
-      - ./db/log:/sibylapp/log
-      - ./db/dump:/sibylapp/dump
+  # db:
+  #   image: mongo:4.0
+  #   container_name: sibylapp_db
+  #   ports:
+  #     - '127.0.0.1:27018:27017'
+  #   command: bash -c "mongod --bind_ip_all --port 27017 --logpath /sibylapp/log/db.log --fork && tail -F anything"
+  #   volumes:
+  #     - ./db/data:/sibylapp/data
+  #     - ./db/log:/sibylapp/log
+  #     - ./db/dump:/sibylapp/dump
   app:
     build: .
     container_name: sibylapp
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     ports:
       - '3000:3000'
     command: sibylapp run --env production -v --docker
