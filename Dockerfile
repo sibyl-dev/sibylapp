@@ -4,7 +4,7 @@ RUN apt-get update
 
 ADD . /sibylapp
 WORKDIR /sibylapp
+RUN cd sibyl && python -m pip install --upgrade pip && pip install -e .[dev]
+RUN cd ..
+RUN pip install -e .[dev]
 
-RUN python -m pip install --upgrade pip
-RUN make install
-RUN cd sibyl && make install
