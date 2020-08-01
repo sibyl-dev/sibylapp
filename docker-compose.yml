@@ -13,6 +13,9 @@ services:
   app:
     build: .
     container_name: sibylapp
+    volumes:
+      - ./screening:/sibylapp/screening
+      - ./logs:/logs
     # depends_on:
     #   - db
     ports:
