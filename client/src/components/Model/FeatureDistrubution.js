@@ -4,7 +4,7 @@ import DashWrapper from '../common/DashWrapper';
 
 import Search from '../common/Search';
 import ScoreInfo from '../common/ScoreInfo';
-// import PieChart from '../common/PieChart';
+import PieChart from '../common/PieChart';
 import {
   getIsEntitiesLoading,
   getIsEntityDistributionsLoading,
@@ -85,9 +85,9 @@ class FeatureDistribution extends Component {
               <td>
                 <ScoreInfo />
               </td>
-              {/* <td>
+              <td>
                 <PieChart />
-              </td> */}
+              </td>
             </tr>
           </tbody>
         </table>
