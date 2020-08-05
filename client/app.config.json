@@ -1,0 +1,10 @@
+{
+    "apps": [
+        {
+            "name": "sibyl-client",
+            "script": "npx",
+            "interpreter": "none",
+            "args": "serve -s build -p 4200"
+        }
+    ]
+}
