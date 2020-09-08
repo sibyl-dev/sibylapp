@@ -42,6 +42,7 @@ import './Details.scss';
 //   { value: 'all', label: 'All Values', isFixed: true },
 //   { value: 'binary', label: 'True/False', isFixed: true },
 //   { value: 'numeric', label: 'Numerical', isFixed: true },
+//   { value: 'categorical', label: 'Categorical', isFixed: true },
 // ];
 
 const contribFilters = [
@@ -229,6 +230,11 @@ export class Details extends Component {
   getFeatureType(feature) {
     const { entityData } = this.props;
     const { name, type } = feature;
+
+    if (type === 'categorical') {
+      return feature.entityData;
+    }
+
     return type === 'binary' ? (entityData.features[name] > 0 ? 'True' : 'False') : entityData.features[name];
   }
 
@@ -311,22 +317,54 @@ export class Details extends Component {
           <tbody>
             <Loader isLoading={isDataLoading}>
               {features && features.length > 0 ? (
-                features.map((currentFeature) => (
-                  <tr key={currentFeature.name}>
-                    <td className="align-center">{this.getFeatureCategoryColor(currentFeature.category)}</td>
-                    <td>{currentFeature.description}</td>
-                    <td className="align-right">{this.getFeatureType(currentFeature)}</td>
-                    <td className="align-center" width="145">
-                      <BiProgressBar
-                        percentage={currentFeature.contributionValue}
-                        width="110"
-                        height="10"
-                        maxRange={maxContributionRange}
-                        isSingle={viewMode === 'split'}
-                      />
-                    </td>
-                  </tr>
-                ))
+                features.map((currentFeature) => {
+                  const categoricalFeatures = [
+                    `PRI_VICTIM_COUNT`,
+                    `PRI_FOCUS_GENDER`,
+                    `PRI_FOCUS_CHILD_ROLE`,
+                    `PRI_FOCUS_AGE`,
+                    `PRI_PRNT_COUNT`,
+                    `PRI_PERP_COUNT`,
+                    `PRI_OTHC_COUNT`,
+                    `PRI_OTHA_COUNT`,
+                  ];
+
+                  const mockTableValues = {
+                    description: 'Favourite color',
+                    entityData: 'Blue',
+                    contributionValue: '=====',
+                  };
+
+                  let updatedFeatures = currentFeature;
+
+                  if (categoricalFeatures.indexOf(updatedFeatures.name) > -1) {
+                    updatedFeatures = {
+                      ...currentFeature,
+                      ...mockTableValues,
+                    };
+                  }
+
+                  return (
+                    <tr key={currentFeature.name}>
+                      <td className="align-center">{this.getFeatureCategoryColor(currentFeature.category)}</td>
+                      <td>{updatedFeatures.description}</td>
+                      <td className="align-right">{this.getFeatureType(updatedFeatures)}</td>
+                      <td className="align-center" width="145">
+                        {isNaN(updatedFeatures.contributionValue) ? (
+                          updatedFeatures.contributionValue
+                        ) : (
+                          <BiProgressBar
+                            percentage={currentFeature.contributionValue}
+                            width="110"
+                            height="10"
+                            maxRange={maxContributionRange}
+                            isSingle={viewMode === 'split'}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan="4" className="align-center">

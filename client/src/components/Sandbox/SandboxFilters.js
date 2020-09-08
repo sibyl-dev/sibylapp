@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 import { TrashIcon, QuestionIcon } from '../../assets/icons/icons';
 import ModalDialog from '../common/ModalDialog';
 import { updateFeaturePredictionScore } from '../../model/actions/features';
@@ -226,47 +227,90 @@ class SandboxFilters extends Component {
     return featuresCount.map((currentFeature, featureIndex) => {
       const selectedFeature = Object.keys(storedFeatures).length ? storedFeatures[currentFeature] : null;
       return (
-        <tr key={`${currentFeature}`}>
-          <td width="3%" className="counter">
-            {featureIndex + 1}
-          </td>
-          <td width="50%">
-            <Select
-              isSearchable
-              isMulti={false}
-              classNamePrefix="sibyl-select"
-              className="sibyl-select"
-              options={dropdownFeatures(features)}
-              placeholder="Select / Search a Feature"
-              onChange={(value) => this.onFeatureOptionUpdate(currentFeature, value)}
-              value={selectedFeature}
-            />
-          </td>
-          <td>
-            <div className="separator" />
-          </td>
-          <td width="30%">{this.renderFeatureValues(currentFeature)}</td>
-          <td align="center" width="9%">
-            <ul className="feature-controls">
-              <li>
-                <button
-                  type="button"
-                  className="clean reset-feature"
-                  onClick={() => this.onResetFeature(currentFeature)}
-                >
-                  Reset
-                </button>
-              </li>
-              <li>
-                {featureIndex !== 0 && (
-                  <button type="button" className="clean trash" onClick={() => this.onRemoveFeature(currentFeature)}>
-                    <TrashIcon />
+        <React.Fragment key={uuidv4()}>
+          <tr>
+            <td width="3%" className="counter">
+              {featureIndex + 1}
+            </td>
+            <td width="50%">
+              <Select
+                isSearchable
+                isMulti={false}
+                classNamePrefix="sibyl-select"
+                className="sibyl-select"
+                options={dropdownFeatures(features)}
+                placeholder="Select / Search a Feature"
+                onChange={(value) => this.onFeatureOptionUpdate(currentFeature, value)}
+                value={selectedFeature}
+              />
+            </td>
+            <td>
+              <div className="separator" />
+            </td>
+            <td width="30%">{this.renderFeatureValues(currentFeature)}</td>
+            <td align="center" width="9%">
+              <ul className="feature-controls">
+                <li>
+                  <button
+                    type="button"
+                    className="clean reset-feature"
+                    onClick={() => this.onResetFeature(currentFeature)}
+                  >
+                    Reset
                   </button>
-                )}
-              </li>
-            </ul>
-          </td>
-        </tr>
+                </li>
+                <li>
+                  {featureIndex !== 0 && (
+                    <button type="button" className="clean trash" onClick={() => this.onRemoveFeature(currentFeature)}>
+                      <TrashIcon />
+                    </button>
+                  )}
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td width="3%" className="counter">
+              {featureIndex + 1}
+            </td>
+            <td width="50%">
+              <Select
+                isSearchable
+                isMulti={false}
+                classNamePrefix="sibyl-select"
+                className="sibyl-select"
+                options={dropdownFeatures(features)}
+                placeholder="Categorical Variables"
+                onChange={(value) => this.onFeatureOptionUpdate(currentFeature, value)}
+                value={selectedFeature}
+              />
+            </td>
+            <td>
+              <div className="separator" />
+            </td>
+            <td width="30%">{this.renderFeatureValues(currentFeature)}</td>
+            <td align="center" width="9%">
+              <ul className="feature-controls">
+                <li>
+                  <button
+                    type="button"
+                    className="clean reset-feature"
+                    onClick={() => this.onResetFeature(currentFeature)}
+                  >
+                    Reset
+                  </button>
+                </li>
+                <li>
+                  {featureIndex !== 0 && (
+                    <button type="button" className="clean trash" onClick={() => this.onRemoveFeature(currentFeature)}>
+                      <TrashIcon />
+                    </button>
+                  )}
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </React.Fragment>
       );
     });
   }
