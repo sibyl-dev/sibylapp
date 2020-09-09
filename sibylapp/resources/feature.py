@@ -1,4 +1,5 @@
 import logging
+import math
 
 from flask_restful import Resource
 
@@ -11,8 +12,13 @@ def get_feature(feature_doc):
     feature = {
         'name': feature_doc.name,
         'description': feature_doc.description,
-        'type': feature_doc.type
+        'type': feature_doc.type,
     }
+    # TODO: Prevent this from ever happening from database side
+    if str(feature_doc.negated_description) == 'nan':
+        feature['negated_description'] = None
+    else:
+        feature['negated_description'] = feature_doc.negated_description
     if feature_doc.category is not None:
         feature['category'] = feature_doc.category.name
     else:
@@ -23,7 +29,8 @@ def get_feature(feature_doc):
 def get_category(category_doc):
     category = {
         'name': category_doc.name,
-        'color': category_doc.color
+        'color': category_doc.color,
+        'abbreviation': category_doc.abbreviation
     }
     return category
 
@@ -38,7 +45,7 @@ class Feature(Resource):
         @apiDescription Get details of a specific feature.
 
         @apiSuccess {String} name Name of the feature.
-        @apiSuccess {String} description Short paragraph description of
+        @apiSuccess {String} description Short sentence description of
             the feature.
         @apiSuccess {String} category Category of the feature.
         @apiSuccess {String="numeric","binary","category"} type Value type.
@@ -92,6 +99,7 @@ class Categories(Resource):
         @apiSuccess {Object[]} categories List of Category Objects.
         @apiSuccess {String} categories.name Name of category.
         @apiSuccess {String} categories.color Color of category.
+        @apiSuccess {String} categories.abbreviation Abbreviation of category
         """
         documents = schema.Category.find()
         try:

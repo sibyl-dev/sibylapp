@@ -11,7 +11,7 @@ import {
   setSortPredDirection,
   setSortDiffDirectionAction,
   setContribFiltersAction,
-  setModelPredictFilterValueAction,
+  // setModelPredictFilterValueAction,
   setModelPredDiffFilterAction,
 } from '../../model/actions/features';
 import { getIsEntitiesLoading } from '../../model/selectors/entities';
@@ -24,7 +24,7 @@ import {
   getCurrentPredSortDir,
   getReversedModelPredFeatures,
   getCurrentSortDiffDir,
-  getModelPredictFilterValue,
+  // getModelPredictFilterValue,
   getModelPredDiffFilterValue,
 } from '../../model/selectors/features';
 
@@ -35,11 +35,11 @@ import MetTooltip from '../common/MetTooltip';
 import Loader from '../common/Loader';
 import { setActivePageAction } from '../../model/actions/sidebar';
 
-const valueSelect = [
-  { value: 'all', label: 'All Values', isFixed: true },
-  { value: 'false', label: 'True -> False', isFixed: true },
-  { value: 'true', label: 'False -> True', isFixed: true },
-];
+// const valueSelect = [
+//   { value: 'all', label: 'All Values', isFixed: true },
+//   { value: 'false', label: 'True -> False', isFixed: true },
+//   { value: 'true', label: 'False -> True', isFixed: true },
+// ];
 
 const diffValues = [
   { value: 'difference', label: 'Difference', isFixed: true },
@@ -63,8 +63,8 @@ class Sandbox extends Component {
       setFilterCategories,
       isCategoriesLoading,
       currentFilterCategs,
-      setFilterValue,
-      currentFilterValue,
+      // setFilterValue,
+      // currentFilterValue,
       currentDiffFilterVal,
       setDiffFilter,
       modelPredFeatures,
@@ -85,7 +85,7 @@ class Sandbox extends Component {
                 value={currentFilterCategs}
               />
             </li>
-            <li>
+            {/* <li>
               <Select
                 isSearchable={false}
                 isMulti={false}
@@ -96,7 +96,7 @@ class Sandbox extends Component {
                 onChange={(filterValue) => setFilterValue(filterValue.value)}
                 value={valueSelect.filter((currentVal) => currentVal.value === currentFilterValue)}
               />
-            </li>
+            </li> */}
             <li>
               <Select
                 isSearchable={false}
@@ -133,7 +133,7 @@ class Sandbox extends Component {
     return currentFeature === 0 ? trueRow : falseRow;
   }
 
-  getFeatureCathegoryColor(feature) {
+  getFeatureCategoryColor(feature) {
     const { featureCategories } = this.props;
     const colorIndex = featureCategories.findIndex((currentCategory) => currentCategory.name === feature);
 
@@ -142,9 +142,12 @@ class Sandbox extends Component {
     }
 
     return (
-      <MetTooltip title={featureCategories[colorIndex].name} placement="top">
-        <i className="bullet" style={{ background: featureCategories[colorIndex].color }} />
-      </MetTooltip>
+      <>
+        <MetTooltip title={featureCategories[colorIndex].name} placement="top">
+          <i className="bullet" style={{ background: featureCategories[colorIndex].color }} />
+        </MetTooltip>
+        <span className="feature-category-label">{featureCategories[colorIndex].abbreviation}</span>
+      </>
     );
   }
 
@@ -221,7 +224,7 @@ class Sandbox extends Component {
 
                       return (
                         <tr key={name}>
-                          <td className="align-center">{this.getFeatureCathegoryColor(category)}</td>
+                          <td className="align-center">{this.getFeatureCategoryColor(category)}</td>
                           <td>
                             <span>{description}</span>
                           </td>
@@ -262,7 +265,7 @@ export default connect(
     currentPredSortDir: getCurrentPredSortDir(state),
     modelPredFeatures: getReversedModelPredFeatures(state),
     currentDiffDirection: getCurrentSortDiffDir(state),
-    currentFilterValue: getModelPredictFilterValue(state),
+    // currentFilterValue: getModelPredictFilterValue(state),
     currentDiffFilterVal: getModelPredDiffFilterValue(state),
   }),
   (dispatch) => ({
@@ -271,7 +274,7 @@ export default connect(
     setSortPrediction: (direction) => dispatch(setSortPredDirection(direction)),
     setSortDiffDirection: (direction) => dispatch(setSortDiffDirectionAction(direction)),
     setContribFilters: (filters) => dispatch(setContribFiltersAction(filters)),
-    setFilterValue: (filterValue) => dispatch(setModelPredictFilterValueAction(filterValue)),
+    // setFilterValue: (filterValue) => dispatch(setModelPredictFilterValueAction(filterValue)),
     setDiffFilter: (filterValue) => dispatch(setModelPredDiffFilterAction(filterValue)),
     setUserActions: (userAction) => dispatch(setUserActionRecording(userAction)),
     setPageName: (pageName) => dispatch(setActivePageAction(pageName)),

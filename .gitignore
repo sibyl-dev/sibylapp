@@ -47,7 +47,7 @@ logs/
 
 # Data
 client/public/data/
-db-instance/
+db/
 mtv/data/raw
 mtv/db/data
 
@@ -135,8 +135,8 @@ ENV/
 
 .vscode/
 
-db/
 dbdata/
 sibylapp/db/data
 sibyl/
 screening_log.csv
+sibyl_test/
