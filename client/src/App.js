@@ -52,7 +52,6 @@ class App extends Component {
         <div className="main-wrapper">
           <div className="dash-container full-width">
             <div className="dashboard">
-              <Header />
               <Login />
             </div>
           </div>
