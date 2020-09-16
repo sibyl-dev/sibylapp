@@ -6,7 +6,7 @@ import { getIsSidebarCollapsed } from './model/selectors/sidebar';
 import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/Header/Header';
 import Dashboard from './components/Dashboard/Dashboard';
-import { setEntityIdAction, getEntityAction, setUserIdAction } from './model/actions/entities';
+import { setEntityIdAction, getEntityAction, setUserIdAction, getModelsAction } from './model/actions/entities';
 import { getCurrentEntityID, getCurrentUserID } from './model/selectors/entities';
 import './assets/sass/main.scss';
 import Login from './components/Login/Login';
@@ -17,15 +17,8 @@ class App extends Component {
   }
 
   getEntityDetails() {
-    const { currentEntityID, setUserID, currentUserID } = this.props;
+    const { currentEntityID, setUserID, currentUserID, setEntityID, getModels, getFeaturesList } = this.props;
     const { location } = this.props;
-    if (location.pathname.includes('entity')) {
-      const entityID = this.props.location.pathname.split('/')[2];
-
-      if (currentEntityID !== entityID) {
-        this.props.setEntityID(entityID);
-      }
-    }
 
     if (location.search.includes('user_id')) {
       const userID = location.search.split('=')[1];
@@ -34,7 +27,19 @@ class App extends Component {
       }
     }
 
-    this.props.getFeaturesList();
+    if (location.pathname.includes('entity')) {
+      const entityID = this.props.location.pathname.split('/')[2];
+
+      if (currentEntityID !== entityID) {
+        setEntityID(entityID)
+          .then(() => getModels())
+          .then(() => getFeaturesList());
+
+        return;
+      }
+    }
+
+    getModels().then(() => getFeaturesList());
   }
 
   render() {
@@ -83,6 +88,7 @@ export default connect(
   (dispatch) => ({
     setEntityID: (entityID) => dispatch(setEntityIdAction(entityID)),
     setUserID: (userID) => dispatch(setUserIdAction(userID)),
+    getModels: (modelID) => dispatch(getModelsAction(modelID)),
     getFeaturesList: () => dispatch(getEntityAction()),
   }),
 )(App);
