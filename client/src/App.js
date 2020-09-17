@@ -45,7 +45,7 @@ class App extends Component {
   render() {
     const { isSidebarCollapsed, location, history } = this.props;
     const cookies = new Cookies();
-    const isLoggedIn = cookies.get('isLoggedIn') === 'true';
+    const isLoggedIn = cookies.get('isLoggedIn') === 'true' || cookies.get('isLoggedIn') === 'power';
 
     const isOnLoginPage = history.location.pathname === '/login';
     if (!isOnLoginPage && !isLoggedIn) {
