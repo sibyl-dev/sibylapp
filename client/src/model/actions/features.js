@@ -37,7 +37,7 @@ export function getFeaturesAction() {
     };
 
     dispatch(action)
-      .then(dispatch(getFeaturesImportanceAction()))
+      .then(() => dispatch(getFeaturesImportanceAction()))
       .then(() => dispatch(getModelPredictionAction()));
   };
 }
