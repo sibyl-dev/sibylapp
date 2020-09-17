@@ -5,16 +5,21 @@ import Button from '@material-ui/core/Button';
 import Cookies from 'universal-cookie';
 
 const passwords = ['oaktree'];
+const powerPasswords = ['full'];
 
 const LoginInfo = ({ loggedInCookie }) => {
-  if (loggedInCookie === 'true') {
+  if (loggedInCookie === 'true' || loggedInCookie === 'power') {
     return (
       <Grid container direction="column">
         <Grid item>
           <p>You are logged in.</p>
         </Grid>
         <Grid item>
-          <p>Please go back to the user study page.</p>
+          {loggedInCookie === 'power' ? (
+            <p>Please go back to the main page.</p>
+          ) : (
+            <p>Please go back to the user study page.</p>
+          )}
         </Grid>
       </Grid>
     );
@@ -33,6 +38,9 @@ const Login = () => {
     if (passwords.find((pass) => pass === password)) {
       cookies.set('isLoggedIn', true, { path: '/' });
     }
+    if (powerPasswords.find((pass) => pass === password)) {
+      cookies.set('isLoggedIn', 'power', { path: '/' });
+    }
     window.location.reload(false);
   };
 
@@ -46,7 +54,7 @@ const Login = () => {
           <input type="text" placeholder="Password.." onChange={(e) => setPassword(e.target.value)} />
           <Button
             fullWidth
-            disabled={isLoggedIn === 'true'}
+            disabled={isLoggedIn === 'true' || isLoggedIn === 'power'}
             type="submit"
             className="send-button"
             onClick={setLoginCookie}
