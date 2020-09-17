@@ -85,6 +85,11 @@ export function getModelPredictionAction() {
     }
 
     const { currentFeatures, reversedFeatures } = getModelPredictionPayload(getState());
+
+    if (!currentFeatures || !currentFeatures.length) {
+      return;
+    }
+
     const currentPredictionPayload = {
       eid: entityID,
       model_id: modelID,
