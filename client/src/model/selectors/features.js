@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { getCurrentEntityData, getEntityContributions } from './entities';
+import {getCurrentEntityData, getEntityContributions, getIsEntitiesLoading} from './entities';
 
 export const getFeaturesImportances = (state) => state.features.featuresImportances;
 export const getIsFeaturesLoading = (state) => state.features.isFeaturesLoading;
@@ -67,6 +67,7 @@ export const getMaxContributionRange = createSelector(
 export const getFeaturesData = createSelector(
   [
     getIsFeaturesLoading,
+    getIsEntitiesLoading,
     getCurrentFeatures,
     getCurrentEntityData,
     getEntityContributions,
@@ -79,6 +80,7 @@ export const getFeaturesData = createSelector(
   ],
   (
     isFeaturesLoading,
+    isEntityDataLoading,
     features,
     entityData,
     contributions,
@@ -89,7 +91,7 @@ export const getFeaturesData = createSelector(
     contribFilters,
     featureImportance,
   ) => {
-    if (isFeaturesLoading) {
+    if (isFeaturesLoading || isEntityDataLoading) {
       return [];
     }
 
