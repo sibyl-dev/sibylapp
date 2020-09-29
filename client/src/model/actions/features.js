@@ -240,7 +240,7 @@ export function setFeatureImpSortDirAction(direction) {
   return function (dispatch) {
     const action = {
       type: 'SET_FEATURE_IMPORTANCE_SORT_DIR',
-      sortDir: direction,
+      featureImpSortDir: direction,
     };
 
     dispatch(action);

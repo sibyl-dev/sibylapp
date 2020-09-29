@@ -5,10 +5,11 @@ const initialState = {
   featuresData: [],
   isCategoriesLoading: true,
   categories: [],
+  isFeaturesImportanceLoading: true,
   featuresImportances: {},
   newFeatureScore: null,
   isModelPredictionLoading: true,
-  currendModelPredition: [],
+  currentModelPrediction: [],
   reversedModelPrediction: [],
   filterCriteria: '',
   sortContribDir: 'asc',
@@ -65,8 +66,20 @@ function GET_CATEGORIES_FAILURE(nextState) {
 }
 
 // ------------------
+function GET_FEATURES_IMPORTANCES_REQUEST(nextState) {
+  nextState.isFeaturesImportanceLoading = true;
+}
+
+// ------------------
 function GET_FEATURES_IMPORTANCES_SUCCESS(nextState, action) {
+  nextState.isFeaturesImportanceLoading = false;
   nextState.featuresImportances = action.result.importances;
+}
+
+// ------------------
+function GET_FEATURES_IMPORTANCES_FAILURE(nextState) {
+  nextState.featuresImportances = {};
+  nextState.isFeaturesImportanceLoading = false;
 }
 
 // ------------------
@@ -80,14 +93,14 @@ function GET_MODEL_PREDICTION_REQUEST(nextState) {
 }
 
 function GET_MODEL_PREDICTION_SUCCESS(nextState, { currentPrediction, reversedPrediction }) {
-  nextState.currendModelPredition = currentPrediction;
+  nextState.currentModelPrediction = currentPrediction;
   nextState.reversedModelPrediction = reversedPrediction;
   nextState.isModelPredictionLoading = false;
 }
 
 function GET_MODEL_PREDICTION_FAILURE(nextState) {
   nextState.isModelPredictionLoading = false;
-  nextState.currendModelPredition = [];
+  nextState.currentModelPrediction = [];
   nextState.reversedModelPrediction = [];
 }
 
@@ -157,8 +170,8 @@ function SET_FEATURE_TYPE_FILTER_CATEGS(nextState, { featureTypeFilterCategs }) 
 }
 
 // ------------------
-function SET_FEATURE_IMPORTANCE_SORT_DIR(nextState, { sortDir }) {
-  nextState.featureImpSortDir = sortDir;
+function SET_FEATURE_IMPORTANCE_SORT_DIR(nextState, { featureImpSortDir }) {
+  nextState.featureImpSortDir = featureImpSortDir;
 }
 
 export default createReducer(initialState, {
@@ -168,11 +181,13 @@ export default createReducer(initialState, {
   GET_CATEGORIES_REQUEST,
   GET_CATEGORIES_SUCCESS,
   GET_CATEGORIES_FAILURE,
-  GET_FEATURES_IMPORTANCES_SUCCESS,
-  UPDATE_FEATURE_PREDICTION_SUCCESS,
   GET_MODEL_PREDICTION_REQUEST,
   GET_MODEL_PREDICTION_SUCCESS,
   GET_MODEL_PREDICTION_FAILURE,
+  GET_FEATURES_IMPORTANCES_REQUEST,
+  GET_FEATURES_IMPORTANCES_SUCCESS,
+  GET_FEATURES_IMPORTANCES_FAILURE,
+  UPDATE_FEATURE_PREDICTION_SUCCESS,
   SET_FILTER_CRITERIA,
   SET_FEATURE_CONTRIB_SORT_DIRECTION,
   SET_FILTER_VALUE,
