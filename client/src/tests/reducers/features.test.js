@@ -153,13 +153,8 @@ describe('Features Reducer', () => {
           },
         };
 
-        expect(reducer(defaultState, requestAction)).toEqual({
-          ...defaultState,
-          featureTypeFilters: {
-            positiveFeatures: 'all',
-            negativeFeatures: 'notAll',
-          },
-        });
+        const newState = reducer(defaultState, requestAction);
+        expect(newState.featureTypeFilters.negativeFeatures).toEqual('notAll');
       });
     });
     describe('SET_FEATURE_TYPE_SORT_CONTRIB_DIR', () => {
@@ -172,13 +167,8 @@ describe('Features Reducer', () => {
           },
         };
 
-        expect(reducer(defaultState, requestAction)).toEqual({
-          ...defaultState,
-          featureTypeSortDir: {
-            negativeFeatures: 'desc',
-            positiveFeatures: 'asc',
-          },
-        });
+        const newState = reducer(defaultState, requestAction);
+        expect(newState.featureTypeSortDir.negativeFeatures).toEqual('desc');
       });
     });
     describe('SET_FEATURE_TYPE_FILTER_CATEGS', () => {
@@ -191,13 +181,8 @@ describe('Features Reducer', () => {
           },
         };
 
-        expect(reducer(defaultState, requestAction)).toEqual({
-          ...defaultState,
-          featureTypeFilterCategs: {
-            positiveFeatures: null,
-            negativeFeatures: 'all',
-          },
-        });
+        const newState = reducer(defaultState, requestAction);
+        expect(newState.featureTypeFilterCategs.negativeFeatures).toEqual('all');
       });
     });
   });
@@ -208,10 +193,9 @@ describe('Features Reducer', () => {
         const requestAction = {
           type: 'GET_MODEL_PREDICTION_REQUEST',
         };
-        expect(reducer(defaultState, requestAction)).toEqual({
-          ...defaultState,
-          isModelPredictionLoading: true,
-        });
+
+        const newState = reducer(defaultState, requestAction);
+        expect(newState.isModelPredictionLoading).toBeTruthy();
       });
       it('GET_MODEL_PREDICTION_SUCCESS', () => {
         const requestAction = {
@@ -219,23 +203,21 @@ describe('Features Reducer', () => {
           currentPrediction: [1, 2],
           reversedPrediction: [2, 1],
         };
-        expect(reducer(defaultState, requestAction)).toEqual({
-          ...defaultState,
-          isModelPredictionLoading: false,
-          currentModelPrediction: [1, 2],
-          reversedModelPrediction: [2, 1],
-        });
+
+        const newState = reducer(defaultState, requestAction);
+        expect(newState.isModelPredictionLoading).toBeFalsy();
+        expect(newState.currentModelPrediction).toEqual([1, 2]);
+        expect(newState.reversedModelPrediction).toEqual([2, 1]);
       });
       it('GET_MODEL_PREDICTION_FAILURE', () => {
         const requestAction = {
           type: 'GET_MODEL_PREDICTION_FAILURE',
         };
-        expect(reducer(defaultState, requestAction)).toEqual({
-          ...defaultState,
-          isModelPredictionLoading: false,
-          currentModelPrediction: [],
-          reversedModelPrediction: [],
-        });
+
+        const newState = reducer(defaultState, requestAction);
+        expect(newState.isModelPredictionLoading).toBeFalsy();
+        expect(newState.currentModelPrediction).toEqual([]);
+        expect(newState.reversedModelPrediction).toEqual([]);
       });
     });
     describe('UPDATE_FEATURE_PREDICTION_SUCCESS', () => {
@@ -244,10 +226,9 @@ describe('Features Reducer', () => {
           type: 'UPDATE_FEATURE_PREDICTION_SUCCESS',
           newFeatureScore: [1, 2],
         };
-        expect(reducer(defaultState, requestAction)).toEqual({
-          ...defaultState,
-          newFeatureScore: [1, 2],
-        });
+
+        const newState = reducer(defaultState, requestAction);
+        expect(newState.newFeatureScore).toEqual([1, 2]);
       });
     });
   });

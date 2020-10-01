@@ -29,10 +29,9 @@ export const generateTestsForPromiseReducers = (reducer, defaultState, promiseRe
           const requestAction = {
             type: `${promiseReducer.name}_REQUEST`,
           };
-          expect(reducer(defaultState, requestAction)).toEqual({
-            ...defaultState,
-            [promiseReducer.loading]: true,
-          });
+
+          const newState = reducer(defaultState, requestAction);
+          expect(newState[promiseReducer.loading]).toBeTruthy();
         });
 
         it(`${promiseReducer.name}_SUCCESS`, () => {
@@ -40,22 +39,20 @@ export const generateTestsForPromiseReducers = (reducer, defaultState, promiseRe
             type: `${promiseReducer.name}_SUCCESS`,
             ...promiseReducer.sendData,
           };
-          expect(reducer(defaultState, fulfillAction)).toEqual({
-            ...defaultState,
-            [promiseReducer.loading]: false,
-            [promiseReducer.key]: promiseReducer.testData,
-          });
+
+          const newState = reducer(defaultState, fulfillAction);
+          expect(newState[promiseReducer.loading]).toBeFalsy();
+          expect(newState[promiseReducer.key]).toEqual(promiseReducer.testData);
         });
 
         it(`${promiseReducer.name}_FAILURE`, () => {
-          const requestAction = {
+          const failAction = {
             type: `${promiseReducer.name}_FAILURE`,
           };
-          expect(reducer(defaultState, requestAction)).toEqual({
-            ...defaultState,
-            [promiseReducer.loading]: false,
-            [promiseReducer.key]: promiseReducer.failData,
-          });
+
+          const newState = reducer(defaultState, failAction);
+          expect(newState[promiseReducer.loading]).toBeFalsy();
+          expect(newState[promiseReducer.key]).toEqual(promiseReducer.failData);
         });
       });
     });
