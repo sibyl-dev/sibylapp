@@ -77,7 +77,7 @@ const Header = (props) => {
       option: (styles, state) => {
         return {
           ...styles,
-          backgroundColor: state.isFocused && 'lightgray',
+          backgroundColor: state.isFocused && '#F2F2F2',
           color: '#4F4F4F',
         };
       },

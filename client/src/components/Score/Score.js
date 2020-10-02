@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ReferralTable from './ReferralTable';
+import ReferralSelect from './ReferralSelect';
 import ClientTable from './ClientTable';
 import LineChart from '../common/LineChart/LineChart';
 
@@ -34,7 +34,7 @@ const chartData = [
 
 const Score = () => (
   <>
-    <ReferralTable />
+    <ReferralSelect />
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       <LineChart width={650} height={650} data={chartData} />
       <ClientTable />

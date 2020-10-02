@@ -5,7 +5,7 @@ import Select from 'react-select';
 import { getCasesList, getCurrentCaseID, getEntitiesInCaseList } from '../../model/selectors/cases';
 import { getCasesListAction, setCaseIdAction, getEntitiesInCaseListAction } from '../../model/actions/cases';
 
-import './ReferralTable.scss';
+import './ReferralSelect.scss';
 
 const CategorySelect = ({ caseID, casesList, getCurrentCasesList, getCurrentEntitiesInCase, setCaseId }) => {
   useEffect(() => {
@@ -39,7 +39,7 @@ const CategorySelect = ({ caseID, casesList, getCurrentCasesList, getCurrentEnti
     option: (provided, state) => {
       return {
         ...provided,
-        backgroundColor: state.isFocused && 'lightgray',
+        backgroundColor: state.isFocused && '#F2F2F2',
         color: '#4F4F4F',
       };
     },
