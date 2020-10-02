@@ -42,7 +42,7 @@ const Header = (props) => {
     getCurrentEntitiesInCase();
   }, [getCurrentEntitiesInCase]);
 
-  const clientIdDropdown = () => {
+  const selectClientId = () => {
     const clientIds = entitiesInCaseList.map((id) => {
       return {
         id: id,
@@ -130,7 +130,7 @@ const Header = (props) => {
           <li>
             <h2>{props.pageName}</h2>
           </li>
-          <li>{!isEntityScoreLoading && isRiskScoreVisible && clientIdDropdown()}</li>
+          <li>{!isEntityScoreLoading && isRiskScoreVisible && selectClientId()}</li>
           <li>
             {!isEntityScoreLoading && isRiskScoreVisible && (
               <span>
