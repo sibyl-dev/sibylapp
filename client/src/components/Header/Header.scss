@@ -10,6 +10,11 @@
     li {
         flex: 1;
         justify-content: space-between;
+
+        &:nth-child(2) {
+            margin-left: 600px;
+        }
+
         &:last-child {
             text-align: right;
             strong {
@@ -17,7 +22,7 @@
             }
         }
 
-        &.expand-tip{
+        &.expand-tip {
             font-size: 14px;
             line-height: 16px;
             white-space: nowrap;
@@ -35,7 +40,7 @@
             }
         }
 
-        &.search-field-holder{
+        &.search-field-holder {
             max-width: 480px;
         }
     }
@@ -75,4 +80,8 @@
             border-left: none;
         }
     }
+}
+
+.sibyl-select-client {
+    height: 40px;
 }

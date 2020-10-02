@@ -1,0 +1,30 @@
+.lineChart {
+    display: flex;
+    justify-content: flex-start;
+    margin: 48px;
+}
+
+.xAxis {
+    & path {
+        stroke: #e0e0e0;
+    }
+}
+
+.yAxis {
+    & path {
+        stroke: #e0e0e0;
+    }
+}
+
+.grid {
+    & line {
+        stroke: #e0e0e0;
+        opacity: 0.7;
+        stroke-dasharray: 4;
+    }
+}
+.grid {
+    path {
+        stroke-width: 0;
+    }
+}
