@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { getCasesList, getCurrentCaseID, getEntitiesInCaseList } from '../../model/selectors/cases';
-import { getCasesListAction, setCaseIdAction, getEntitiesInCaseListAction } from '../../model/actions/cases';
+import { getCasesList, getCurrentCaseID, getEntitiesInCaseList } from '../../../model/selectors/cases';
+import { getCasesListAction, setCaseIdAction, getEntitiesInCaseListAction } from '../../../model/actions/cases';
 
 import './ReferralSelect.scss';
 

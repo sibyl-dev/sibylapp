@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ReferralSelect from './ReferralSelect';
-import ClientTable from './ClientTable';
+import ReferralSelect from './components/ReferralSelect';
+import ClientTable from './components/ClientTable';
 import LineChart from '../common/LineChart/LineChart';
 
 const chartData = [

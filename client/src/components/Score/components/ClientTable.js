@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import './ClientTable.scss';
 
-import { getEntitiesInCaseList } from '../../model/selectors/cases';
-import { getEntitiesScore } from '../../model/selectors/cases';
-import { getEntitiesInCaseListAction, setHoverRowAction, ressetHoverRowAction } from '../../model/actions/cases';
-import { getEntityPredictionScoreAction } from '../../model/actions/entities';
+import { getEntitiesInCaseList } from '../../../model/selectors/cases';
+import { getEntitiesScore } from '../../../model/selectors/cases';
+import { getEntitiesInCaseListAction, setHoverRowAction, ressetHoverRowAction } from '../../../model/actions/cases';
+import { getEntityPredictionScoreAction } from '../../../model/actions/entities';
 
 const CategoryTable = ({
   entitiesInCaseList,
