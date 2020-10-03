@@ -2,19 +2,19 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { getCasesList, getCurrentCaseID, getEntitiesInCaseList } from '../../../model/selectors/cases';
-import { getCasesListAction, setCaseIdAction, getEntitiesInCaseListAction } from '../../../model/actions/cases';
+import { getCurrentCaseID } from '../../../model/selectors/cases';
+import { setCaseIdAction } from '../../../model/actions/cases';
 
 import './ReferralSelect.scss';
 
-const CategorySelect = ({ caseID, casesList, getCurrentCasesList, getCurrentEntitiesInCase, setCaseId }) => {
+const CategorySelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId }) => {
   useEffect(() => {
-    getCurrentCasesList();
-    setCaseId('101');
-  }, [getCurrentCasesList, setCaseId]);
+    setCaseId(casesList[0]);
+    getCurrentEntitiesInCase();
+  }, [getCurrentEntitiesInCase, setCaseId, casesList]);
 
   const customStyles = {
-    control: (provided, state) => ({
+    control: (provided) => ({
       ...provided,
       minWidth: '240px',
       width: '240px',
@@ -54,20 +54,18 @@ const CategorySelect = ({ caseID, casesList, getCurrentCasesList, getCurrentEnti
     };
   });
 
-  const placeholder = () => {
-    return (
-      <div
-        style={{
-          width: '190px',
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div>Referral ID</div>
-        <div>{caseID === null ? (casesList.length !== 0 ? casesList[0].id : null) : caseID}</div>
-      </div>
-    );
-  };
+  const placeholder = (
+    <div
+      style={{
+        width: '190px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <div>Referral ID</div>
+      <div>{caseID}</div>
+    </div>
+  );
 
   const handleReferralIdChange = (val) => {
     setCaseId(val.id);
@@ -78,7 +76,7 @@ const CategorySelect = ({ caseID, casesList, getCurrentCasesList, getCurrentEnti
     <Select
       classNamePrefix="sibyl-select-referral"
       className="sibyl-select-referral"
-      placeholder={placeholder()}
+      placeholder={placeholder}
       options={referralList}
       value={caseID}
       onChange={handleReferralIdChange}
@@ -90,13 +88,9 @@ const CategorySelect = ({ caseID, casesList, getCurrentCasesList, getCurrentEnti
 
 export default connect(
   (state) => ({
-    casesList: getCasesList(state),
     caseID: getCurrentCaseID(state),
-    entitiesInCaseList: getEntitiesInCaseList(state),
   }),
   (dispatch) => ({
-    getCurrentCasesList: () => dispatch(getCasesListAction()),
     setCaseId: (caseId) => dispatch(setCaseIdAction(caseId)),
-    getCurrentEntitiesInCase: () => dispatch(getEntitiesInCaseListAction()),
   }),
 )(CategorySelect);

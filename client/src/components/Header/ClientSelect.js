@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { getEntitiesInCaseList } from '../../model/selectors/cases';
-import { getEntitiesInCaseListAction } from '../../model/actions/cases';
+import { getEntitiesInCaseList, getIsEntitiesInCaseLoading, getEntitiesScore } from '../../model/selectors/cases';
 
-import { setEntityIdAction, getEntityPredictionScoreAction } from '../../model/actions/entities';
+import { setEntityIdAction } from '../../model/actions/entities';
+
+import { matchArrToArrOfObj } from '../Score/components/helpers';
 
 import './ClientSelect.scss';
 
-const ClientSelect = ({ entitiesInCaseList, getCurrentEntitiesInCase, setEntityIdAction, loadPredictionScore }) => {
-  const [entityId, setEntityId] = useState(false);
-
-  useEffect(() => {
-    getCurrentEntitiesInCase();
-  }, [getCurrentEntitiesInCase]);
+const ClientSelect = ({
+  entitiesInCaseList,
+  entitiesScoreList,
+  setEntityIdActionProp,
+  entitiesInCaseLoading,
+  onEntityIdChange,
+}) => {
+  const [entityId, setEntityId] = useState(null);
 
   const clientIds = entitiesInCaseList.map((id) => {
     return {
@@ -24,16 +27,37 @@ const ClientSelect = ({ entitiesInCaseList, getCurrentEntitiesInCase, setEntityI
   });
 
   const handleChangeEntityId = (val) => {
-    setEntityIdAction(val.id).then(() => {
+    setEntityIdActionProp(val.id).then(() => {
       setEntityId(val);
-      loadPredictionScore();
+
+      const entitiesScoreListOutput = entitiesScoreList.map((entity) => entity.output);
+
+      const formatKeyValCategories = ([id, risk]) => ({ id, risk });
+
+      const formatCategories = matchArrToArrOfObj(entitiesInCaseList, entitiesScoreListOutput, formatKeyValCategories);
+
+      let tempResultScore;
+
+      const searchScore = (key, categories) => {
+        categories.forEach((value, i) => {
+          if (categories[i].id === key) {
+            tempResultScore = categories[i].risk;
+          }
+        });
+
+        return tempResultScore;
+      };
+
+      const resultScore = searchScore(val.id, formatCategories);
+
+      onEntityIdChange(resultScore);
     });
   };
 
   const placeholder = (
     <div className="selectPlaceholder">
       <div>Client ID</div>
-      <div>{clientIds.length !== 0 ? clientIds[0].id : null}</div>
+      <div>{!entitiesInCaseLoading ? clientIds[0].id : null}</div>
     </div>
   );
 
@@ -89,10 +113,10 @@ const ClientSelect = ({ entitiesInCaseList, getCurrentEntitiesInCase, setEntityI
 export default connect(
   (state) => ({
     entitiesInCaseList: getEntitiesInCaseList(state),
+    entitiesScoreList: getEntitiesScore(state),
+    entitiesInCaseLoading: getIsEntitiesInCaseLoading(state),
   }),
   (dispatch) => ({
-    getCurrentEntitiesInCase: () => dispatch(getEntitiesInCaseListAction()),
-    setEntityIdAction: (entityId) => dispatch(setEntityIdAction(entityId)),
-    loadPredictionScore: () => dispatch(getEntityPredictionScoreAction()),
+    setEntityIdActionProp: (entityId) => dispatch(setEntityIdAction(entityId)),
   }),
 )(ClientSelect);

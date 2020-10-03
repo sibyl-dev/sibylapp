@@ -1,4 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+
+import { getCasesList, getEntitiesInCaseList, getEntitiesScore } from '../../model/selectors/cases';
+import { getSelectedModelID } from '../../model/selectors/entities';
+import { getCasesListAction, getEntitiesInCaseListAction } from '../../model/actions/cases';
 
 import ReferralSelect from './components/ReferralSelect';
 import ClientTable from './components/ClientTable';
@@ -32,14 +37,45 @@ const chartData = [
   },
 ];
 
-const Score = () => (
-  <>
-    <ReferralSelect />
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      <LineChart width={650} height={650} data={chartData} />
-      <ClientTable />
-    </div>
-  </>
-);
+const Score = ({
+  modelID,
+  casesList,
+  entitiesInCaseList,
+  entitiesScoreList,
+  getCurrentCasesList,
+  getCurrentEntitiesInCase,
+}) => {
+  useEffect(() => {
+    if (modelID) {
+      getCurrentCasesList();
+    }
+  }, [getCurrentCasesList, modelID]);
 
-export default Score;
+  return (
+    <>
+      <ReferralSelect
+        casesList={casesList}
+        entitiesInCaseList={entitiesInCaseList}
+        getCurrentCasesList={getCurrentCasesList}
+        getCurrentEntitiesInCase={getCurrentEntitiesInCase}
+      />
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <LineChart width={650} height={650} data={chartData} />
+        <ClientTable entitiesInCaseList={entitiesInCaseList} entitiesScoreList={entitiesScoreList} />
+      </div>
+    </>
+  );
+};
+
+export default connect(
+  (state) => ({
+    modelID: getSelectedModelID(state),
+    casesList: getCasesList(state),
+    entitiesInCaseList: getEntitiesInCaseList(state),
+    entitiesScoreList: getEntitiesScore(state),
+  }),
+  (dispatch) => ({
+    getCurrentCasesList: () => dispatch(getCasesListAction()),
+    getCurrentEntitiesInCase: () => dispatch(getEntitiesInCaseListAction()),
+  }),
+)(Score);

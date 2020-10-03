@@ -25,7 +25,7 @@ export function setHoverRowAction(hoveredRow) {
   };
 }
 
-export function ressetHoverRowAction(hoveredRow) {
+export function resetHoverRowAction(hoveredRow) {
   return function (dispatch) {
     const action = {
       type: 'RESET_HOVER_ROW_NO',
@@ -50,32 +50,29 @@ export function getCasesListAction() {
 export function getEntitiesInCaseListAction() {
   return function (dispatch, getState) {
     const state = getState();
-
     const caseID = getCurrentCaseID(state);
+    const modelID = getSelectedModelID(state);
 
+    if (!modelID || !caseID) {
+      return null;
+    }
     return dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_REQUEST' })
       .then(() => api.get(`/entities_in_case/${caseID}/`))
-      .then((outcomeData) => {
-        return dispatch(getScoresForAllEntities(outcomeData)).then(() =>
+      .then((outcomeData) =>
+        dispatch(getScoresForAllEntitiesAction(outcomeData, modelID)).then(() =>
           dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_SUCCESS', result: outcomeData }),
-        );
-      })
+        ),
+      )
       .catch((err) => {
         console.log(err);
         return dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_FAILURE' });
       });
   };
 }
-
-export function getScoresForAllEntities(entities) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const modelID = getSelectedModelID(state);
-
+function getScoresForAllEntitiesAction(entities, modelID) {
+  return (dispatch) => {
     let apiCalls = entities.map((entityID) => api.get(`/prediction/?model_id=${modelID}&eid=${entityID}`));
-
     const action = { type: 'GET_SCORE_FOR_ALL_ENTITIES', promise: Promise.all(apiCalls) };
-
     return dispatch(action);
   };
 }

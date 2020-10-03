@@ -4,6 +4,8 @@ const initialState = {
   caseID: null,
   casesList: [],
   entitiesInCase: [],
+  isEntitiesScoreLoading: true,
+  isEntitiesInCaseLoading: true,
   entitiesScore: [],
   hoveredRow: null,
 };

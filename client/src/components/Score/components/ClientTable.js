@@ -1,33 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+
+import { matchArrToArrOfObj } from './helpers';
 
 import './ClientTable.scss';
 
-import { getEntitiesInCaseList } from '../../../model/selectors/cases';
-import { getEntitiesScore } from '../../../model/selectors/cases';
-import { getEntitiesInCaseListAction, setHoverRowAction, ressetHoverRowAction } from '../../../model/actions/cases';
-import { getEntityPredictionScoreAction } from '../../../model/actions/entities';
+import { setHoverRowAction, resetHoverRowAction } from '../../../model/actions/cases';
 
-const CategoryTable = ({
-  entitiesInCaseList,
-  getCurrentEntitiesInCase,
-  entitiesScoreList,
-  setHoveredRow,
-  resetHoveredRow,
-}) => {
-  useEffect(() => {
-    getCurrentEntitiesInCase();
-  }, [getCurrentEntitiesInCase]);
-
+const CategoryTable = ({ entitiesInCaseList, entitiesScoreList, setHoveredRow, resetHoveredRow }) => {
   const entitiesScoreListOutput = entitiesScoreList.map((entity) => entity.output);
 
-  const riskCategories = {};
+  const formatKeyValCategories = ([id, risk]) => ({ id, risk });
 
-  for (let i = 0; i < entitiesInCaseList.length; i++) {
-    riskCategories[entitiesInCaseList[i]] = entitiesScoreListOutput[i];
-  }
-
-  const formatCategories = Object.entries(riskCategories).map(([id, risk]) => ({ id, risk }));
+  const formatCategories = matchArrToArrOfObj(entitiesInCaseList, entitiesScoreListOutput, formatKeyValCategories);
 
   const renderHeader = () => {
     let headerElement = ['Client Id', 'Risk Category'];
@@ -35,6 +20,14 @@ const CategoryTable = ({
     return headerElement.map((key, index) => {
       return <th key={index}>{key}</th>;
     });
+  };
+
+  const handleMouseEnter = (e, risk) => {
+    setHoveredRow(risk);
+  };
+
+  const handleMouseLeave = (e, risk) => {
+    resetHoveredRow(risk);
   };
 
   const renderBody = () => {
@@ -59,14 +52,6 @@ const CategoryTable = ({
     );
   };
 
-  const handleMouseEnter = (e, risk) => {
-    setHoveredRow(risk);
-  };
-
-  const handleMouseLeave = (e, risk) => {
-    resetHoveredRow(risk);
-  };
-
   return (
     <div className="table-wrapper">
       <div className="title">Risk Category by Client</div>
@@ -81,14 +66,9 @@ const CategoryTable = ({
 };
 
 export default connect(
-  (state) => ({
-    entitiesInCaseList: getEntitiesInCaseList(state),
-    entitiesScoreList: getEntitiesScore(state),
-  }),
+  () => ({}),
   (dispatch) => ({
-    getCurrentEntitiesInCase: () => dispatch(getEntitiesInCaseListAction()),
-    loadPredictionScore: () => dispatch(getEntityPredictionScoreAction()),
     setHoveredRow: (rowNo) => dispatch(setHoverRowAction(rowNo)),
-    resetHoveredRow: (rowNo) => dispatch(ressetHoverRowAction(rowNo)),
+    resetHoveredRow: (rowNo) => dispatch(resetHoverRowAction(rowNo)),
   }),
 )(CategoryTable);
