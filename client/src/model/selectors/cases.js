@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 export const getCasesList = (state) => state.cases.casesList;
 export const getEntitiesInCaseList = (state) => state.cases.entitiesInCase;
 export const getCurrentCaseID = (state) => state.cases.caseID;
+export const getCurrentCaseEntityScore = (state) => state.cases.caseEntityScore;
 export const getEntitiesScore = (state) => state.cases.entitiesScore;
 export const getHoverRowNo = (state) => state.cases.hoveredRow;
 export const getIsEntitiesInCaseLoading = (state) => state.cases.isEntitiesInCaseLoading;

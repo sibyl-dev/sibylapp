@@ -14,6 +14,17 @@ export function setCaseIdAction(caseID) {
   };
 }
 
+export function setCaseEntityScoreAction(caseEntityScore) {
+  return function (dispatch) {
+    const action = {
+      type: 'SET_CASE_ENTITY_SCORE',
+      caseEntityScore,
+    };
+
+    dispatch(action);
+  };
+}
+
 export function setHoverRowAction(hoveredRow) {
   return function (dispatch) {
     const action = {

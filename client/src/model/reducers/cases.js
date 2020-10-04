@@ -2,6 +2,7 @@ import createReducer from '../store/createReducer';
 
 const initialState = {
   caseID: null,
+  caseEntityScore: null,
   casesList: [],
   entitiesInCase: [],
   isEntitiesScoreLoading: true,
@@ -9,6 +10,10 @@ const initialState = {
   entitiesScore: [],
   hoveredRow: null,
 };
+
+function SET_CASE_ENTITY_SCORE(nextState, { caseEntityScore }) {
+  nextState.caseEntityScore = caseEntityScore;
+}
 
 function SET_CASE_ID(nextState, { caseID }) {
   nextState.caseID = caseID;
@@ -66,6 +71,7 @@ function GET_SCORE_FOR_ALL_ENTITIES_FAILURE(nextState) {
 
 export default createReducer(initialState, {
   SET_CASE_ID,
+  SET_CASE_ENTITY_SCORE,
   GET_CASES_DATA_REQUEST,
   GET_CASES_DATA_SUCCESS,
   GET_CASES_DATA_FAILURE,
