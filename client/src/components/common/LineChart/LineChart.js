@@ -10,8 +10,6 @@ import { getEntityPredictionScoreAction } from '../../../model/actions/entities'
 import '../styles/LineChart.scss';
 
 const margin = 50;
-const circleOpacity = '0.85';
-const circleRadius = 3;
 
 const LineChart = ({ width, height, data, rowId }) => {
   const ref = useRef(null);
@@ -19,6 +17,10 @@ const LineChart = ({ width, height, data, rowId }) => {
   const memoDrawChart = useCallback(() => {
     const calcWidth = `${width + margin}px`;
     const calcHeight = `${height + margin}px`;
+
+    const tempSvg = d3.select(ref.current);
+
+    tempSvg.selectAll('*').remove();
 
     const svg = d3
       .select(ref.current)
@@ -144,11 +146,8 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('class', 'point')
       .append('circle')
       .attr('class', 'circle')
-      .style('fill', '#383F67')
       .attr('cx', (d) => xScale(d.x))
-      .attr('cy', (d) => yScale(d.y))
-      .attr('r', circleRadius)
-      .style('opacity', circleOpacity);
+      .attr('cy', (d) => yScale(d.y));
 
     //add data point text
 
@@ -163,8 +162,22 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('y', (d) => yScale(d.y) - 15);
 
     lines.selectAll('.text').attr('fill', (d, i, nodes) => {
-      console.log(rowId);
       return rowId === d.id ? d3.select(nodes[i]).classed('hover', true) : 'rgba(56, 63, 103, 0.6)';
+    });
+
+    lines.selectAll('.circle').style('fill', (d, i, nodes) => {
+      return rowId === d.id ? d3.select(nodes[i]).classed('hover', true) : '#383F67';
+    });
+
+    lines.selectAll('.circle').attr('r', (d) => {
+      let circleRadius;
+
+      if (rowId === d.id) {
+        circleRadius = 6;
+        return circleRadius;
+      }
+      circleRadius = 3;
+      return circleRadius;
     });
   }, [data, height, width, rowId]);
 

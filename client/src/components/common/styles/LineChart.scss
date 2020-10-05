@@ -37,3 +37,11 @@
         font-size: 16px;
     }
 }
+
+.circle {
+    &.hover {
+        fill: white;
+        stroke: #2f80ed;
+        stroke-width: 2;
+    }
+}
