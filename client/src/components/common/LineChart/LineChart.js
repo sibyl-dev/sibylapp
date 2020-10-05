@@ -29,14 +29,10 @@ const LineChart = ({ width, height, data, rowId }) => {
       .append('g')
       .attr('transform', `translate(${margin}, ${margin})`);
 
-    //xScale
-
     const xScale = d3
       .scaleLinear()
       .domain([1, data[0].values.length - 1])
       .range([0, width - margin]);
-
-    //yScale
 
     const maxY = d3.max(data[0].values.map((coord) => coord.y)) + 2;
 
@@ -44,8 +40,6 @@ const LineChart = ({ width, height, data, rowId }) => {
       .scaleLinear()
       .domain([0, maxY])
       .range([height - margin, 0]);
-
-    //xAxis
 
     const xAxis = d3.axisBottom(xScale).ticks(20).tickSize(0);
 
@@ -61,8 +55,6 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('font-size', '14px')
       .style('text-anchor', 'middle')
       .text('Risk Score');
-
-    //yAxis
 
     const yAxis = d3
       .axisLeft(yScale)
@@ -83,8 +75,6 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('font-size', '14px')
       .text('Placement Rates (%)');
 
-    //add chart title
-
     svg
       .append('g')
       .attr('class', 'chartTitle')
@@ -95,20 +85,16 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('font-size', '16px')
       .attr('font-weight', '500');
 
-    // add grid background
+    svg
+      .append('g')
+      .attr('class', 'grid')
+      .attr('transform', `translate(0, ${height - margin})`)
+      .call(xAxis.tickSize(-`${height - margin}`, 0, 0).tickFormat(''));
 
     svg
       .append('g')
       .attr('class', 'grid')
-      .attr('transform', 'translate(0,' + (height - margin) + ')')
-      .call(xAxis.tickSize(-(height - margin), 0, 0).tickFormat(''));
-
-    svg
-      .append('g')
-      .attr('class', 'grid')
-      .call(yAxis.tickSize(-(width - margin), 0, 0).tickFormat(''));
-
-    //add chartLine
+      .call(yAxis.tickSize(-`${width - margin}`, 0, 0).tickFormat(''));
 
     const line = d3
       .line()
@@ -116,8 +102,6 @@ const LineChart = ({ width, height, data, rowId }) => {
       .y((d) => yScale(d.y));
 
     let lines = svg.append('g').attr('class', 'lines');
-
-    // add path
 
     lines
       .selectAll('.line-group')
@@ -130,8 +114,6 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('d', (d) => line(d.values))
       .style('stroke', '#383F67')
       .style('fill', 'none');
-
-    // add circles
 
     lines
       .selectAll('.data-group')
@@ -149,8 +131,6 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('cx', (d) => xScale(d.x))
       .attr('cy', (d) => yScale(d.y));
 
-    //add data point text
-
     lines
       .selectAll('.point')
       .append('text')
@@ -161,13 +141,15 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('x', (d) => xScale(d.x) - 10)
       .attr('y', (d) => yScale(d.y) - 15);
 
-    lines.selectAll('.text').attr('fill', (d, i, nodes) => {
-      return rowId === d.id ? d3.select(nodes[i]).classed('hover', true) : 'rgba(56, 63, 103, 0.6)';
-    });
+    lines
+      .selectAll('.text')
+      .attr('fill', (d, i, nodes) =>
+        rowId === d.id ? d3.select(nodes[i]).classed('hover', true) : 'rgba(56, 63, 103, 0.6)',
+      );
 
-    lines.selectAll('.circle').style('fill', (d, i, nodes) => {
-      return rowId === d.id ? d3.select(nodes[i]).classed('hover', true) : '#383F67';
-    });
+    lines
+      .selectAll('.circle')
+      .style('fill', (d, i, nodes) => (rowId === d.id ? d3.select(nodes[i]).classed('hover', true) : '#383F67'));
 
     lines.selectAll('.circle').attr('r', (d) => {
       let circleRadius;

@@ -36,23 +36,18 @@ const CategorySelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId
       height: '40px',
     }),
 
-    option: (provided, state) => {
-      return {
-        ...provided,
-        backgroundColor: state.isFocused && '#F2F2F2',
-        color: '#4F4F4F',
-      };
-    },
-
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused && '#F2F2F2',
+      color: '#4F4F4F',
+    }),
     menu: (styles) => ({ ...styles, width: '240px' }),
   };
 
-  const referralList = casesList.map((referral) => {
-    return {
-      id: referral,
-      label: referral,
-    };
-  });
+  const referralList = casesList.map((referral) => ({
+    id: referral,
+    label: referral,
+  }));
 
   const placeholder = (
     <div

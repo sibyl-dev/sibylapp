@@ -24,22 +24,18 @@ const CategoryTable = ({ entitiesInCaseList, entitiesScoreList, hoverRowOn, hove
   const renderHeader = () => {
     let headerElement = ['Client Id', 'Risk Score'];
 
-    return headerElement.map((key, index) => {
-      return <th key={index}>{key}</th>;
-    });
+    return headerElement.map((key, index) => <th key={`header-el-${index}`}>{key}</th>);
   };
 
   const renderBody = () => {
     return (
       categoriesWithRateId &&
-      categoriesWithRateId.map(({ id, risk, row_id }) => {
-        return (
-          <tr onMouseEnter={() => hoverRowOn(row_id)} onMouseLeave={() => hoverRowOff(row_id)} key={id}>
-            <td>{id}</td>
-            <td>{risk}</td>
-          </tr>
-        );
-      })
+      categoriesWithRateId.map(({ id, risk, row_id }) => (
+        <tr onMouseEnter={() => hoverRowOn(row_id)} onMouseLeave={() => hoverRowOff(row_id)} key={id}>
+          <td>{id}</td>
+          <td>{risk}</td>
+        </tr>
+      ))
     );
   };
 

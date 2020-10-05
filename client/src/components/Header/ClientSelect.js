@@ -19,12 +19,10 @@ const ClientSelect = ({
 }) => {
   const [entityId, setEntityId] = useState(null);
 
-  const clientIds = entitiesInCaseList.map((id) => {
-    return {
-      id: id,
-      label: id,
-    };
-  });
+  const clientIds = entitiesInCaseList.map((id) => ({
+    id,
+    label: id,
+  }));
 
   const handleChangeEntityId = (val) => {
     setEntityIdActionProp(val.id).then(() => {
@@ -85,13 +83,11 @@ const ClientSelect = ({
       height: '40px',
     }),
 
-    option: (styles, state) => {
-      return {
-        ...styles,
-        backgroundColor: state.isFocused && '#F2F2F2',
-        color: '#4F4F4F',
-      };
-    },
+    option: (styles, state) => ({
+      ...styles,
+      backgroundColor: state.isFocused && '#F2F2F2',
+      color: '#4F4F4F',
+    }),
 
     menu: (styles) => ({ ...styles, width: '240px' }),
   };

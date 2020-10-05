@@ -35,7 +35,7 @@ const Header = ({
     if (!isEntitiesScoreLoading) {
       setCaseEntityScore(entitiesScoreList[0].output);
     }
-  }, [isEntitiesScoreLoading, setCaseEntityScore, entitiesScoreList]); //when updated use useeffect
+  }, [isEntitiesScoreLoading, setCaseEntityScore, entitiesScoreList]);
 
   const excludedPages = ['Global Feature Importance', 'Feature Distribution'];
 
