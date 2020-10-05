@@ -31,7 +31,7 @@ const LineChart = ({ width, height, data, rowId }) => {
 
     const xScale = d3
       .scaleLinear()
-      .domain([1, data[0].values.length - 1])
+      .domain([1, data[0].values.length])
       .range([0, width - margin]);
 
     const maxY = d3.max(data[0].values.map((coord) => coord.y)) + 2;
@@ -169,7 +169,7 @@ const LineChart = ({ width, height, data, rowId }) => {
 
   return (
     <div className="lineChart">
-      <svg ref={ref}></svg>
+      <svg ref={ref} />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 import { matchArrToArrOfObj } from './helpers';
 
@@ -24,20 +25,17 @@ const CategoryTable = ({ entitiesInCaseList, entitiesScoreList, hoverRowOn, hove
   const renderHeader = () => {
     let headerElement = ['Client Id', 'Risk Score'];
 
-    return headerElement.map((key, index) => <th key={`header-el-${index}`}>{key}</th>);
+    return headerElement.map((head) => <th key={uuidv4()}>{head}</th>);
   };
 
-  const renderBody = () => {
-    return (
-      categoriesWithRateId &&
-      categoriesWithRateId.map(({ id, risk, row_id }) => (
-        <tr onMouseEnter={() => hoverRowOn(row_id)} onMouseLeave={() => hoverRowOff(row_id)} key={id}>
-          <td>{id}</td>
-          <td>{risk}</td>
-        </tr>
-      ))
-    );
-  };
+  const renderBody = () =>
+    categoriesWithRateId &&
+    categoriesWithRateId.map(({ id, risk, row_id }) => (
+      <tr onMouseEnter={() => hoverRowOn(row_id)} onMouseLeave={() => hoverRowOff(row_id)} key={id}>
+        <td>{id}</td>
+        <td>{risk}</td>
+      </tr>
+    ));
 
   return (
     <div className="table-wrapper">

@@ -74,8 +74,7 @@ export function getEntitiesInCaseListAction() {
           dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_SUCCESS', result: outcomeData }),
         ),
       )
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         return dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_FAILURE' });
       });
   };
