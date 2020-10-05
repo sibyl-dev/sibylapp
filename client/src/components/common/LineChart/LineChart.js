@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import * as d3 from 'd3';
 import { connect } from 'react-redux';
 
-import { getEntitiesInCaseList, getHoverRowNo } from '../../../model/selectors/cases';
+import { getEntitiesInCaseList, getScoreRowId } from '../../../model/selectors/cases';
 import { getEntityScore } from '../../../model/selectors/entities';
 import { getEntitiesInCaseListAction } from '../../../model/actions/cases';
 import { getEntityPredictionScoreAction } from '../../../model/actions/entities';
@@ -13,10 +13,10 @@ const margin = 50;
 const circleOpacity = '0.85';
 const circleRadius = 3;
 
-const LineChart = ({ width, height, data }) => {
+const LineChart = ({ width, height, data, rowId }) => {
   const ref = useRef(null);
 
-  const drawChart = () => {
+  const memoDrawChart = useCallback(() => {
     const calcWidth = `${width + margin}px`;
     const calcHeight = `${height + margin}px`;
 
@@ -58,7 +58,7 @@ const LineChart = ({ width, height, data }) => {
       .attr('fill', '#4F4F4F')
       .attr('font-size', '14px')
       .style('text-anchor', 'middle')
-      .text('Risk Category');
+      .text('Risk Score');
 
     //yAxis
 
@@ -80,6 +80,18 @@ const LineChart = ({ width, height, data }) => {
       .attr('fill', '#4F4F4F')
       .attr('font-size', '14px')
       .text('Placement Rates (%)');
+
+    //add chart title
+
+    svg
+      .append('g')
+      .attr('class', 'chartTitle')
+      .attr('transform', `translate(-${margin}, -32)`)
+      .append('text')
+      .text('Placement Rates by Risk Score')
+      .attr('fill', '#4F4F4F')
+      .attr('font-size', '16px')
+      .attr('font-weight', '500');
 
     // add grid background
 
@@ -120,17 +132,19 @@ const LineChart = ({ width, height, data }) => {
     // add circles
 
     lines
-      .selectAll('circle-group')
+      .selectAll('.data-group')
       .data(data)
       .enter()
       .append('g')
-      .style('fill', '#383F67')
-      .selectAll('circle')
+      .attr('class', 'data-group')
+      .selectAll('.point')
       .data((d) => d.values)
       .enter()
       .append('g')
-      .attr('class', 'circle')
+      .attr('class', 'point')
       .append('circle')
+      .attr('class', 'circle')
+      .style('fill', '#383F67')
       .attr('cx', (d) => xScale(d.x))
       .attr('cy', (d) => yScale(d.y))
       .attr('r', circleRadius)
@@ -139,18 +153,24 @@ const LineChart = ({ width, height, data }) => {
     //add data point text
 
     lines
-      .selectAll('.circle')
+      .selectAll('.point')
       .append('text')
       .attr('class', 'text')
-      .attr('fill', '#383F67')
-      .attr('opacity', 0.6)
       .attr('font-size', '12px')
+      .attr('id', (d) => d.id)
       .text((d) => `${d.y}%`)
       .attr('x', (d) => xScale(d.x) - 10)
       .attr('y', (d) => yScale(d.y) - 15);
-  };
 
-  useEffect(drawChart, []);
+    lines.selectAll('.text').attr('fill', (d, i, nodes) => {
+      console.log(rowId);
+      return rowId === d.id ? d3.select(nodes[i]).classed('hover', true) : 'rgba(56, 63, 103, 0.6)';
+    });
+  }, [data, height, width, rowId]);
+
+  useEffect(() => {
+    memoDrawChart();
+  }, [memoDrawChart]);
 
   return (
     <div className="lineChart">
@@ -163,7 +183,7 @@ export default connect(
   (state) => ({
     entitiesInCaseList: getEntitiesInCaseList(state),
     entityScore: getEntityScore(state),
-    hoveredRow: getHoverRowNo(state),
+    rowId: getScoreRowId(state),
   }),
   (dispatch) => ({
     getCurrentEntitiesInCase: () => dispatch(getEntitiesInCaseListAction()),

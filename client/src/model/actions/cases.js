@@ -25,22 +25,22 @@ export function setCaseEntityScoreAction(caseEntityScore) {
   };
 }
 
-export function setHoverRowAction(hoveredRow) {
+export function hoverRowIdAction(scoreRowId) {
   return function (dispatch) {
     const action = {
-      type: 'SET_HOVER_ROW_NO',
-      hoveredRow,
+      type: 'SET_HOVER_ROW_ID',
+      scoreRowId,
     };
 
     dispatch(action);
   };
 }
 
-export function resetHoverRowAction(hoveredRow) {
+export function hoverOffRowAction(scoreRowId) {
   return function (dispatch) {
     const action = {
-      type: 'RESET_HOVER_ROW_NO',
-      hoveredRow,
+      type: 'RESET_HOVER_ROW_ID',
+      scoreRowId,
     };
 
     dispatch(action);

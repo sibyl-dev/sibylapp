@@ -5,7 +5,7 @@ export const getEntitiesInCaseList = (state) => state.cases.entitiesInCase;
 export const getCurrentCaseID = (state) => state.cases.caseID;
 export const getCurrentCaseEntityScore = (state) => state.cases.caseEntityScore;
 export const getEntitiesScore = (state) => state.cases.entitiesScore;
-export const getHoverRowNo = (state) => state.cases.hoveredRow;
+export const getScoreRowId = (state) => state.cases.scoreRowId;
 export const getIsEntitiesInCaseLoading = (state) => state.cases.isEntitiesInCaseLoading;
 export const getIsEntitiesScoreLoading = (state) => state.cases.isEntitiesScoreLoading;
 

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 import { getCasesList, getEntitiesInCaseList, getEntitiesScore } from '../../model/selectors/cases';
 import { getSelectedModelID } from '../../model/selectors/entities';
@@ -25,17 +26,22 @@ const chartData = [
       { x: 10, y: 6 },
       { x: 11, y: 7 },
       { x: 12, y: 8 },
-      { x: 12, y: 8 },
-      { x: 13, y: 11 },
-      { x: 14, y: 14 },
-      { x: 15, y: 16 },
-      { x: 16, y: 20 },
-      { x: 17, y: 24 },
-      { x: 18, y: 32 },
-      { x: 19, y: 48 },
+      { x: 13, y: 8 },
+      { x: 14, y: 11 },
+      { x: 15, y: 14 },
+      { x: 16, y: 16 },
+      { x: 17, y: 20 },
+      { x: 18, y: 24 },
+      { x: 19, y: 32 },
+      { x: 20, y: 48 },
     ],
   },
 ];
+
+const chartDataWithIds = chartData.map((point) => ({
+  ...point,
+  values: point.values.map((valuePoint) => ({ ...valuePoint, id: uuidv4() })),
+}));
 
 const Score = ({
   modelID,
@@ -60,8 +66,12 @@ const Score = ({
         getCurrentEntitiesInCase={getCurrentEntitiesInCase}
       />
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <LineChart width={650} height={650} data={chartData} />
-        <ClientTable entitiesInCaseList={entitiesInCaseList} entitiesScoreList={entitiesScoreList} />
+        <LineChart width={650} height={650} data={chartDataWithIds} />
+        <ClientTable
+          entitiesInCaseList={entitiesInCaseList}
+          entitiesScoreList={entitiesScoreList}
+          data={chartDataWithIds}
+        />
       </div>
     </>
   );

@@ -8,7 +8,7 @@ const initialState = {
   isEntitiesScoreLoading: true,
   isEntitiesInCaseLoading: true,
   entitiesScore: [],
-  hoveredRow: null,
+  scoreRowId: null,
 };
 
 function SET_CASE_ENTITY_SCORE(nextState, { caseEntityScore }) {
@@ -19,12 +19,12 @@ function SET_CASE_ID(nextState, { caseID }) {
   nextState.caseID = caseID;
 }
 
-function SET_HOVER_ROW_NO(nextState, { hoveredRow }) {
-  nextState.hoveredRow = hoveredRow;
+function SET_HOVER_ROW_ID(nextState, { scoreRowId }) {
+  nextState.scoreRowId = scoreRowId;
 }
 
-function RESET_HOVER_ROW_NO(nextState) {
-  nextState.hoveredRow = null;
+function RESET_HOVER_ROW_ID(nextState) {
+  nextState.scoreRowId = null;
 }
 
 function GET_CASES_DATA_REQUEST(nextState) {
@@ -81,6 +81,6 @@ export default createReducer(initialState, {
   GET_SCORE_FOR_ALL_ENTITIES_REQUEST,
   GET_SCORE_FOR_ALL_ENTITIES_SUCCESS,
   GET_SCORE_FOR_ALL_ENTITIES_FAILURE,
-  SET_HOVER_ROW_NO,
-  RESET_HOVER_ROW_NO,
+  SET_HOVER_ROW_ID,
+  RESET_HOVER_ROW_ID,
 });
