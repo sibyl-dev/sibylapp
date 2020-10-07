@@ -78,7 +78,7 @@ const LineChart = ({ width, height, data, rowId }) => {
     svg
       .append('g')
       .attr('class', 'chartTitle')
-      .attr('transform', `translate(-${margin}, -32)`)
+      .attr('transform', `translate(-${margin - 10}, -32)`)
       .append('text')
       .text('Placement Rates by Risk Score')
       .attr('fill', '#4F4F4F')
@@ -138,8 +138,8 @@ const LineChart = ({ width, height, data, rowId }) => {
       .attr('font-size', '12px')
       .attr('id', (d) => d.id)
       .text((d) => `${d.y}%`)
-      .attr('x', (d) => xScale(d.x) - 10)
-      .attr('y', (d) => yScale(d.y) - 15);
+      .attr('x', (d) => xScale(d.x) - 22)
+      .attr('y', (d) => yScale(d.y) - 10);
 
     lines
       .selectAll('.text')

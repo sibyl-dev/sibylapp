@@ -36,11 +36,10 @@ export function hoverRowIdAction(scoreRowId) {
   };
 }
 
-export function hoverOffRowAction(scoreRowId) {
+export function hoverOffRowAction() {
   return function (dispatch) {
     const action = {
       type: 'RESET_HOVER_ROW_ID',
-      scoreRowId,
     };
 
     dispatch(action);
@@ -74,9 +73,7 @@ export function getEntitiesInCaseListAction() {
           dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_SUCCESS', result: outcomeData }),
         ),
       )
-      .catch(() => {
-        return dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_FAILURE' });
-      });
+      .catch(() => dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_FAILURE' }));
   };
 }
 function getScoresForAllEntitiesAction(entities, modelID) {

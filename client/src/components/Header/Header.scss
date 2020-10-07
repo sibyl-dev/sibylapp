@@ -2,10 +2,12 @@
 
 .main-header,
 .sub-header {
-    padding: 20px 40px;
+    padding: 12px 40px;
+    min-height: 64px;
     ul {
         display: flex;
         justify-content: space-between;
+        max-height: 25px;
     }
     li {
         &:nth-child(2) {

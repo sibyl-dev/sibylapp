@@ -10,98 +10,92 @@ import { matchArrToArrOfObj } from '../Score/components/helpers';
 
 import './ClientSelect.scss';
 
+const optionStyles = {
+  option: (styles, state) => ({
+    ...styles,
+    backgroundColor: state.isFocused && '#F2F2F2',
+    color: '#4F4F4F',
+  }),
+};
+
 const ClientSelect = ({
   entitiesInCaseList,
   entitiesScoreList,
-  setEntityIdActionProp,
-  entitiesInCaseLoading,
+  updateEntityId,
+  isCaseEntitiesLoading,
   onEntityIdChange,
 }) => {
   const [entityId, setEntityId] = useState(null);
 
+  const [selectedVal, setSelectedVal] = useState(null);
+
   const clientIds = entitiesInCaseList.map((id) => ({
     id,
     label: id,
+    selected: 'Selected',
   }));
 
-  const handleChangeEntityId = (val) => {
-    setEntityIdActionProp(val.id).then(() => {
-      setEntityId(val);
+  const onChangeEntityID = (val) => {
+    updateEntityId(val.id);
+    setEntityId(val);
+    setSelectedVal(val);
 
-      const entitiesScoreListOutput = entitiesScoreList.map((entity) => entity.output);
+    const entitiesScoreListOutput = entitiesScoreList.map((entity) => entity.output);
 
-      const formatKeyValCategories = ([id, risk]) => ({ id, risk });
+    const formatKeyValCategories = ([id, risk]) => ({ id, risk });
 
-      const formatCategories = matchArrToArrOfObj(entitiesInCaseList, entitiesScoreListOutput, formatKeyValCategories);
+    const formatCategories = matchArrToArrOfObj(entitiesInCaseList, entitiesScoreListOutput, formatKeyValCategories);
 
-      let tempResultScore;
+    let tempResultScore;
 
-      const searchScore = (key, categories) => {
-        categories.forEach((value, i) => {
-          if (categories[i].id === key) {
-            tempResultScore = categories[i].risk;
-          }
-        });
+    const searchScore = (key, categories) => {
+      categories.forEach((value, i) => {
+        if (categories[i].id === key) {
+          tempResultScore = categories[i].risk;
+        }
+      });
 
-        return tempResultScore;
-      };
+      return tempResultScore;
+    };
 
-      const resultScore = searchScore(val.id, formatCategories);
+    const resultScore = searchScore(val.id, formatCategories);
 
-      onEntityIdChange(resultScore);
-    });
+    onEntityIdChange(resultScore);
   };
 
   const placeholder = (
-    <div className="selectPlaceholder">
+    <div className="placeholder-wrapper">
       <div>Client ID</div>
-      <div>{!entitiesInCaseLoading ? clientIds[0].id : null}</div>
+      <div>{!isCaseEntitiesLoading ? clientIds[0].id : null}</div>
     </div>
   );
 
-  const customStyles = {
-    control: (styles) => ({
-      ...styles,
-      minWidth: '240px',
-      width: '240px',
-      minHeight: '40px',
-      height: '40px',
-    }),
+  const formatOptionLabel = ({ id, label, selected }, { context }) => {
+    let isLabelSelected;
 
-    valueContainer: (styles) => ({
-      ...styles,
-      height: '40px',
-    }),
+    if (selectedVal) {
+      isLabelSelected = selectedVal.id === label;
+    }
 
-    indicatorSeparator: (styles) => ({
-      ...styles,
-      display: 'none',
-    }),
-
-    indicatorsContainer: (styles) => ({
-      ...styles,
-      height: '40px',
-    }),
-
-    option: (styles, state) => ({
-      ...styles,
-      backgroundColor: state.isFocused && '#F2F2F2',
-      color: '#4F4F4F',
-    }),
-
-    menu: (styles) => ({ ...styles, width: '240px' }),
+    return (
+      <div className="option-label">
+        <div>{label}</div>
+        <div className="option-selected">{context === 'value' ? '' : isLabelSelected ? selected : ''}</div>
+      </div>
+    );
   };
 
   return (
     <Select
       classNamePrefix="sibyl-select-client"
       className="sibyl-select-client"
-      placeholder={placeholder}
       options={clientIds}
-      styles={customStyles}
+      placeholder={placeholder}
       isSearchable={false}
-      onChange={handleChangeEntityId}
+      onChange={onChangeEntityID}
+      formatOptionLabel={formatOptionLabel}
       value={entityId}
+      styles={optionStyles}
     />
   );
 };
@@ -110,9 +104,9 @@ export default connect(
   (state) => ({
     entitiesInCaseList: getEntitiesInCaseList(state),
     entitiesScoreList: getEntitiesScore(state),
-    entitiesInCaseLoading: getIsEntitiesInCaseLoading(state),
+    isCaseEntitiesLoading: getIsEntitiesInCaseLoading(state),
   }),
   (dispatch) => ({
-    setEntityIdActionProp: (entityId) => dispatch(setEntityIdAction(entityId)),
+    updateEntityId: (entityId) => dispatch(setEntityIdAction(entityId)),
   }),
 )(ClientSelect);

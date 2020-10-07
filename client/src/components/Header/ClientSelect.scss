@@ -1,5 +1,43 @@
-.selectPlaceholder {
-    width: 190px;
-    display: flex;
-    justify-content: space-between;
+.sibyl-select-client {
+    &__control {
+        min-width: 240px;
+        width: 240px;
+        min-height: 40px;
+        height: 40px;
+    }
+
+    &__valueContainer {
+        height: 40px;
+    }
+
+    &__indicator-separator {
+        display: none;
+    }
+
+    &__indicatorsContainer {
+        height: '40px';
+    }
+
+    .sibyl-select-client__menu-list {
+        .sibyl-select-client__option--is-focused {
+            background-color: #f2f2f2;
+        }
+
+        .option-label {
+            display: flex;
+
+            .option-selected {
+                margin-left: auto;
+                color: #bdbdbd;
+            }
+        }
+    }
+
+    .sibyl-select-client__placeholder {
+        .placeholder-wrapper {
+            width: 190px;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
 }

@@ -3,6 +3,11 @@
     display: flex;
     flex-direction: column;
     margin: 98px 0 0 48px;
+
+    .scroll-wrapper {
+        overflow-y: scroll;
+        max-height: 240px;
+    }
 }
 
 .title {
@@ -41,6 +46,10 @@
             }
 
             &:hover {
+                color: #4f4f4f;
+                background-color: rgba(47, 128, 237, 0.05);
+            }
+            &.hovered {
                 color: #4f4f4f;
                 background-color: rgba(47, 128, 237, 0.05);
             }

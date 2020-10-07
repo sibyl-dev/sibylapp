@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
@@ -7,56 +7,30 @@ import { setCaseIdAction } from '../../../model/actions/cases';
 
 import './ReferralSelect.scss';
 
+const optionStyles = {
+  option: (styles, state) => ({
+    ...styles,
+    backgroundColor: state.isFocused && '#F2F2F2',
+    color: '#4F4F4F',
+  }),
+};
+
 const CategorySelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId }) => {
   useEffect(() => {
     setCaseId(casesList[0]);
     getCurrentEntitiesInCase();
   }, [getCurrentEntitiesInCase, setCaseId, casesList]);
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      minWidth: '240px',
-      width: '240px',
-      minHeight: '40px',
-      height: '40px',
-    }),
-
-    valueContainer: (styles) => ({
-      ...styles,
-      height: '40px',
-    }),
-
-    indicatorSeparator: (styles) => ({
-      ...styles,
-      display: 'none',
-    }),
-    indicatorsContainer: (styles) => ({
-      ...styles,
-      height: '40px',
-    }),
-
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused && '#F2F2F2',
-      color: '#4F4F4F',
-    }),
-    menu: (styles) => ({ ...styles, width: '240px' }),
-  };
+  const [selectedVal, setSelectedVal] = useState(null);
 
   const referralList = casesList.map((referral) => ({
     id: referral,
     label: referral,
+    selected: 'Selected',
   }));
 
   const placeholder = (
-    <div
-      style={{
-        width: '190px',
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
+    <div className="placeholder-wrapper">
       <div>Referral ID</div>
       <div>{caseID}</div>
     </div>
@@ -65,6 +39,22 @@ const CategorySelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId
   const handleReferralIdChange = (val) => {
     setCaseId(val.id);
     getCurrentEntitiesInCase();
+    setSelectedVal(val);
+  };
+
+  const formatOptionLabel = ({ id, label, selected }, { context }) => {
+    let isLabelSelected;
+
+    if (selectedVal) {
+      isLabelSelected = selectedVal.id === label;
+    }
+
+    return (
+      <div className="option-label">
+        <div>{label}</div>
+        <div className="option-selected">{context === 'value' ? '' : isLabelSelected ? selected : ''}</div>
+      </div>
+    );
   };
 
   return (
@@ -75,8 +65,9 @@ const CategorySelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId
       options={referralList}
       value={caseID}
       onChange={handleReferralIdChange}
-      styles={customStyles}
       isSearchable={false}
+      formatOptionLabel={formatOptionLabel}
+      styles={optionStyles}
     />
   );
 };

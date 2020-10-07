@@ -10,6 +10,8 @@ import ReferralSelect from './components/ReferralSelect';
 import ClientTable from './components/ClientTable';
 import LineChart from '../common/LineChart/LineChart';
 
+import './Score.scss';
+
 const chartData = [
   {
     name: 'Client',
@@ -59,13 +61,15 @@ const Score = ({
 
   return (
     <>
-      <ReferralSelect
-        casesList={casesList}
-        entitiesInCaseList={entitiesInCaseList}
-        getCurrentCasesList={getCurrentCasesList}
-        getCurrentEntitiesInCase={getCurrentEntitiesInCase}
-      />
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div className="sub-header">
+        <ReferralSelect
+          casesList={casesList}
+          entitiesInCaseList={entitiesInCaseList}
+          getCurrentCasesList={getCurrentCasesList}
+          getCurrentEntitiesInCase={getCurrentEntitiesInCase}
+        />
+      </div>
+      <div className="chart-wrapper">
         <LineChart width={650} height={650} data={chartDataWithIds} />
         <ClientTable
           entitiesInCaseList={entitiesInCaseList}
