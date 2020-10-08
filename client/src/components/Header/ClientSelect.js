@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { getEntitiesInCaseList, getIsEntitiesInCaseLoading, getEntitiesScore } from '../../model/selectors/cases';
+import { getEntitiesInCaseList, getEntitiesScore } from '../../model/selectors/cases';
 import { getPageName } from '../../model/selectors/sidebar';
 
 import { setEntityIdAction } from '../../model/actions/entities';
@@ -21,14 +21,7 @@ const optionStyles = {
   }),
 };
 
-const ClientSelect = ({
-  entitiesInCaseList,
-  entitiesScoreList,
-  updateEntityId,
-  isCaseEntitiesLoading,
-  onEntityIdChange,
-  currentPage,
-}) => {
+const ClientSelect = ({ entitiesInCaseList, entitiesScoreList, updateEntityId, onEntityIdChange }) => {
   const [entityId, setEntityId] = useState(null);
 
   const [selectedVal, setSelectedVal] = useState(null);
@@ -84,7 +77,7 @@ const ClientSelect = ({
     </div>
   );
 
-  const formatOptionLabel = ({ id, label, selected }, { context }) => {
+  const formatOptionLabel = ({ label, selected }, { context }) => {
     let isLabelSelected;
 
     if (selectedVal) {
@@ -116,10 +109,8 @@ const ClientSelect = ({
 
 export default connect(
   (state) => ({
-    currentPage: getPageName(state),
     entitiesInCaseList: getEntitiesInCaseList(state),
     entitiesScoreList: getEntitiesScore(state),
-    isCaseEntitiesLoading: getIsEntitiesInCaseLoading(state),
   }),
   (dispatch) => ({
     updateEntityId: (entityId) => dispatch(setEntityIdAction(entityId)),
