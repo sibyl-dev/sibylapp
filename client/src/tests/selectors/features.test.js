@@ -32,6 +32,7 @@ import {
 } from '../../model/selectors/features';
 
 import defaultState from './states/features.default';
+import entitiesDefaultState from './states/entities.default';
 
 describe('Features Selectors', () => {
   describe('getFeaturesImportances()', () => {
@@ -155,10 +156,18 @@ describe('Features Selectors', () => {
   });
 });
 
-describe('Created Features Selectos', () => {
+describe('Created Features Selectors', () => {
   let testState;
   beforeEach(() => {
-    testState = JSON.parse(JSON.stringify(defaultState));
+    testState = JSON.parse(
+      JSON.stringify({
+        ...defaultState,
+        entities: {
+          entityData: entitiesDefaultState.entities.entityData,
+          entityContributions: entitiesDefaultState.entities.entityContributions,
+        },
+      }),
+    );
   });
 
   describe('getMaxContributionRange()', () => {
