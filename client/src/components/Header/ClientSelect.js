@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 
 import { getEntitiesInCaseList, getEntitiesScore } from '../../model/selectors/cases';
-import { getPageName } from '../../model/selectors/sidebar';
 
 import { setEntityIdAction } from '../../model/actions/entities';
 
