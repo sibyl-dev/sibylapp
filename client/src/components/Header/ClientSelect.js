@@ -77,14 +77,12 @@ const ClientSelect = ({
     selected: 'Selected',
   }));
 
-  const placeholder = () => {
-    return (
-      <div className="placeholder-wrapper">
-        <div>Client ID</div>
-        <div>{clientIds[0]?.id || formatLocalStorageClientIds[0]}</div>
-      </div>
-    );
-  };
+  const placeholder = (
+    <div className="placeholder-wrapper">
+      <div>Client ID</div>
+      <div>{clientIds[0]?.id || formatLocalStorageClientIds[0]}</div>
+    </div>
+  );
 
   const formatOptionLabel = ({ id, label, selected }, { context }) => {
     let isLabelSelected;
@@ -106,7 +104,7 @@ const ClientSelect = ({
       classNamePrefix="sibyl-select-client"
       className="sibyl-select-client"
       options={clientIds || formatLocalStorageClientIds}
-      placeholder={placeholder()}
+      placeholder={placeholder}
       isSearchable={false}
       onChange={onChangeEntityID}
       formatOptionLabel={formatOptionLabel}

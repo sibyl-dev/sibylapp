@@ -2,12 +2,11 @@ import { createLogger } from 'redux-logger';
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleWare from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import throttle from 'lodash/throttle';
 import dashBoardReducers from '../reducers';
 import { api } from './middlewares';
 
 import { loadState, saveState } from '../../components/Header/localStorage';
-
-import throttle from 'lodash/throttle';
 
 const persistedState = loadState();
 

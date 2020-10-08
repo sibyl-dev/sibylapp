@@ -27,10 +27,6 @@ const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEn
     setCaseEntityScore(entitiesScoreList[0]?.output);
   }, [isEntitiesScoreLoading, setCaseEntityScore, entitiesScoreList]);
 
-  const excludedPages = ['Global Feature Importance', 'Feature Distribution'];
-
-  let isRiskScoreVisible = !excludedPages.includes(currentPage);
-
   const updateEntityScore = (value) => {
     setCaseEntityScore(value);
   };
@@ -43,16 +39,16 @@ const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEn
             <h2>{currentPage}</h2>
           </li>
           <li>
-            {!isEntitiesScoreLoading && isRiskScoreVisible ? (
+            {!isEntitiesScoreLoading ? (
               <ClientSelect onEntityIdChange={updateEntityScore} />
             ) : currentPage === 'Score' ? (
               <CircularProgress />
-            ) : (
+            ) : caseEntityScore ? (
               <ClientSelect onEntityIdChange={updateEntityScore} />
-            )}
+            ) : null}
           </li>
           <li>
-            {!isEntitiesScoreLoading && isRiskScoreVisible && (
+            {!isEntitiesScoreLoading && (
               <span>
                 Risk Score: <strong>{caseEntityScore}</strong>
                 <button type="button" className="clean" onClick={() => toggleModal(true)}>

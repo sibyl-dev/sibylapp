@@ -55,22 +55,19 @@ const CategoryTable = ({
     hoverRowOn(row_id);
   };
 
-  const renderBody = () => {
-    return (
-      ratedIdCategories &&
-      ratedIdCategories.map(({ id, risk, row_id }, i) => (
-        <tr
-          className={i === 0 ? hoveredClass : ''}
-          onMouseEnter={() => handleMouseEnter(row_id)}
-          onMouseLeave={() => hoverRowOff(row_id)}
-          key={id}
-        >
-          <td>{id}</td>
-          <td>{risk}</td>
-        </tr>
-      ))
-    );
-  };
+  const renderBody = () =>
+    ratedIdCategories &&
+    ratedIdCategories.map(({ id, risk, row_id }, i) => (
+      <tr
+        className={i === 0 ? hoveredClass : ''}
+        onMouseEnter={() => handleMouseEnter(row_id)}
+        onMouseLeave={() => hoverRowOff(row_id)}
+        key={id}
+      >
+        <td>{id}</td>
+        <td>{risk}</td>
+      </tr>
+    ));
 
   return (
     <div className="table-wrapper">

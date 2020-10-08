@@ -44,7 +44,7 @@ const ReferralSelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId
     setSelectedVal(val);
   };
 
-  const formatOptionLabel = ({ id, label, selected }, { context }) => {
+  const formatOptionLabel = ({ label, selected }, { context }) => {
     let isLabelSelected;
 
     if (selectedVal) {
