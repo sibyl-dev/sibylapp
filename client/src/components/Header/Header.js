@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { ExcamationIcon } from '../../assets/icons/icons';
 import { getPageName } from '../../model/selectors/sidebar';
-
 import { getIsEntitiesScoreLoading, getEntitiesScore, getCurrentCaseEntityScore } from '../../model/selectors/cases';
 import { setCaseEntityScoreAction } from '../../model/actions/cases';
 
@@ -21,20 +20,11 @@ const toggleModalDialog = (modalState, onClose) => (
   </ModalDialog>
 );
 
-const Header = ({
-  isEntitiesScoreLoading,
-  currentPage,
-  entitiesScoreList,
-  pageName,
-  caseEntityScore,
-  setCaseEntityScore,
-}) => {
+const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEntityScore, setCaseEntityScore }) => {
   const [isModalOpen, toggleModal] = useState(false);
 
   useEffect(() => {
-    if (!isEntitiesScoreLoading) {
-      setCaseEntityScore(entitiesScoreList[0].output);
-    }
+    setCaseEntityScore(entitiesScoreList[0]?.output);
   }, [isEntitiesScoreLoading, setCaseEntityScore, entitiesScoreList]);
 
   const excludedPages = ['Global Feature Importance', 'Feature Distribution'];
@@ -50,17 +40,19 @@ const Header = ({
       <div className="main-header">
         <ul>
           <li>
-            <h2>{pageName}</h2>
+            <h2>{currentPage}</h2>
           </li>
           <li>
-            {!isEntitiesScoreLoading && isRiskScoreVisible && pageName === 'Score' ? (
+            {!isEntitiesScoreLoading && isRiskScoreVisible ? (
               <ClientSelect onEntityIdChange={updateEntityScore} />
+            ) : currentPage === 'Score' ? (
+              <CircularProgress />
             ) : (
-              pageName === 'Score' && <CircularProgress />
+              <ClientSelect onEntityIdChange={updateEntityScore} />
             )}
           </li>
           <li>
-            {!isEntitiesScoreLoading && isRiskScoreVisible && pageName === 'Score' && (
+            {!isEntitiesScoreLoading && isRiskScoreVisible && (
               <span>
                 Risk Score: <strong>{caseEntityScore}</strong>
                 <button type="button" className="clean" onClick={() => toggleModal(true)}>
@@ -78,7 +70,6 @@ const Header = ({
 export default connect(
   (state) => ({
     caseEntityScore: getCurrentCaseEntityScore(state),
-    pageName: getPageName(state),
     currentPage: getPageName(state),
     isEntitiesScoreLoading: getIsEntitiesScoreLoading(state),
     entitiesScoreList: getEntitiesScore(state),

@@ -3,10 +3,13 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 
 import { getEntitiesInCaseList, getIsEntitiesInCaseLoading, getEntitiesScore } from '../../model/selectors/cases';
+import { getPageName } from '../../model/selectors/sidebar';
 
 import { setEntityIdAction } from '../../model/actions/entities';
 
 import { matchArrToArrOfObj } from '../Score/components/helpers';
+
+import { loadState } from './localStorage';
 
 import './ClientSelect.scss';
 
@@ -24,6 +27,7 @@ const ClientSelect = ({
   updateEntityId,
   isCaseEntitiesLoading,
   onEntityIdChange,
+  currentPage,
 }) => {
   const [entityId, setEntityId] = useState(null);
 
@@ -63,12 +67,24 @@ const ClientSelect = ({
     onEntityIdChange(resultScore);
   };
 
-  const placeholder = (
-    <div className="placeholder-wrapper">
-      <div>Client ID</div>
-      <div>{!isCaseEntitiesLoading ? clientIds[0].id : null}</div>
-    </div>
-  );
+  const localStorageCasesState = loadState().cases;
+
+  const localStorageClientIds = localStorageCasesState.entitiesInCase;
+
+  const formatLocalStorageClientIds = localStorageClientIds.map((id) => ({
+    id,
+    label: id,
+    selected: 'Selected',
+  }));
+
+  const placeholder = () => {
+    return (
+      <div className="placeholder-wrapper">
+        <div>Client ID</div>
+        <div>{clientIds[0]?.id || formatLocalStorageClientIds[0]}</div>
+      </div>
+    );
+  };
 
   const formatOptionLabel = ({ id, label, selected }, { context }) => {
     let isLabelSelected;
@@ -89,8 +105,8 @@ const ClientSelect = ({
     <Select
       classNamePrefix="sibyl-select-client"
       className="sibyl-select-client"
-      options={clientIds}
-      placeholder={placeholder}
+      options={clientIds || formatLocalStorageClientIds}
+      placeholder={placeholder()}
       isSearchable={false}
       onChange={onChangeEntityID}
       formatOptionLabel={formatOptionLabel}
@@ -102,6 +118,7 @@ const ClientSelect = ({
 
 export default connect(
   (state) => ({
+    currentPage: getPageName(state),
     entitiesInCaseList: getEntitiesInCaseList(state),
     entitiesScoreList: getEntitiesScore(state),
     isCaseEntitiesLoading: getIsEntitiesInCaseLoading(state),

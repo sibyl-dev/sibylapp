@@ -15,9 +15,10 @@ const optionStyles = {
   }),
 };
 
-const CategorySelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId }) => {
+const ReferralSelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId }) => {
   useEffect(() => {
     setCaseId(casesList[0]);
+
     getCurrentEntitiesInCase();
   }, [getCurrentEntitiesInCase, setCaseId, casesList]);
 
@@ -38,6 +39,7 @@ const CategorySelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId
 
   const handleReferralIdChange = (val) => {
     setCaseId(val.id);
+
     getCurrentEntitiesInCase();
     setSelectedVal(val);
   };
@@ -79,4 +81,4 @@ export default connect(
   (dispatch) => ({
     setCaseId: (caseId) => dispatch(setCaseIdAction(caseId)),
   }),
-)(CategorySelect);
+)(ReferralSelect);

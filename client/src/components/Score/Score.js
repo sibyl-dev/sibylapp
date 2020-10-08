@@ -62,12 +62,7 @@ const Score = ({
   return (
     <>
       <div className="sub-header">
-        <ReferralSelect
-          casesList={casesList}
-          entitiesInCaseList={entitiesInCaseList}
-          getCurrentCasesList={getCurrentCasesList}
-          getCurrentEntitiesInCase={getCurrentEntitiesInCase}
-        />
+        <ReferralSelect casesList={casesList} getCurrentEntitiesInCase={getCurrentEntitiesInCase} />
       </div>
       <div className="chart-wrapper">
         <LineChart width={650} height={650} data={chartDataWithIds} />
