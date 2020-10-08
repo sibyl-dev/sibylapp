@@ -1,29 +1,10 @@
+import defaultState from './states/entities.default';
 import {
   getActivePredictionScore,
   getCurrentEntityID,
   getCurrentUserID,
   getSelectedModelID,
 } from '../../model/selectors/entities';
-
-const defaultState = {
-  entities: {
-    entityID: '4a',
-    models: [
-      {
-        id: '1',
-      },
-      {
-        id: '2',
-      },
-      {
-        id: '3',
-      },
-    ],
-    userID: 'testID',
-    predictionScore: 1.23,
-    entityScore: 5.6,
-  },
-};
 
 describe('Entities Selectors', () => {
   describe('getCurrentEntityID()', () => {
