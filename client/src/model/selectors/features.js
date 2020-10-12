@@ -8,7 +8,7 @@ export const getCurrentFeatureCategories = (state) => state.features.categories;
 export const getCurrentFeatures = (state) => state.features.featuresData;
 export const getUpdatedFeatureScore = (state) => state.features.newFeatureScore;
 export const getIsModelPredictLoading = (state) => state.features.isModelPredictionLoading;
-export const getCurrentModelPrediction = (state) => state.features.currendModelPredition;
+export const getCurrentModelPrediction = (state) => state.features.currentModelPrediction;
 export const getReversedModelPrediction = (state) => state.features.reversedModelPrediction;
 export const getFeaturesFilterCriteria = (state) => state.features.filterCriteria;
 export const getSortingContribDir = (state) => state.features.sortContribDir;
