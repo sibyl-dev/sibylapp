@@ -7,7 +7,7 @@ import { getIsEntitiesScoreLoading, getEntitiesScore, getCurrentCaseEntityScore 
 import { setCaseEntityScoreAction } from '../../model/actions/cases';
 
 import ModalDialog from '../common/ModalDialog';
-import ClientSelect from './ClientSelect';
+import ClientSelect from './components/ClientSelect';
 import './Header.scss';
 
 const toggleModalDialog = (modalState, onClose) => (

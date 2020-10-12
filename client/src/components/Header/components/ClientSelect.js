@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { getEntitiesInCaseList, getEntitiesScore } from '../../model/selectors/cases';
+import { getEntitiesInCaseList, getEntitiesScore } from '../../../model/selectors/cases';
 
-import { setEntityIdAction } from '../../model/actions/entities';
+import { setEntityIdAction } from '../../../model/actions/entities';
 
-import { matchArrToArrOfObj } from '../Score/components/helpers';
+import { matchArrToArrOfObj } from '../../Score/components/helpers';
 
 import { loadState } from './localStorage';
 
@@ -42,19 +42,11 @@ const ClientSelect = ({ entitiesInCaseList, entitiesScoreList, updateEntityId, o
 
     const formatCategories = matchArrToArrOfObj(entitiesInCaseList, entitiesScoreListOutput, formatKeyValCategories);
 
-    let tempResultScore;
+    let resultScore;
 
-    const searchScore = (key, categories) => {
-      categories.forEach((value, i) => {
-        if (categories[i].id === key) {
-          tempResultScore = categories[i].risk;
-        }
-      });
-
-      return tempResultScore;
-    };
-
-    const resultScore = searchScore(val.id, formatCategories);
+    formatCategories.forEach((category) => {
+      resultScore = category.risk;
+    });
 
     onEntityIdChange(resultScore);
   };
@@ -77,11 +69,7 @@ const ClientSelect = ({ entitiesInCaseList, entitiesScoreList, updateEntityId, o
   );
 
   const formatOptionLabel = ({ label, selected }, { context }) => {
-    let isLabelSelected;
-
-    if (selectedVal) {
-      isLabelSelected = selectedVal.id === label;
-    }
+    const isLabelSelected = selectedVal && selectedVal.id === label;
 
     return (
       <div className="option-label">

@@ -6,7 +6,7 @@ import throttle from 'lodash/throttle';
 import dashBoardReducers from '../reducers';
 import { api } from './middlewares';
 
-import { loadState, saveState } from '../../components/Header/localStorage';
+import { loadState, saveState } from '../../components/Header/components/localStorage';
 
 const persistedState = loadState();
 
