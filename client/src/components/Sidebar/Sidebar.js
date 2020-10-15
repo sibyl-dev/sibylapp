@@ -33,13 +33,13 @@ class Sidebar extends Component {
             <IndicatorIcon dir={!isSidebarCollapsed && 'left'} />
           </li>
           <li>
-            <NavLink exact to={`/score`} activeClassName="active" onClick={() => setActivePage('Score')}>
+            <NavLink exact to="/score" activeClassName="active" onClick={() => setActivePage('Score')}>
               <ScoreIcon />
               <span>Score</span>
             </NavLink>
           </li>
           <li>
-            <NavLink exact to={`/details`} activeClassName="active" onClick={() => setActivePage('Details')}>
+            <NavLink exact to="/details" activeClassName="active" onClick={() => setActivePage('Details')}>
               <DetailsIcon />
               <span>Details</span>
             </NavLink>

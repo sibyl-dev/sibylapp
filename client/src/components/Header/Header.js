@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { LoaderIcon } from '../../assets/icons/icons';
-import { ExcamationIcon } from '../../assets/icons/icons';
+import { ExcamationIcon, LoaderIcon } from '../../assets/icons/icons';
 import { getPageName } from '../../model/selectors/sidebar';
 import { getIsEntitiesScoreLoading, getEntitiesScore, getCurrentCaseEntityScore } from '../../model/selectors/cases';
 
