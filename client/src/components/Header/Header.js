@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { CircularProgress } from '@material-ui/core';
+import { LoaderIcon } from '../../assets/icons/icons';
 import { ExcamationIcon } from '../../assets/icons/icons';
 import { getPageName } from '../../model/selectors/sidebar';
 import { getIsEntitiesScoreLoading, getEntitiesScore, getCurrentCaseEntityScore } from '../../model/selectors/cases';
+
 import { setCaseEntityScoreAction } from '../../model/actions/cases';
 
 import ModalDialog from '../common/ModalDialog';
@@ -24,12 +25,16 @@ const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEn
   const [isModalOpen, toggleModal] = useState(false);
 
   useEffect(() => {
-    setCaseEntityScore(entitiesScoreList[0]?.output);
-  }, [isEntitiesScoreLoading, setCaseEntityScore, entitiesScoreList]);
+    if (entitiesScoreList.length) {
+      setCaseEntityScore(entitiesScoreList[0].output);
+    }
+  }, [setCaseEntityScore, entitiesScoreList]);
 
   const updateEntityScore = (value) => {
     setCaseEntityScore(value);
   };
+
+  const excludedPages = ['Global Feature Importance', 'Feature Distribution'];
 
   return (
     <div className="header">
@@ -40,15 +45,15 @@ const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEn
           </li>
           <li>
             {!isEntitiesScoreLoading ? (
-              <ClientSelect onEntityIdChange={updateEntityScore} />
-            ) : currentPage === 'Score' ? (
-              <CircularProgress />
-            ) : caseEntityScore ? (
-              <ClientSelect onEntityIdChange={updateEntityScore} />
-            ) : null}
+              !excludedPages.includes(currentPage) ? (
+                <ClientSelect onEntityIdChange={updateEntityScore} />
+              ) : null
+            ) : (
+              <LoaderIcon />
+            )}
           </li>
           <li>
-            {!isEntitiesScoreLoading && (
+            {!isEntitiesScoreLoading && !excludedPages.includes(currentPage) && (
               <span>
                 Risk Score: <strong>{caseEntityScore}</strong>
                 <button type="button" className="clean" onClick={() => toggleModal(true)}>

@@ -7,6 +7,7 @@ const initialState = {
   entitiesInCase: [],
   isEntitiesScoreLoading: true,
   isEntitiesInCaseLoading: true,
+  isCasesLoading: true,
   entitiesScore: [],
   scoreRowId: null,
 };

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 import Select from 'react-select';
 
 import { getEntitiesInCaseList, getEntitiesScore } from '../../../model/selectors/cases';
+import { getPageName } from '../../../model/selectors/sidebar';
 
-import { setEntityIdAction } from '../../../model/actions/entities';
+import { setEntityIdAction, getEntityAction } from '../../../model/actions/entities';
 
 import { matchArrToArrOfObj } from '../../Score/components/helpers';
 
@@ -20,7 +23,20 @@ const optionStyles = {
   }),
 };
 
-const ClientSelect = ({ entitiesInCaseList, entitiesScoreList, updateEntityId, onEntityIdChange }) => {
+const ClientSelect = ({
+  entitiesInCaseList,
+  entitiesScoreList,
+  updateEntityId,
+  onEntityIdChange,
+  currentPage,
+  getFeaturesList,
+}) => {
+  useEffect(() => {
+    if (entitiesInCaseList.length) {
+      updateEntityId(entitiesInCaseList[0]);
+    }
+  }, [updateEntityId, entitiesInCaseList]);
+
   const [entityId, setEntityId] = useState(null);
 
   const [selectedVal, setSelectedVal] = useState(null);
@@ -42,13 +58,23 @@ const ClientSelect = ({ entitiesInCaseList, entitiesScoreList, updateEntityId, o
 
     const formatCategories = matchArrToArrOfObj(entitiesInCaseList, entitiesScoreListOutput, formatKeyValCategories);
 
-    let resultScore;
+    const searchScore = (lookupKey, categories, idKey, riskKey) => {
+      const filteredCategories = categories.filter((category, i) => categories[i][idKey] === lookupKey);
 
-    formatCategories.forEach((category) => {
-      resultScore = category.risk;
-    });
+      const foundResultScore = filteredCategories[0][riskKey];
+
+      return foundResultScore;
+    };
+
+    const resultScore = searchScore(val.id, formatCategories, 'id', 'risk');
 
     onEntityIdChange(resultScore);
+
+    const excludedPages = ['Global Feature Importance', 'Feature Distribution'];
+
+    if (!excludedPages.includes(currentPage)) {
+      getFeaturesList();
+    }
   };
 
   const localStorageCasesState = loadState().cases;
@@ -96,10 +122,12 @@ const ClientSelect = ({ entitiesInCaseList, entitiesScoreList, updateEntityId, o
 
 export default connect(
   (state) => ({
+    currentPage: getPageName(state),
     entitiesInCaseList: getEntitiesInCaseList(state),
     entitiesScoreList: getEntitiesScore(state),
   }),
   (dispatch) => ({
     updateEntityId: (entityId) => dispatch(setEntityIdAction(entityId)),
+    getFeaturesList: () => dispatch(getEntityAction()),
   }),
-)(ClientSelect);
+)(withRouter(ClientSelect));

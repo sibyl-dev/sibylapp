@@ -7,6 +7,7 @@ export const getCurrentCaseEntityScore = (state) => state.cases.caseEntityScore;
 export const getEntitiesScore = (state) => state.cases.entitiesScore;
 export const getScoreRowId = (state) => state.cases.scoreRowId;
 export const getIsEntitiesInCaseLoading = (state) => state.cases.isEntitiesInCaseLoading;
+export const getIsCasesLoading = (state) => state.cases.isCasesLoading;
 export const getIsEntitiesScoreLoading = (state) => state.cases.isEntitiesScoreLoading;
 
 export const getCurrentCasesList = createSelector([getCasesList], (casesList) =>

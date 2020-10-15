@@ -5,6 +5,8 @@ import Select from 'react-select';
 import { getCurrentCaseID } from '../../../model/selectors/cases';
 import { setCaseIdAction } from '../../../model/actions/cases';
 
+import { loadState } from '../../Header/components/localStorage';
+
 import './ReferralSelect.scss';
 
 const optionStyles = {
@@ -17,7 +19,17 @@ const optionStyles = {
 
 const ReferralSelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId }) => {
   useEffect(() => {
-    setCaseId(casesList[0]);
+    const localStorageCasesList = loadState().cases.casesList;
+
+    if (localStorageCasesList.length) {
+      setCaseId(localStorageCasesList[0]);
+
+      return;
+    }
+
+    if (casesList.length) {
+      setCaseId(casesList[0]);
+    }
 
     getCurrentEntitiesInCase();
   }, [getCurrentEntitiesInCase, setCaseId, casesList]);

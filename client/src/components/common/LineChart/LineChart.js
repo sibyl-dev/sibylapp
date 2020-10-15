@@ -2,10 +2,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import * as d3 from 'd3';
 import { connect } from 'react-redux';
 
-import { getEntitiesInCaseList, getScoreRowId } from '../../../model/selectors/cases';
-import { getEntityScore } from '../../../model/selectors/entities';
-import { getEntitiesInCaseListAction } from '../../../model/actions/cases';
-import { getEntityPredictionScoreAction } from '../../../model/actions/entities';
+import { getScoreRowId } from '../../../model/selectors/cases';
 
 import '../styles/LineChart.scss';
 
@@ -174,14 +171,6 @@ const LineChart = ({ width, height, data, rowId }) => {
   );
 };
 
-export default connect(
-  (state) => ({
-    entitiesInCaseList: getEntitiesInCaseList(state),
-    entityScore: getEntityScore(state),
-    rowId: getScoreRowId(state),
-  }),
-  (dispatch) => ({
-    getCurrentEntitiesInCase: () => dispatch(getEntitiesInCaseListAction()),
-    loadPredictionScore: () => dispatch(getEntityPredictionScoreAction()),
-  }),
-)(LineChart);
+export default connect((state) => ({
+  rowId: getScoreRowId(state),
+}))(LineChart);

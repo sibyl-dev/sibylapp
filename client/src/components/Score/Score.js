@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { getCasesList, getEntitiesInCaseList, getEntitiesScore } from '../../model/selectors/cases';
 import { getSelectedModelID } from '../../model/selectors/entities';
 import { getCasesListAction, getEntitiesInCaseListAction } from '../../model/actions/cases';
-
 import ReferralSelect from './components/ReferralSelect';
 import ClientTable from './components/ClientTable';
 import LineChart from '../common/LineChart/LineChart';
@@ -54,10 +53,14 @@ const Score = ({
   getCurrentEntitiesInCase,
 }) => {
   useEffect(() => {
+    if (casesList.length) {
+      return;
+    }
+
     if (modelID) {
       getCurrentCasesList();
     }
-  }, [getCurrentCasesList, modelID]);
+  }, [modelID, getCurrentCasesList, casesList]);
 
   return (
     <>

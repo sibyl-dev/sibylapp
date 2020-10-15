@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Cookies from 'universal-cookie';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toggleSidebarStateAction, setActivePageAction } from '../../model/actions/sidebar';
 import { getIsSidebarCollapsed } from '../../model/selectors/sidebar';
+import { getCurrentEntityID } from '../../model/selectors/entities';
 import {
   IndicatorIcon,
   ScoreIcon,
@@ -19,9 +19,8 @@ import './Sidebar.scss';
 class Sidebar extends Component {
   render() {
     const { toggleSidebarState, isSidebarCollapsed, setActivePage } = this.props;
+
     const sidebarClassNames = isSidebarCollapsed ? 'sidebar' : 'sidebar expanded';
-    const cookies = new Cookies();
-    const entityID = cookies.get('entityID') || 0;
 
     return (
       <div className={sidebarClassNames}>
@@ -34,13 +33,13 @@ class Sidebar extends Component {
             <IndicatorIcon dir={!isSidebarCollapsed && 'left'} />
           </li>
           <li>
-            <NavLink exact to="/" activeClassName="active" onClick={() => setActivePage('Score')}>
+            <NavLink exact to={`/score`} activeClassName="active" onClick={() => setActivePage('Score')}>
               <ScoreIcon />
               <span>Score</span>
             </NavLink>
           </li>
           <li>
-            <NavLink exact to={`/entity/${entityID}`} activeClassName="active" onClick={() => setActivePage('Details')}>
+            <NavLink exact to={`/details`} activeClassName="active" onClick={() => setActivePage('Details')}>
               <DetailsIcon />
               <span>Details</span>
             </NavLink>
@@ -66,21 +65,17 @@ class Sidebar extends Component {
               <IndicatorIcon dir="right" />
             </button> */}
           {/* <ul>
-              <li>
-                <NavLink
-                  exact
-                  to="/global-feature-importance"
-                  onClick={() => setActivePage('Global Feature Importance')}
-                >
-                  <span>Global Feature Importance</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink exact to="/feature-distribution" onClick={() => setActivePage('Feature Distribution')}>
-                  <span>Feature Distribution</span>
-                </NavLink>
-              </li>
-            </ul> */}
+            <li>
+              <NavLink exact to="/global-feature-importance" onClick={() => setActivePage('Global Feature Importance')}>
+                <span>Global Feature Importance</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink exact to="/feature-distribution" onClick={() => setActivePage('Feature Distribution')}>
+                <span>Feature Distribution</span>
+              </NavLink>
+            </li>
+          </ul> */}
           {/* </li> */}
         </ul>
       </div>
@@ -91,6 +86,7 @@ class Sidebar extends Component {
 export default connect(
   (state) => ({
     isSidebarCollapsed: getIsSidebarCollapsed(state),
+    currentEntityID: getCurrentEntityID(state),
   }),
   (dispatch) => ({
     toggleSidebarState: (sidebarState) => dispatch(toggleSidebarStateAction(sidebarState)),
