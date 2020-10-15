@@ -57,11 +57,7 @@ const ReferralSelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId
   };
 
   const formatOptionLabel = ({ label, selected }, { context }) => {
-    let isLabelSelected;
-
-    if (selectedVal) {
-      isLabelSelected = selectedVal.id === label;
-    }
+    const isLabelSelected = selectedVal && selectedVal.id === label;
 
     return (
       <div className="option-label">
