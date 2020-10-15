@@ -77,9 +77,7 @@ const ClientSelect = ({
     }
   };
 
-  const localStorageCasesState = loadState().cases;
-
-  const localStorageClientIds = localStorageCasesState.entitiesInCase;
+  const localStorageClientIds = loadState().cases.entitiesInCase;
 
   const formatLocalStorageClientIds = localStorageClientIds.map((id) => ({
     id,
@@ -109,7 +107,7 @@ const ClientSelect = ({
     <Select
       classNamePrefix="sibyl-select-client"
       className="sibyl-select-client"
-      options={clientIds || formatLocalStorageClientIds}
+      options={clientIds}
       placeholder={placeholder}
       isSearchable={false}
       onChange={onChangeEntityID}
