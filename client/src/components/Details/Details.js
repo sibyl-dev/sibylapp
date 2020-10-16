@@ -19,7 +19,12 @@ import {
   setFeatureTypeFilterCategsAction,
   setFilterCriteriaAction,
 } from '../../model/actions/features';
-import { getIsEntitiesLoading, getCurrentEntityData, getIsEntityContribLoading } from '../../model/selectors/entities';
+import {
+  getIsEntitiesLoading,
+  getCurrentEntityData,
+  getIsEntityContribLoading,
+  getSelectedModelID,
+} from '../../model/selectors/entities';
 
 import {
   getIsFeaturesLoading,
@@ -39,6 +44,11 @@ import {
 import { setUserActionRecording } from '../../model/actions/userActions';
 
 import { setActivePageAction } from '../../model/actions/sidebar';
+
+import { setCaseIdAction, getEntitiesInCaseListAction, getCasesListAction } from '../../model/actions/cases';
+
+import { loadState } from '../Header/components/localStorage';
+
 import './Details.scss';
 
 // const filterValues = [
@@ -59,9 +69,12 @@ const initialContributionView = {
   isNegativeViewExpanded: false,
 };
 
+const localStorageCasesList = loadState().cases.casesList;
+
 export class Details extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       viewMode: 'unified',
       featureContribView: initialContributionView,
@@ -75,6 +88,19 @@ export class Details extends Component {
     };
     this.props.setUserActions(userData);
     this.props.setPageName('Details');
+  }
+
+  componentDidUpdate(prevProps) {
+    const { modelID, setCaseId, getCurrentCasesList, getCurrentEntitiesInCase } = this.props;
+
+    if (modelID !== prevProps.modelID) {
+      if (localStorageCasesList.length) {
+        setCaseId(localStorageCasesList[0]);
+      }
+
+      getCurrentCasesList();
+      getCurrentEntitiesInCase();
+    }
   }
 
   componentWillUnmount() {
@@ -518,6 +544,7 @@ export class Details extends Component {
 
 export default connect(
   (state) => ({
+    modelID: getSelectedModelID(state),
     isEntityLoading: getIsEntitiesLoading(state),
     isFeaturesLoading: getIsFeaturesLoading(state),
     isCategoriesLoading: getIsCategoriesLoading(state),
@@ -548,5 +575,8 @@ export default connect(
       dispatch(setFeatureTypeFilterCategsAction(featureType, categs)),
     setUserActions: (userAction) => dispatch(setUserActionRecording(userAction)),
     setPageName: (pageName) => dispatch(setActivePageAction(pageName)),
+    setCaseId: (caseId) => dispatch(setCaseIdAction(caseId)),
+    getCurrentEntitiesInCase: () => dispatch(getEntitiesInCaseListAction()),
+    getCurrentCasesList: () => dispatch(getCasesListAction()),
   }),
 )(Details);

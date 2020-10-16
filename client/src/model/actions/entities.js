@@ -81,6 +81,7 @@ export function getEntityPredictionScoreAction() {
       type: 'GET_ENTITY_SCORE',
       promise: api.get(`/prediction/?model_id=${modelID}&eid=${entityID}`),
     };
+
     dispatch(action);
   };
 }

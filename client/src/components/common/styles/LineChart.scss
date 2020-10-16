@@ -1,0 +1,47 @@
+.lineChart {
+    display: flex;
+    justify-content: flex-start;
+    margin: 32px;
+}
+
+.xAxis {
+    path {
+        stroke: #e0e0e0;
+    }
+}
+
+.yAxis {
+    path {
+        stroke: #e0e0e0;
+    }
+}
+
+.grid {
+    line {
+        stroke: #e0e0e0;
+        opacity: 0.7;
+        stroke-dasharray: 4;
+    }
+}
+.grid {
+    path {
+        stroke-width: 0;
+    }
+}
+
+.text {
+    font-size: 12px;
+
+    &.hover {
+        fill: #2f80ed;
+        font-size: 16px;
+    }
+}
+
+.circle {
+    &.hover {
+        fill: white;
+        stroke: #2f80ed;
+        stroke-width: 2;
+    }
+}

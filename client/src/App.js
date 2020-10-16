@@ -24,19 +24,14 @@ class App extends Component {
       }
     }
 
-    if (location.pathname.includes('entity')) {
-      const entityID = this.props.location.pathname.split('/')[2];
-
-      if (currentEntityID !== entityID) {
-        setEntityID(entityID)
-          .then(() => getModels())
-          .then(() => getFeaturesList());
-
-        return;
-      }
+    if (currentEntityID) {
+      getModels().then(() => getFeaturesList());
+      return;
     }
 
-    getModels().then(() => getFeaturesList());
+    setEntityID(currentEntityID)
+      .then(getModels())
+      .then(() => getFeaturesList());
   }
 
   render() {

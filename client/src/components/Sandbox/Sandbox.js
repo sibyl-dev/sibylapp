@@ -14,7 +14,7 @@ import {
   // setModelPredictFilterValueAction,
   setModelPredDiffFilterAction,
 } from '../../model/actions/features';
-import { getIsEntitiesLoading } from '../../model/selectors/entities';
+import { getIsEntitiesLoading, getSelectedModelID } from '../../model/selectors/entities';
 import {
   getIsFeaturesLoading,
   getIsModelPredictLoading,
@@ -30,10 +30,14 @@ import {
 
 import { ArrowIcon, SortIcon } from '../../assets/icons/icons';
 import { setUserActionRecording } from '../../model/actions/userActions';
+import { setCaseIdAction, getEntitiesInCaseListAction, getCasesListAction } from '../../model/actions/cases';
+
 import './Sandbox.scss';
 import MetTooltip from '../common/MetTooltip';
 import Loader from '../common/Loader';
 import { setActivePageAction } from '../../model/actions/sidebar';
+
+import { loadState } from '../Header/components/localStorage';
 
 // const valueSelect = [
 //   { value: 'all', label: 'All Values', isFixed: true },
@@ -47,6 +51,8 @@ const diffValues = [
   { value: 'protective', label: 'Protective', isFixed: true },
 ];
 
+const localStorageCasesList = loadState().cases.casesList;
+
 class Sandbox extends Component {
   componentDidMount() {
     const userData = {
@@ -55,6 +61,19 @@ class Sandbox extends Component {
     };
     this.props.setUserActions(userData);
     this.props.setPageName('Sandbox');
+  }
+
+  componentDidUpdate(prevProps) {
+    const { modelID, setCaseId, getCurrentCasesList, getCurrentEntitiesInCase } = this.props;
+
+    if (modelID !== prevProps.modelID) {
+      if (localStorageCasesList.length) {
+        setCaseId(localStorageCasesList[0]);
+      }
+
+      getCurrentCasesList();
+      getCurrentEntitiesInCase();
+    }
   }
 
   renderDashHeader() {
@@ -256,6 +275,7 @@ class Sandbox extends Component {
 
 export default connect(
   (state) => ({
+    modelID: getSelectedModelID(state),
     isEntityLoading: getIsEntitiesLoading(state),
     isFeaturesLoading: getIsFeaturesLoading(state),
     isModelPredictionLoading: getIsModelPredictLoading(state),
@@ -278,5 +298,8 @@ export default connect(
     setDiffFilter: (filterValue) => dispatch(setModelPredDiffFilterAction(filterValue)),
     setUserActions: (userAction) => dispatch(setUserActionRecording(userAction)),
     setPageName: (pageName) => dispatch(setActivePageAction(pageName)),
+    setCaseId: (caseId) => dispatch(setCaseIdAction(caseId)),
+    getCurrentEntitiesInCase: () => dispatch(getEntitiesInCaseListAction()),
+    getCurrentCasesList: () => dispatch(getCasesListAction()),
   }),
 )(Sandbox);

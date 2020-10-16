@@ -2,14 +2,19 @@
 
 .main-header,
 .sub-header {
-    padding: 20px 40px;
+    padding: 12px 40px;
+    min-height: 64px;
     ul {
         display: flex;
-        align-items: center;
+        justify-content: space-between;
+        max-height: 25px;
     }
     li {
-        flex: 1;
-        justify-content: space-between;
+        &:nth-child(2) {
+            margin-left: auto;
+            margin-right: 40px;
+        }
+
         &:last-child {
             text-align: right;
             strong {
@@ -17,7 +22,7 @@
             }
         }
 
-        &.expand-tip{
+        &.expand-tip {
             font-size: 14px;
             line-height: 16px;
             white-space: nowrap;
@@ -35,7 +40,7 @@
             }
         }
 
-        &.search-field-holder{
+        &.search-field-holder {
             max-width: 480px;
         }
     }
@@ -75,4 +80,8 @@
             border-left: none;
         }
     }
+}
+
+.sibyl-select-client {
+    height: 40px;
 }
