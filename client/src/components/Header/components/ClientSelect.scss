@@ -34,6 +34,19 @@
         }
     }
 
+    .sibyl-select-client__single-value {
+        .option-label {
+            display: flex;
+            justify-content: space-between;
+            width: 190px;
+
+            :first-child {
+                margin-left: auto;
+                color: #808080;
+            }
+        }
+    }
+
     .sibyl-select-client__placeholder {
         .placeholder-wrapper {
             width: 190px;

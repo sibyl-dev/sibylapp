@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
-import Select from 'react-select';
+import Select, { components } from 'react-select';
 
 import { getEntitiesInCaseList, getEntitiesScore } from '../../../model/selectors/cases';
 import { currentEntityID } from '../../../model/selectors/entities';
@@ -21,6 +20,14 @@ const optionStyles = {
     ...styles,
     backgroundColor: state.isFocused && '#F2F2F2',
     color: '#4F4F4F',
+  }),
+  control: (styles) => ({
+    ...styles,
+    border: '1px solid #E0E0E0',
+    boxShadow: 'none',
+    '&:hover': {
+      border: '1px solid #E0E0E0',
+    },
   }),
 };
 
@@ -90,9 +97,20 @@ const ClientSelect = ({
   const placeholder = (
     <div className="placeholder-wrapper">
       <div>Client ID</div>
-      <div>{clientIds[0]?.id || formatLocalStorageClientIds[0]}</div>
+      {entityId === null ? <div>{clientIds[0]?.id || formatLocalStorageClientIds[0]}</div> : null}
     </div>
   );
+
+  const { ValueContainer, Placeholder } = components;
+
+  const CustomValueContainer = ({ children, ...props }) => {
+    return (
+      <ValueContainer {...props}>
+        <Placeholder {...props}>{props.selectProps.placeholder}</Placeholder>
+        {React.Children.map(children, (child) => (child && child.type !== Placeholder ? child : null))}
+      </ValueContainer>
+    );
+  };
 
   const formatOptionLabel = ({ label, selected }, { context }) => {
     const isLabelSelected = (selectedVal && selectedVal.id === label) || currentEntityID === label;
@@ -116,6 +134,9 @@ const ClientSelect = ({
       formatOptionLabel={formatOptionLabel}
       value={entityId}
       styles={optionStyles}
+      components={{
+        ValueContainer: CustomValueContainer,
+      }}
     />
   );
 };

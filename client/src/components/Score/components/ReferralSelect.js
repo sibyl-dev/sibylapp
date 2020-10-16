@@ -15,6 +15,14 @@ const optionStyles = {
     backgroundColor: state.isFocused && '#F2F2F2',
     color: '#4F4F4F',
   }),
+  control: (styles) => ({
+    ...styles,
+    border: '1px solid #E0E0E0',
+    boxShadow: 'none',
+    '&:hover': {
+      border: '1px solid #E0E0E0',
+    },
+  }),
 };
 
 const ReferralSelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId }) => {
