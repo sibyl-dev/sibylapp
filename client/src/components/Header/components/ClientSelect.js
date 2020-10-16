@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import Select, { components } from 'react-select';
 
 import { getEntitiesInCaseList, getEntitiesScore } from '../../../model/selectors/cases';
@@ -150,4 +149,4 @@ export default connect(
     updateEntityId: (entityId) => dispatch(setEntityIdAction(entityId)),
     getFeaturesList: () => dispatch(getEntityAction()),
   }),
-)(withRouter(ClientSelect));
+)(ClientSelect);
