@@ -1,18 +1,5 @@
+import initialState from './states/sidebar.default';
 import { getIsSidebarCollapsed, getPageName } from '../../model/selectors/sidebar';
-
-const initialState = {
-  sidebar: {
-    isSidebarCollapsed: false,
-    pageName: 'Score',
-  },
-};
-
-const randomPageState = {
-  sidebar: {
-    isSidebarCollapsed: false,
-    pageName: 'Random Page',
-  },
-};
 
 describe('Sidebar Selectors', () => {
   describe('getIsSidebarCollapsed()', () => {
@@ -22,6 +9,9 @@ describe('Sidebar Selectors', () => {
   });
   describe('getPageName()', () => {
     it("returns the sidebar's collapsed state", () => {
+      const randomPageState = initialState;
+      randomPageState.sidebar.pageName = 'Random Page';
+
       expect(getPageName(randomPageState)).toEqual('Random Page');
     });
   });
