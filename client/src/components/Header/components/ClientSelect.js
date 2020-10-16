@@ -38,7 +38,7 @@ const ClientSelect = ({
   onEntityIdChange,
   currentPage,
   getFeaturesList,
-  currentEntityID,
+  storeEntityID,
 }) => {
   useEffect(() => {
     if (entitiesInCaseList.length) {
@@ -103,17 +103,15 @@ const ClientSelect = ({
 
   const { ValueContainer, Placeholder } = components;
 
-  const CustomValueContainer = ({ children, ...props }) => {
-    return (
-      <ValueContainer {...props}>
-        <Placeholder {...props}>{props.selectProps.placeholder}</Placeholder>
-        {React.Children.map(children, (child) => (child && child.type !== Placeholder ? child : null))}
-      </ValueContainer>
-    );
-  };
+  const CustomValueContainer = ({ children, ...props }) => (
+    <ValueContainer {...props}>
+      <Placeholder {...props}>{props.selectProps.placeholder}</Placeholder>
+      {React.Children.map(children, (child) => (child && child.type !== Placeholder ? child : null))}
+    </ValueContainer>
+  );
 
   const formatOptionLabel = ({ label, selected }, { context }) => {
-    const isLabelSelected = (selectedVal && selectedVal.id === label) || currentEntityID === label;
+    const isLabelSelected = (selectedVal && selectedVal.id === label) || storeEntityID === label;
 
     return (
       <div className="option-label">
@@ -143,7 +141,7 @@ const ClientSelect = ({
 
 export default connect(
   (state) => ({
-    currentEntityID: currentEntityID(state),
+    storeEntityID: currentEntityID(state),
     currentPage: getPageName(state),
     entitiesInCaseList: getEntitiesInCaseList(state),
     entitiesScoreList: getEntitiesScore(state),
