@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 
 import { getEntitiesInCaseList, getEntitiesScore } from '../../../model/selectors/cases';
+import { currentEntityID } from '../../../model/selectors/entities';
 import { getPageName } from '../../../model/selectors/sidebar';
 
 import { setEntityIdAction, getEntityAction } from '../../../model/actions/entities';
@@ -30,6 +31,7 @@ const ClientSelect = ({
   onEntityIdChange,
   currentPage,
   getFeaturesList,
+  currentEntityID,
 }) => {
   useEffect(() => {
     if (entitiesInCaseList.length) {
@@ -93,7 +95,7 @@ const ClientSelect = ({
   );
 
   const formatOptionLabel = ({ label, selected }, { context }) => {
-    const isLabelSelected = selectedVal && selectedVal.id === label;
+    const isLabelSelected = (selectedVal && selectedVal.id === label) || currentEntityID === label;
 
     return (
       <div className="option-label">
@@ -120,6 +122,7 @@ const ClientSelect = ({
 
 export default connect(
   (state) => ({
+    currentEntityID: currentEntityID(state),
     currentPage: getPageName(state),
     entitiesInCaseList: getEntitiesInCaseList(state),
     entitiesScoreList: getEntitiesScore(state),

@@ -5,55 +5,36 @@ import { getSelectedModelID } from '../selectors/entities';
 
 export function setCaseIdAction(caseID) {
   return function (dispatch) {
-    const action = {
+    dispatch({
       type: 'SET_CASE_ID',
       caseID,
-    };
-
-    dispatch(action);
+    });
   };
 }
 
 export function setCaseEntityScoreAction(caseEntityScore) {
   return function (dispatch) {
-    const action = {
+    dispatch({
       type: 'SET_CASE_ENTITY_SCORE',
       caseEntityScore,
-    };
-
-    dispatch(action);
+    });
   };
 }
 
 export function hoverRowIdAction(scoreRowId) {
   return function (dispatch) {
-    const action = {
-      type: 'SET_HOVER_ROW_ID',
-      scoreRowId,
-    };
-
-    dispatch(action);
-  };
-}
-
-export function hoverOffRowAction() {
-  return function (dispatch) {
-    const action = {
-      type: 'RESET_HOVER_ROW_ID',
-    };
-
-    dispatch(action);
+    scoreRowId !== null
+      ? dispatch({ type: 'SET_HOVER_ROW_ID', scoreRowId })
+      : dispatch({ type: 'SET_HOVER_ROW_ID', scoreRowId: null });
   };
 }
 
 export function getCasesListAction() {
   return function (dispatch) {
-    const action = {
+    dispatch({
       type: 'GET_CASES_DATA',
       promise: api.get('/cases/'),
-    };
-
-    dispatch(action);
+    });
   };
 }
 
@@ -66,14 +47,20 @@ export function getEntitiesInCaseListAction() {
     if (!modelID || !caseID) {
       return null;
     }
-    return dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_REQUEST' })
-      .then(() => api.get(`/entities_in_case/${caseID}/`))
+
+    dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_REQUEST' });
+
+    return api
+      .get(`/entities_in_case/${caseID}/`)
       .then((outcomeData) =>
         dispatch(getScoresForAllEntitiesAction(outcomeData, modelID)).then(() =>
           dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_SUCCESS', result: outcomeData }),
         ),
       )
-      .catch(() => dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_FAILURE' }));
+      .catch((err) => {
+        dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_FAILURE' });
+        console.warn(err);
+      });
   };
 }
 function getScoresForAllEntitiesAction(entities, modelID) {

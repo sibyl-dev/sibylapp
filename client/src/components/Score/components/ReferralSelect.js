@@ -52,12 +52,15 @@ const ReferralSelect = ({ caseID, casesList, getCurrentEntitiesInCase, setCaseId
   const handleReferralIdChange = (val) => {
     setCaseId(val.id);
 
-    getCurrentEntitiesInCase();
+    if (val.id !== caseID) {
+      getCurrentEntitiesInCase();
+    }
+
     setSelectedVal(val);
   };
 
   const formatOptionLabel = ({ label, selected }, { context }) => {
-    const isLabelSelected = selectedVal && selectedVal.id === label;
+    const isLabelSelected = (selectedVal && selectedVal.id === label) || caseID === label;
 
     return (
       <div className="option-label">

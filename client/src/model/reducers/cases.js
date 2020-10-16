@@ -24,10 +24,6 @@ function SET_HOVER_ROW_ID(nextState, { scoreRowId }) {
   nextState.scoreRowId = scoreRowId;
 }
 
-function RESET_HOVER_ROW_ID(nextState) {
-  nextState.scoreRowId = null;
-}
-
 function GET_CASES_DATA_REQUEST(nextState) {
   nextState.isCasesLoading = true;
 }
@@ -83,5 +79,4 @@ export default createReducer(initialState, {
   GET_SCORE_FOR_ALL_ENTITIES_SUCCESS,
   GET_SCORE_FOR_ALL_ENTITIES_FAILURE,
   SET_HOVER_ROW_ID,
-  RESET_HOVER_ROW_ID,
 });

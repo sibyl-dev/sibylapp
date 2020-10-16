@@ -20,17 +20,17 @@ const toggleModalDialog = (modalState, onClose) => (
   </ModalDialog>
 );
 
-const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEntityScore, setCaseEntityScore }) => {
+const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEntityScore, updateEntityScore }) => {
   const [isModalOpen, toggleModal] = useState(false);
 
   useEffect(() => {
     if (entitiesScoreList.length) {
-      setCaseEntityScore(entitiesScoreList[0].output);
+      updateEntityScore(entitiesScoreList[0].output);
     }
-  }, [setCaseEntityScore, entitiesScoreList]);
+  }, [updateEntityScore, entitiesScoreList]);
 
-  const updateEntityScore = (value) => {
-    setCaseEntityScore(value);
+  const changeEntityScore = (value) => {
+    updateEntityScore(value);
   };
 
   const excludedPages = ['Global Feature Importance', 'Feature Distribution'];
@@ -45,7 +45,7 @@ const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEn
           <li>
             {!isEntitiesScoreLoading ? (
               !excludedPages.includes(currentPage) ? (
-                <ClientSelect onEntityIdChange={updateEntityScore} />
+                <ClientSelect onEntityIdChange={changeEntityScore} />
               ) : null
             ) : (
               <LoaderIcon />
@@ -75,6 +75,6 @@ export default connect(
     entitiesScoreList: getEntitiesScore(state),
   }),
   (dispatch) => ({
-    setCaseEntityScore: (caseEntityScore) => dispatch(setCaseEntityScoreAction(caseEntityScore)),
+    updateEntityScore: (caseEntityScore) => dispatch(setCaseEntityScoreAction(caseEntityScore)),
   }),
 )(Header);

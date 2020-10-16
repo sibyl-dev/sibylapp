@@ -5,19 +5,19 @@
 }
 
 .xAxis {
-    & path {
+    path {
         stroke: #e0e0e0;
     }
 }
 
 .yAxis {
-    & path {
+    path {
         stroke: #e0e0e0;
     }
 }
 
 .grid {
-    & line {
+    line {
         stroke: #e0e0e0;
         opacity: 0.7;
         stroke-dasharray: 4;

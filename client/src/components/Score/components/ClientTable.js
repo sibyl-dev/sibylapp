@@ -6,14 +6,13 @@ import { matchArrToArrOfObj } from './helpers';
 
 import './ClientTable.scss';
 
-import { hoverRowIdAction, hoverOffRowAction } from '../../../model/actions/cases';
+import { hoverRowIdAction } from '../../../model/actions/cases';
 import { getIsEntitiesInCaseLoading, getScoreRowId } from '../../../model/selectors/cases';
 
 const CategoryTable = ({
   entitiesInCaseList,
   entitiesScoreList,
-  hoverRowOn,
-  hoverRowOff,
+  hoverRowId,
   isCaseEntitiesLoading,
   data,
   scoreRowId,
@@ -38,11 +37,11 @@ const CategoryTable = ({
       const firstRowId = ratedIdCategories[0].row_id;
 
       if (scoreRowId === null) {
-        hoverRowOn(firstRowId);
+        hoverRowId(firstRowId);
         setHoveredClass('hovered');
       }
     }
-  }, [isCaseEntitiesLoading, ratedIdCategories, scoreRowId, hoverRowOn]);
+  }, [isCaseEntitiesLoading, ratedIdCategories, scoreRowId, hoverRowId]);
 
   const renderHeader = () => {
     let headerElement = ['Client Id', 'Risk Score'];
@@ -52,7 +51,7 @@ const CategoryTable = ({
 
   const handleMouseEnter = (row_id) => {
     setHoveredClass('');
-    hoverRowOn(row_id);
+    hoverRowId(row_id);
   };
 
   const renderBody = () =>
@@ -61,7 +60,7 @@ const CategoryTable = ({
       <tr
         className={i === 0 ? hoveredClass : ''}
         onMouseEnter={() => handleMouseEnter(row_id)}
-        onMouseLeave={() => hoverRowOff(row_id)}
+        onMouseLeave={() => hoverRowId(!row_id)}
         key={id}
       >
         <td>{id}</td>
@@ -91,7 +90,6 @@ export default connect(
   }),
 
   (dispatch) => ({
-    hoverRowOn: (rowId) => dispatch(hoverRowIdAction(rowId)),
-    hoverRowOff: (rowId) => dispatch(hoverOffRowAction(rowId)),
+    hoverRowId: (rowId) => dispatch(hoverRowIdAction(rowId)),
   }),
 )(CategoryTable);
