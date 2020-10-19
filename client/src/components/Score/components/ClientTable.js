@@ -43,6 +43,10 @@ const CategoryTable = ({
     }
   }, [isCaseEntitiesLoading, ratedIdCategories, scoreRowId, hoverRowId]);
 
+  useEffect(() => {
+    hoverRowId(null);
+  }, [hoverRowId]);
+
   const renderHeader = () => {
     let headerElement = ['Client Id', 'Risk Score'];
 
