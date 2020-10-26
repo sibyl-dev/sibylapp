@@ -24,7 +24,7 @@ class App extends Component {
       }
     }
 
-    if (currentEntityID) {
+    if (currentEntityID !== null) {
       getModels().then(() => getFeaturesList());
       return;
     }

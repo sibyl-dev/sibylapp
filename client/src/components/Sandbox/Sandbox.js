@@ -31,6 +31,7 @@ import {
 import { ArrowIcon, SortIcon } from '../../assets/icons/icons';
 import { setUserActionRecording } from '../../model/actions/userActions';
 import { setCaseIdAction, getEntitiesInCaseListAction, getCasesListAction } from '../../model/actions/cases';
+import { getCasesList } from '../../model/selectors/cases';
 
 import './Sandbox.scss';
 import MetTooltip from '../common/MetTooltip';
@@ -51,7 +52,7 @@ const diffValues = [
   { value: 'protective', label: 'Protective', isFixed: true },
 ];
 
-const localStorageCasesList = loadState().cases.casesList;
+const localStorageCasesList = loadState()?.cases.casesList;
 
 class Sandbox extends Component {
   componentDidMount() {
@@ -61,17 +62,20 @@ class Sandbox extends Component {
     };
     this.props.setUserActions(userData);
     this.props.setPageName('Sandbox');
+    this.props.getCurrentCasesList();
   }
 
   componentDidUpdate(prevProps) {
-    const { modelID, setCaseId, getCurrentCasesList, getCurrentEntitiesInCase } = this.props;
+    const { modelID, setCaseId, casesList, getCurrentEntitiesInCase } = this.props;
 
     if (modelID !== prevProps.modelID) {
       if (localStorageCasesList.length) {
         setCaseId(localStorageCasesList[0]);
       }
+    }
 
-      getCurrentCasesList();
+    if (casesList.length !== prevProps.casesList.length) {
+      setCaseId(casesList[0]);
       getCurrentEntitiesInCase();
     }
   }
@@ -287,6 +291,7 @@ export default connect(
     currentDiffDirection: getCurrentSortDiffDir(state),
     // currentFilterValue: getModelPredictFilterValue(state),
     currentDiffFilterVal: getModelPredDiffFilterValue(state),
+    casesList: getCasesList(state),
   }),
   (dispatch) => ({
     getModelPrediction: () => dispatch(getModelPredictionAction()),
