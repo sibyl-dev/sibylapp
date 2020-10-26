@@ -97,6 +97,5 @@ module.exports = {
         order: ['static-methods', 'lifecycle', 'everything-else', 'render'],
       },
     ],
-    "useTabs": 'off',
   },
 };
