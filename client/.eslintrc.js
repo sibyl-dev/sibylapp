@@ -91,11 +91,13 @@ module.exports = {
     'class-methods-use-this': 'off',
     camelcase: 'off',
     'no-useless-constructor': 'off',
+
     'react/sort-comp': [
       1,
       {
         order: ['static-methods', 'lifecycle', 'everything-else', 'render'],
       },
     ],
+    useTabs: false,
   },
 };
