@@ -23,7 +23,7 @@ class ModelWrapper(ABC):
     @abstractmethod
     def predict(self, X):
         """
-        Makes a prediction on X
+        Makes a prediction on x
         :param X: dataframe of shape (n_entities, n_features)
                   Data to predict on. Column names should be feature names
         :return: list of size (n_entities, )
@@ -36,7 +36,7 @@ class Transformer(ABC):
     @abstractmethod
     def transform(self, X):
         """
-        Transform X for a model
+        Transform x for a model
         :param X: DataFrame of shape (n_samples, n_features_original)
                   Input to model
         :return: DataFrame of shape (n_samples, n_features_transformed)
@@ -142,7 +142,7 @@ class MappingsTransformer(ABC):
     def transform(self, X):
         return convert_from_categorical(X, self.mappings)[self.features]
 
-    def transform_contributions_shap(self, contributions):
+    def transform_contributions(self, contributions):
         return combine_contributions_from_mappings(contributions, self.mappings)
 
 

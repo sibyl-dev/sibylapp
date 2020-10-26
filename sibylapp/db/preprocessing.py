@@ -7,10 +7,10 @@ import numpy as np
 import pandas as pd
 from mongoengine import connect
 from pymongo import MongoClient
+from pyreal.explainers import LocalFeatureContribution
 from sklearn.linear_model import Lasso
 
-from sibyl.sibyl import global_explanation as ge
-from sibyl.sibyl import local_feature_explanation as lfe
+import sibylapp.resources.global_explanation as ge
 from sibylapp.db import schema
 from sibylapp.db.utils import MappingsTransformer, ModelWrapperThresholds
 
@@ -87,33 +87,40 @@ def load_mappings_transformer(mappings_filepath, features):
     return MappingsTransformer(mappings, features)
 
 
-def insert_model(model, transformer, set_doc, texts, importance_filepath=None, base_model=None,
-                 explainer_filepath=None, features=None, dataset_filepath=None):
-    def fit_explainer(base_model, transformer, dataset):
-        explainer = lfe.fit_contribution_explainer(base_model, dataset.sample(100),
-                                                   transformer=transformer, return_result=True,
-                                                   use_linear_explainer=True)
-        return explainer
+def insert_model(features, model_filepath, dataset_filepath,
+                 importance_filepath=None, explainer_filepath=None):
+    thresholds = [0.01174609, 0.01857239, 0.0241622, 0.0293587,
+                  0.03448975, 0.0396932, 0.04531139, 0.051446,
+                  0.05834176, 0.06616039, 0.07549515, 0.08624243,
+                  0.09912388, 0.11433409, 0.13370343, 0.15944484,
+                  0.19579651, 0.25432879, 0.36464856, 1.0]
+    base_model, model_features = load_model_from_weights_sklearn(
+        model_filepath, Lasso())
 
-    def get_importances(model, transformer, dataset, targets):
-        importance_df = ge.get_global_importance(model, dataset[0:1000], targets[0:1000],
-                                                 transformer=transformer)
-        importance_df[importance_df < 0] = 0
-        return importance_df
+    model = ModelWrapperThresholds(base_model, thresholds, features=model_features)
+    transformer = load_mappings_transformer(os.path.join(directory, "mappings.csv"),
+                                            model_features)
+
+    dataset, targets = load_data(features, dataset_filepath)
 
     model_serial = pickle.dumps(model)
     transformer_serial = pickle.dumps(transformer)
+
+    texts = {
+        "name": "Lasso Regression Model",
+        "description": "placeholder",
+        "performance": "placeholder"
+    }
     name = texts["name"]
     description = texts["description"]
     performance = texts["performance"]
-
-    dataset, targets = load_data(features, dataset_filepath)
 
     if importance_filepath is not None:
         importance_df = pd.read_csv(importance_filepath)
         importance_df = importance_df.set_index("name")
     else:
-        importance_df = get_importances(base_model, transformer, dataset, targets)
+        raise NotImplementedError()
+
     importances = importance_df.to_dict(orient='dict')["importance"]
 
     if explainer_filepath is not None:
@@ -121,9 +128,11 @@ def insert_model(model, transformer, set_doc, texts, importance_filepath=None, b
         with open(explainer_filepath, "rb") as f:
             explainer_serial = f.read()
     else:
-        if features is None or dataset_filepath is None:
-            print("Must have features and dataset to train explainer")
-        explainer = fit_explainer(base_model, transformer, dataset)
+        explainer = LocalFeatureContribution(base_model, dataset.sample(100),
+                                             contribution_transforms=transformer,
+                                             e_algorithm="shap",
+                                             e_transforms=transformer,
+                                             m_transforms=transformer, fit_on_init=True)
         explainer_serial = pickle.dumps(explainer)
 
     items = {
@@ -140,7 +149,7 @@ def insert_model(model, transformer, set_doc, texts, importance_filepath=None, b
 
 
 def insert_entities(values_filepath, features_names, mappings_filepath=None,
-                    counter_start=0, num=0, include_cases=False):
+                    counter_start=0, num=0, include_referrals=False):
     values_df = pd.read_csv(values_filepath)[features_names + ["eid"]]
     if mappings_filepath is not None:
         mappings = pd.read_csv(mappings_filepath)
@@ -150,7 +159,7 @@ def insert_entities(values_filepath, features_names, mappings_filepath=None,
         values_df = values_df.iloc[counter_start:num + counter_start]
     eids = values_df["eid"]
 
-    cases = schema.Case.find()
+    referrals = schema.Referral.find()
 
     raw_entities = values_df.to_dict(orient="records")
     entities = []
@@ -159,8 +168,8 @@ def insert_entities(values_filepath, features_names, mappings_filepath=None,
         entity["eid"] = str(raw_entity["eid"])
         del raw_entity["eid"]
         entity["features"] = raw_entity
-        if include_cases:
-            entity["property"] = {"case_ids": [random.choice(cases).case_id]}
+        if include_referrals:
+            entity["property"] = {"referral_ids": [random.choice(referrals).referral_id]}
         entities.append(entity)
     schema.Entity.insert_many(entities)
     return eids
@@ -174,15 +183,15 @@ def insert_training_set(eids):
     return set_doc
 
 
-def insert_cases(filepath):
-    case_df = pd.read_csv(filepath)
-    items_raw = case_df.to_dict(orient='records')
+def insert_referrals(filepath):
+    referral_df = pd.read_csv(filepath)
+    items_raw = referral_df.to_dict(orient='records')
     items = []
     for item_raw in items_raw:
-        item = {"case_id": str(item_raw["case_id"]),
+        item = {"referral_id": str(item_raw["referral_id"]),
                 "property": {"team": item_raw["team"]}}
         items.append(item)
-    schema.Case.insert_many(items)
+    schema.Referral.insert_many(items)
 
 
 def generate_feature_distribution_doc(save_path, model, transformer,
@@ -203,8 +212,7 @@ def generate_feature_distribution_doc(save_path, model, transformer,
     summary_dict = {}
     for output in range(1, 21):
         row_details = {}
-        rows = ge.get_rows_by_output(output, model.predict, dataset, row_labels=None,
-                                     transformer=transformer)
+        rows = ge.get_rows_by_output(output, model.predict, dataset, row_labels=None)
 
         count_total = len(rows)
         count_removed = sum(targets.iloc[rows])
@@ -237,55 +245,38 @@ if __name__ == "__main__":
     include_database = False
     client = MongoClient("localhost", 27017)
     connect('sibylapp', host='localhost', port=27017)
-    directory = "data"
+    directory = os.path.join("..", "..", "..", "sibyl-data")
 
     # INSERT CATEGORIES
     insert_categories(os.path.join(directory, "categories.csv"))
 
     # INSERT FEATURES
-    feature_names = insert_features(os.path.join(directory, "agg_features.csv")).tolist()
+    feature_names = insert_features(os.path.join(directory, "features.csv")).tolist()
 
-    # INSERT CASES
-    insert_cases(os.path.join(directory, "cases.csv"))
+    # INSERT REFERRALS
+    insert_referrals(os.path.join(directory, "referrals.csv"))
 
     # INSERT ENTITIES
-    eids = insert_entities(os.path.join(directory, "agg_true_entities.csv"), feature_names,
+    eids = insert_entities(os.path.join(directory, "true_entities.csv"), feature_names,
                            mappings_filepath=os.path.join(directory, "mappings.csv"),
-                           include_cases=True)
+                           include_referrals=True)
 
     # INSERT FULL DATASET
     if include_database:
-        eids = insert_entities(os.path.join(directory, "agg_dataset.csv"), feature_names,
+        eids = insert_entities(os.path.join(directory, "dataset.csv"), feature_names,
                                counter_start=17, num=100000)
     set_doc = insert_training_set(eids)
 
     # INSERT MODEL
-    thresholds = [0.01174609, 0.01857239, 0.0241622, 0.0293587,
-                  0.03448975, 0.0396932, 0.04531139, 0.051446,
-                  0.05834176, 0.06616039, 0.07549515, 0.08624243,
-                  0.09912388, 0.11433409, 0.13370343, 0.15944484,
-                  0.19579651, 0.25432879, 0.36464856, 1.0]
-    base_model, model_features = load_model_from_weights_sklearn(
-        os.path.join(directory, "weights.csv"), Lasso())
-    model = ModelWrapperThresholds(base_model, thresholds, features=model_features)
-    transformer = load_mappings_transformer(os.path.join(directory, "mappings.csv"), model_features)
+    model_filepath = os.path.join(directory, "weights.csv")
+    dataset_filepath = os.path.join(directory, "dataset.csv")
+    importance_filepath = os.path.join(directory, "importances.csv")
 
-    with open(os.path.join(directory, "description.txt"), 'r') as file:
-        description = file.read()
-    with open(os.path.join(directory, "performance.txt"), 'r') as file:
-        performance = file.read()
-    texts = {
-        "name": "Lasso Regression Model",
-        "description": description,
-        "performance": performance
-    }
-
-    insert_model(model, transformer, set_doc, texts,
-                 dataset_filepath=os.path.join(directory, "agg_dataset.csv"),
-                 base_model=base_model, features=feature_names)
+    insert_model(features=feature_names, model_filepath=model_filepath,
+                 dataset_filepath=dataset_filepath, importance_filepath=importance_filepath)
 
     # PRE-COMPUTE DISTRIBUTION INFORMATION
-    generate_feature_distribution_doc("precomputed/agg_distributions.json", model, transformer,
+    '''generate_feature_distribution_doc("precomputed/agg_distributions.json", model, transformer,
                                       os.path.join(directory, "agg_dataset.csv"),
-                                      os.path.join(directory, "agg_features.csv"))
+                                      os.path.join(directory, "agg_features.csv"))'''
     test_validation()

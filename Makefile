@@ -64,7 +64,7 @@ test: test-server test-client ## run tests on both server and client
 
 .PHONY: test-server
 test-server: ## run tests on server
-	py.test -n 2 ./tests
+	py.test ./tests
 
 .PHONY: test-server-flask
 test-server-flask: ## run tests on server
@@ -190,7 +190,7 @@ clean-build: ## remove build artifacts
 	rm -fr dist/
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+	find . -name '*.egg' -exec rm -fr {} +
 
 .PHONY: clean-pyc
 clean-pyc: ## remove Python file artifacts
@@ -233,9 +233,10 @@ load-db: init-db
 	mongo sibylapp --eval "db.dropDatabase()"
 	mongorestore --db sibylapp ./db/dump/sibylapp/
 
-.PHONY: install-sibyl
-install-sibyl:
-	git clone https://github.com/DAI-Lab/sibyl.git sibyl
-	cd sibyl
-	pip install .
+.PHONY: install-real
+install-pyreal:
+	git clone https://github.com/DAI-Lab/pyreal.git pyreal
+	cd pyreal
+	pip install -e .
+
 
