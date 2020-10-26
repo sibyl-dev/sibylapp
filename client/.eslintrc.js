@@ -97,6 +97,6 @@ module.exports = {
         order: ['static-methods', 'lifecycle', 'everything-else', 'render'],
       },
     ],
-    useTabs: false,
+    useTabs: 0,
   },
 };
