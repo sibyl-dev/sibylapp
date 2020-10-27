@@ -162,7 +162,7 @@ export function getOutcomeCountAction() {
       return;
     }
 
-    return api
+    api
       .post('/outcome_count/', { prediction: predictionScore, model_id: modelID })
       .then((data) => data.json())
       .then((outcomeData) => dispatch({ type: 'GET_OUTCOME_COUNT_SUCCESS', outcomeData }));
