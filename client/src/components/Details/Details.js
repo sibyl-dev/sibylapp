@@ -46,6 +46,7 @@ import { setUserActionRecording } from '../../model/actions/userActions';
 import { setActivePageAction } from '../../model/actions/sidebar';
 
 import { setCaseIdAction, getEntitiesInCaseListAction, getCasesListAction } from '../../model/actions/cases';
+import { getCasesList } from '../../model/selectors/cases';
 
 import { loadState } from '../Header/components/localStorage';
 
@@ -69,7 +70,7 @@ const initialContributionView = {
   isNegativeViewExpanded: false,
 };
 
-const localStorageCasesList = loadState().cases.casesList;
+const localStorageCasesList = loadState()?.cases.casesList;
 
 export class Details extends Component {
   constructor(props) {
@@ -88,17 +89,20 @@ export class Details extends Component {
     };
     this.props.setUserActions(userData);
     this.props.setPageName('Details');
+    this.props.getCurrentCasesList();
   }
 
   componentDidUpdate(prevProps) {
-    const { modelID, setCaseId, getCurrentCasesList, getCurrentEntitiesInCase } = this.props;
+    const { modelID, setCaseId, casesList, getCurrentEntitiesInCase } = this.props;
 
     if (modelID !== prevProps.modelID) {
       if (localStorageCasesList.length) {
         setCaseId(localStorageCasesList[0]);
       }
+    }
 
-      getCurrentCasesList();
+    if (casesList.length !== prevProps.casesList.length) {
+      setCaseId(casesList[0]);
       getCurrentEntitiesInCase();
     }
   }
@@ -561,6 +565,7 @@ export default connect(
     grouppedFeatures: getGrouppedFeatures(state),
     currentFeatureTypeCategs: getFeatureTypeFilterCategs(state),
     maxContributionRange: getMaxContributionRange(state),
+    casesList: getCasesList(state),
   }),
   (dispatch) => ({
     setSortContribDir: (direction) => dispatch(sortFeaturesByContribAction(direction)),

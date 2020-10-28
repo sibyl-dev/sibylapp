@@ -282,7 +282,9 @@ describe('Created Features Selectors', () => {
     it('returns all the features matching the search field', () => {
       testState.features.filterCriteria = 'The child in focus had a child welfare placement in the last 90 days';
 
-      expect(getReversedModelPredFeatures(testState)).toEqual(expectations.getReversedModelPredictionFeaturesSearchFilter);
+      expect(getReversedModelPredFeatures(testState)).toEqual(
+        expectations.getReversedModelPredictionFeaturesSearchFilter,
+      );
     });
 
     it('returns all the features matching the category filter', () => {
@@ -296,7 +298,9 @@ describe('Created Features Selectors', () => {
     it('returns all the features matching the contribution filter', () => {
       testState.features.diffFilterVal = 'risk';
 
-      expect(getReversedModelPredFeatures(testState)).toEqual(expectations.getReversedModelPredictionFeaturesPredictionFilter);
+      expect(getReversedModelPredFeatures(testState)).toEqual(
+        expectations.getReversedModelPredictionFeaturesPredictionFilter,
+      );
     });
   });
 
