@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import Cookies from 'universal-cookie';
 import { connect } from 'react-redux';
 import { getIsSidebarCollapsed } from './model/selectors/sidebar';
 import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/Header/Header';
 import Dashboard from './components/Dashboard/Dashboard';
+import Login from './components/Login/Login';
 import { setEntityIdAction, getEntityAction, setUserIdAction, getModelsAction } from './model/actions/entities';
 import { getCurrentEntityID, getCurrentUserID } from './model/selectors/entities';
 import './assets/sass/main.scss';
@@ -35,15 +37,40 @@ class App extends Component {
   }
 
   render() {
-    const { isSidebarCollapsed, location } = this.props;
+    const cookies = new Cookies();
+    const { isSidebarCollapsed, location, history } = this.props;
     const dashContainerClassNames = isSidebarCollapsed ? 'dash-container full-width' : 'dash-container';
+    const isLoggedIn = cookies.get('isLoggedIn') === 'true' || cookies.get('isLoggedIn') === 'power';
+
+    const isOnLoginPage = history.location.pathname === '/login';
+    if (!isOnLoginPage && !isLoggedIn) {
+      history.push('/login');
+    }
+
+    if (isOnLoginPage) {
+      return (
+        <div className="main-wrapper">
+          <div className="dash-container full-width">
+            <div className="dashboard">
+              <Login />
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="main-wrapper">
         <Sidebar />
         <div className={dashContainerClassNames}>
-          <Header />
-          <Dashboard location={location} />
+          {isOnLoginPage ? (
+            <Login />
+          ) : (
+            <>
+              <Header />
+              <Dashboard location={location} />
+            </>
+          )}
         </div>
         <div className="clear" />
       </div>

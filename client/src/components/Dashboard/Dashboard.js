@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'universal-cookie';
 import { Switch, Route } from 'react-router-dom';
 import Score from '../Score/Score';
 import Details from '../Details/Details';
@@ -11,16 +12,18 @@ import FeatureDistribution from '../Model/FeatureDistribution';
 
 const Dashboard = (props) => {
   const { location } = props;
+  const cookies = new Cookies();
+  const isPowerUser = cookies.get('isLoggedIn') === 'power';
 
   return (
     <div className="dashboard">
       <Switch location={location}>
         <Route path="/details" component={Details} />
-        <Route path="/sandbox" exact component={Sandbox} />
-        <Route path="/model" component={Model} />
-        <Route path="/global-feature-importance" component={FeatureImportance} />
-        <Route path="/feature-distribution" component={FeatureDistribution} />
-        <Route path="/score" exact component={Score} />
+        {isPowerUser ? <Route path="/sandbox" exact component={Sandbox} /> : null}
+        {isPowerUser ? <Route path="/model" component={Model} /> : null}
+        {isPowerUser ? <Route path="/global-feature-importance" component={FeatureImportance} /> : null}
+        {isPowerUser ? <Route path="/feature-distribution" component={FeatureDistribution} /> : null}
+        {isPowerUser ? <Route path="/score" exact component={Score} /> : null}
         <Route path="*" component={NotFound} />
       </Switch>
     </div>
