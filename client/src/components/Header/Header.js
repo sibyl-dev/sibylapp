@@ -48,7 +48,7 @@ const Header = ({ isEntitiesScoreLoading, currentPage, entitiesScoreList, caseEn
                 <ClientSelect onEntityIdChange={changeEntityScore} />
               ) : null
             ) : (
-              currentPage !== 'Not found' && <LoaderIcon />
+              currentPage !== 'Not found' && !excludedPages.includes(currentPage) && <LoaderIcon />
             )}
           </li>
           <li>

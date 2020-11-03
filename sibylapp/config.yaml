@@ -23,7 +23,7 @@ TESTING: False
 
 # LOGGING
 #===================================
-log_filename: "screening_log.csv"
+log_filename: "screening/screening_log.csv"
 
 # PRE-SAVED INFORMATION
 #===================================

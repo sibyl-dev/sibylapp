@@ -15,6 +15,9 @@ services:
     container_name: sibylapp
     depends_on:
       - db
+    volumes:
+      - ./screening:/sibylapp/screening
+      - ./logs:/logs
     ports:
       - '3000:3000'
     command: sibylapp run --env production -v --docker
