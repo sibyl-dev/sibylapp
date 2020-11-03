@@ -33,7 +33,7 @@ export function getCasesListAction() {
   return function (dispatch) {
     dispatch({
       type: 'GET_CASES_DATA',
-      promise: api.get('/cases/'),
+      promise: api.get('/referrals/'),
     });
   };
 }
@@ -51,7 +51,7 @@ export function getEntitiesInCaseListAction() {
     dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_REQUEST' });
 
     return api
-      .get(`/entities_in_case/${caseID}/`)
+      .get(`/entities_in_referral/${caseID}/`)
       .then((outcomeData) =>
         dispatch(getScoresForAllEntitiesAction(outcomeData, modelID)).then(() =>
           dispatch({ type: 'GET_ENTITIES_IN_CASE_DATA_SUCCESS', result: outcomeData }),

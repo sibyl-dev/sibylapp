@@ -29,7 +29,7 @@ function GET_CASES_DATA_REQUEST(nextState) {
 }
 
 function GET_CASES_DATA_SUCCESS(nextState, action) {
-  nextState.casesList = action.result.cases;
+  nextState.casesList = action.result.referrals;
   nextState.isCasesLoading = false;
 }
 
