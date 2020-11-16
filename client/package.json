@@ -22,7 +22,7 @@
         "react-dom": "^16.13.1",
         "react-redux": "^7.2.0",
         "react-router-dom": "^5.2.0",
-        "react-scripts": "3.4.1",
+        "react-scripts": "^3.4.4",
         "react-select": "^3.1.0",
         "redux": "^4.0.5",
         "redux-devtools-extension": "^2.13.8",
@@ -38,7 +38,8 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint -c .eslintrc.js 'src/**/*{.js,.jsx}'",
-        "lint:fix": "eslint --fix -c .eslintrc.js 'src/**/*{.js,.jsx}'"
+        "lint:fix": "eslint --fix -c .eslintrc.js 'src/**/*{.js,.jsx}'",
+        "serve": "serve -s build -p 4200"
     },
     "eslintConfig": {
         "extends": "react-app"
