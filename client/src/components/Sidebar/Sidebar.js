@@ -32,24 +32,24 @@ class Sidebar extends Component {
           <li onClick={() => toggleSidebarState(!isSidebarCollapsed)} className="sidebar-trigger">
             <IndicatorIcon dir={!isSidebarCollapsed && 'left'} />
           </li>
-          <li>
+          {/*<li>
             <NavLink exact to="/score" activeClassName="active" onClick={() => setActivePage('Score')}>
               <ScoreIcon />
               <span>Score</span>
             </NavLink>
-          </li>
+          </li>*/}
           <li>
             <NavLink exact to="/details" activeClassName="active" onClick={() => setActivePage('Details')}>
               <DetailsIcon />
               <span>Details</span>
             </NavLink>
           </li>
-          <li>
+          {/*<li>
             <NavLink exact to="/sandbox" onClick={() => setActivePage('Sandbox')}>
               <SandboxIcon />
               <span>Sandbox</span>
             </NavLink>
-          </li>
+          </li>*/}
             {/*<li>
             <NavLink exact to="/similar-children" onClick={() => setActivePage('Similar Children')}>
               <SimilarChildrenIcon />
@@ -68,11 +68,11 @@ class Sidebar extends Component {
                 <span>Global Feature Importance</span>
               </NavLink>
             </li>
-            <li>
+            {/*<li>
               <NavLink exact to="/feature-distribution" onClick={() => setActivePage('Feature Distribution')}>
                 <span>Feature Distribution</span>
               </NavLink>
-            </li>
+            </li>*/}
           </ul>
          </li>
         </ul>
