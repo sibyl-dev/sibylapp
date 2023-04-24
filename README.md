@@ -26,12 +26,12 @@ In these cases, explanations can serve many functions. They may help build user 
 
 Sibylapp is an online interactive tool built on the top of Sibyl (python library) to provide explanations to predictive models on tabular data.
 
-# Install
+# Getting Started
 
 ## Requirements
 Sibylapp runs on node. We recommend using nvm to run. You can install it using the guide [here](https://github.com/nvm-sh/nvm).
 
-## Steps to Install
+## Steps to Install and Run
 Sibylapp requires npm version v14.15.0. You can run the app from the `sibylapp/client` directory with:
 ```bash
 nvm use v14.15.0
