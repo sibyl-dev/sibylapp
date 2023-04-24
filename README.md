@@ -29,52 +29,15 @@ Sibylapp is an online interactive tool built on the top of Sibyl (python library
 # Install
 
 ## Requirements
+Sibylapp runs on node. We recommend using nvm to run. You can install it using the guide [here](https://github.com/nvm-sh/nvm).
 
-**sibylapp** has been developed and tested on [Python 3.5, 3.6, 3.7 and 3.8](https://www.python.org/downloads/)
-
-Also, although it is not strictly required, the usage of a [virtualenv](https://virtualenv.pypa.io/en/latest/)
-is highly recommended in order to avoid interfering with other software installed in the system
-in which **sibylapp** is run.
-
-These are the minimum commands needed to create a virtualenv using python3.6 for **sibylapp**:
-
+## Steps to Install
+Sibylapp requires npm version v14.15.0. You can run the app from the `sibylapp/client` directory with:
 ```bash
-pip install virtualenv
-virtualenv -p $(which python3.6) sibylapp-venv
+nvm use v14.15.0
+npm start
 ```
 
-Afterwards, you have to execute this command to activate the virtualenv:
-
-```bash
-source sibylapp-venv/bin/activate
-```
-
-Remember to execute it every time you start a new console to work on **sibylapp**!
-
-<!-- Uncomment this section after releasing the package to PyPI for installation instructions
-## Install from PyPI
-
-After creating the virtualenv and activating it, we recommend using
-[pip](https://pip.pypa.io/en/stable/) in order to install **sibylapp**:
-
-```bash
-pip install sibylapp
-```
-
-This will pull and install the latest stable release from [PyPI](https://pypi.org/).
--->
-
-## Install from source
-
-With your virtualenv activated, you can clone the repository and install it from
-source by running `make install` on the `stable` branch:
-
-```bash
-git clone git@github.com:HDI-Project/sibylapp.git
-cd sibylapp
-git checkout stable
-make install
-```
 
 ## Install for Development
 
