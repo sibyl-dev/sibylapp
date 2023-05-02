@@ -1,4 +1,5 @@
 const baseUrl = 'http://localhost:3000/api/v1';
+//const baseUrl = 'http://ec2-18-219-30-120.us-east-2.compute.amazonaws.com:3000/api/v1';
 
 export const api = {
   get(url, dataType = 'json') {

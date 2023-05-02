@@ -8,9 +8,9 @@ import {
   IndicatorIcon,
   ScoreIcon,
   DetailsIcon,
-  // SandboxIcon,
+  SandboxIcon,
   // SimilarChildrenIcon,
-  // ModelIcon,
+  ModelIcon,
   MetLogo,
 } from '../../assets/icons/icons';
 
@@ -32,51 +32,49 @@ class Sidebar extends Component {
           <li onClick={() => toggleSidebarState(!isSidebarCollapsed)} className="sidebar-trigger">
             <IndicatorIcon dir={!isSidebarCollapsed && 'left'} />
           </li>
-          <li>
+          {/*<li>
             <NavLink exact to="/score" activeClassName="active" onClick={() => setActivePage('Score')}>
               <ScoreIcon />
               <span>Score</span>
             </NavLink>
-          </li>
+          </li>*/}
           <li>
             <NavLink exact to="/details" activeClassName="active" onClick={() => setActivePage('Details')}>
               <DetailsIcon />
               <span>Details</span>
             </NavLink>
           </li>
-          {/* <li>
+          {/*<li>
             <NavLink exact to="/sandbox" onClick={() => setActivePage('Sandbox')}>
               <SandboxIcon />
               <span>Sandbox</span>
             </NavLink>
-          </li> */}
-          {/*
-          Temporarily 'disabled'
-          <li>
+          </li>*/}
+            {/*<li>
             <NavLink exact to="/similar-children" onClick={() => setActivePage('Similar Children')}>
               <SimilarChildrenIcon />
               <span>Similar Children</span>
             </NavLink>
-          </li> */}
-          {/* <li className="model">
+          </li>*/}
+           <li className="model">
             <button type="button" className="clean about-model" onClick={() => toggleSidebarState(!isSidebarCollapsed)}>
               <ModelIcon />
               <span>About Model</span>
               <IndicatorIcon dir="right" />
-            </button> */}
-          {/* <ul>
+            </button>
+           <ul>
             <li>
               <NavLink exact to="/global-feature-importance" onClick={() => setActivePage('Global Feature Importance')}>
                 <span>Global Feature Importance</span>
               </NavLink>
             </li>
-            <li>
+            {/*<li>
               <NavLink exact to="/feature-distribution" onClick={() => setActivePage('Feature Distribution')}>
                 <span>Feature Distribution</span>
               </NavLink>
-            </li>
-          </ul> */}
-          {/* </li> */}
+            </li>*/}
+          </ul>
+         </li>
         </ul>
       </div>
     );

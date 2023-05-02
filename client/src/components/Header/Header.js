@@ -13,9 +13,7 @@ import './Header.scss';
 const toggleModalDialog = (modalState, onClose) => (
   <ModalDialog isOpen={modalState} onClose={onClose} title="Risk Score">
     <p>
-      This is the risk score prediction for this child. The scores range from 1 to 20. The higher the risk score, the
-      higher the chance of placement. A score of **1** therefore represents the bottom 5% of risk among referred
-      children, and a **20** represents the top 5%.
+      This is the cost prediction for the house.
     </p>
   </ModalDialog>
 );
