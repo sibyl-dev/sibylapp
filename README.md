@@ -16,8 +16,8 @@ Explanation tool for machine learning
 
 <!-- - Documentation: https://HDI-Project.github.io/sibylapp -->
 
--   The Restful APIs documentation: http://54.208.61.79/apidoc/
--   Homepage: https://github.com/HDI-Project/sibylapp
+-   The Restful APIs documentation: http://18.223.186.158/
+-   Homepage: https://github.com/DAI-Lab/sibylapp
 
 # Overview
 
@@ -26,54 +26,28 @@ In these cases, explanations can serve many functions. They may help build user 
 
 Sibylapp is an online interactive tool built on the top of Sibyl (python library) to provide explanations to predictive models on tabular data.
 
-# Install
+# Getting Started
 
 ## Requirements
+Sibylapp runs on node. We recommend using nvm to run. You can install it using the guide [here](https://github.com/nvm-sh/nvm).
 
-**sibylapp** has been developed and tested on [Python 3.5, 3.6, 3.7 and 3.8](https://www.python.org/downloads/)
-
-Also, although it is not strictly required, the usage of a [virtualenv](https://virtualenv.pypa.io/en/latest/)
-is highly recommended in order to avoid interfering with other software installed in the system
-in which **sibylapp** is run.
-
-These are the minimum commands needed to create a virtualenv using python3.6 for **sibylapp**:
-
+## Steps to Install and Run
+Sibylapp requires node version v14.15.0. We recommend using [NVM](https://github.com/nvm-sh/nvm) (for windows) or [N](https://github.com/tj/n) (for mac/linux) for node/npm version management. You can run the app in development mode with:
 ```bash
-pip install virtualenv
-virtualenv -p $(which python3.6) sibylapp-venv
+cd client
+rm -rf node_modules && rm -rf build
+npm install 
+npm start
 ```
 
-Afterwards, you have to execute this command to activate the virtualenv:
-
+Or in production mode with:
 ```bash
-source sibylapp-venv/bin/activate
-```
-
-Remember to execute it every time you start a new console to work on **sibylapp**!
-
-<!-- Uncomment this section after releasing the package to PyPI for installation instructions
-## Install from PyPI
-
-After creating the virtualenv and activating it, we recommend using
-[pip](https://pip.pypa.io/en/stable/) in order to install **sibylapp**:
-
-```bash
-pip install sibylapp
-```
-
-This will pull and install the latest stable release from [PyPI](https://pypi.org/).
--->
-
-## Install from source
-
-With your virtualenv activated, you can clone the repository and install it from
-source by running `make install` on the `stable` branch:
-
-```bash
-git clone git@github.com:HDI-Project/sibylapp.git
-cd sibylapp
-git checkout stable
-make install
+cd client
+npm install -g serve 
+rm -rf node_modules && rm -rf build
+npm install 
+npm run build
+serve -s build -p 4200
 ```
 
 ## Install for Development
